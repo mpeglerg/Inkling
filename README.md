@@ -6,7 +6,7 @@
 
 You may not know this, but you already know inkling. Inkling is a programming language that lets you follow your gut- you learn to program by doing what makes sense to you while learning to shift your thinking to grow as a programmer and as a thinker. Speak the language you code. Type what you want to say. Where will your inkling take you today?
 
-Created by Marco B, Cooper LaRhette, Veda Ashok, Sam Gibson, Maya Pegler-Gordon, and Talia Bahar
+Created by Marco B, Cooper LaRhette, Veda Ashok, Sam Gibson, Maya Pegler-Gordon, and Talia Bahar.
 
 # Features
 
