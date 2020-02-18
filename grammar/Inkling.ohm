@@ -1,10 +1,10 @@
 Inkling {
     Program     =  (Stmt)*
     Stmt        =  newline* SimpleStmt newline+                             -- simpleStmt
-                |  newline* IfExpr newline+                                 -- ifBlock
-                |  newline* ForExpr newline+                                -- forLoop
+                |  newline* IfStmt newline+                                 -- ifBlock
+                |  newline* ForLoop newline+                                -- forLoop
                 |  newline* FuncDec newline+                                -- funcDec
-                |  newline* WhileExpr newline+                              -- whileLoop
+                |  newline* WhileLoop newline+                              -- whileLoop
     Block       =  "{" Stmt+ "}"
     SimpleStmt  =  Call
                 |  VarExp "is" Exp                                          -- assign
@@ -28,13 +28,13 @@ Inkling {
 
     Call        =  VarExp "(" Args ")"
 
-    WhileExpr   =  "while" "(" Exp ")" Block
-    IfExpr      =  Exp "?" SimpleStmt ":" SimpleStmt                        -- ternary
+    WhileLoop   =  "while" "(" Exp ")" Block
+    IfStmt      =  Exp "?" SimpleStmt ":" SimpleStmt                        -- ternary
                 |  "if" "(" Exp ")" Block                                   -- if
                    ("else if" "(" Exp ")" Block)*
                     ("else" Block)?
 
-    ForExpr     =  "for" id "is" Type "in" Exp Block
+    ForLoop     =  "for" id "is" Type "in" Exp Block
 
     Field       =  id ":" Exp
     Exp         =  Exp1 "and" Exp                                           -- plus
