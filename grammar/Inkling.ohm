@@ -37,8 +37,8 @@ Inkling {
     ForExpr     =  "for" id "is" Type "in" Exp Block
 
     Field       =  id ":" Exp
-    Exp         =  Exp1 "and" Exp                                           --plus
-                |  Exp1 "or" Exp                                            --minus
+    Exp         =  Exp1 "and" Exp                                           -- plus
+                |  Exp1 "or" Exp                                            -- minus
                 |  Exp1
     Exp1        =  Exp2 relop Exp2                                          -- relop
                 |  Exp2
