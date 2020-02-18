@@ -30,9 +30,9 @@ Inkling {
 
     WhileLoop   =  "while" "(" Exp ")" Block
     IfStmt      =  Exp "?" SimpleStmt ":" SimpleStmt                        -- ternary
-                |  "if" "(" Exp ")" Block                                   -- if
+                |  "if" "(" Exp ")" Block
                    ("else if" "(" Exp ")" Block)*
-                    ("else" Block)?
+                   ("else" Block)?                                          -- if
 
     ForLoop     =  "for" id "is" Type "in" Exp Block
 
