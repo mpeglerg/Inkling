@@ -4,7 +4,8 @@
   "description": "CMSI 488 project",
   "main": "Inkling.ohm",
   "scripts": {
-    "test": "jest"
+    "test": "jest --collect-coverage",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
