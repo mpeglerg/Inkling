@@ -47,12 +47,12 @@ class IfStmt {
 }
 
 
-class ForStmt {
+class ForLoop {
   constructor(id, type, exp, body) {
     Object.assign(this, {
-      index,
-      start,
-      end,
+      id,
+      type,
+      exp,
       body,
     })
   }
@@ -61,9 +61,9 @@ class ForStmt {
 class FuncDecStmt {
   constructor(id, params, type, body) {
     Object.assign(this, {
-      index,
-      start,
-      end,
+      id,
+      params,
+      type,
       body,
     })
   }
@@ -251,18 +251,27 @@ module.exports = {
   Print,
   ReturnStatement,
   IfStmt,
-  ForStmt,
+  ForLoop,
   FuncDecStmt,
   WhileLoop,
   FieldVarExp,
   SubscriptedVarExp,
   Param,
   Call,
-  PlusMinusExp,
-  RelopExp,
-  MulOpExp,
-  AddOpExp,
+  BinaryExpression,
+  IdentifierExpression,
+  ListExpression,
+  KeyValueExpression,
+  DictExpression,
+  SetExpression,
   PowExp,
-  PrefixPostfixExp,
+  PrefixExpression,
+  PostfixExpression,
   Paren,
+  ListType,
+  SetType,
+  DictType,
+  NumericLiteral,
+  TextLiteral,
+  BooleanLiteral,
 }
