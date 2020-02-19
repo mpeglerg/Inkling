@@ -5,24 +5,32 @@ const {
   Assignment,
   VarDeclaration,
   Print,
-  Return,
+  ReturnStatement,
+  ForLoop,
   IfStmt,
-  ForStmt,
   FuncDecStmt,
-  WhileStmt,
-  VarExpression,
+  WhileLoop,
   FieldVarExp,
   SubscriptedVarExp,
   Param,
   Call,
-  AndOrExp,
-  AddOpExp,
-  MulOpExp,
-  RelopExp,
+  BinaryExpression,
+  IdentifierExpression,
+  ListExpression,
+  KeyValueExpression,
+  DictExpression,
+  SetExpression,
   PowExp,
-  PrefixPostfixExp,
+  PrefixExpression,
+  PostfixExpression,
   Paren,
-} = require('index')
+  ListType,
+  SetType,
+  DictType,
+  NumericLiteral,
+  TextLiteral,
+  BooleanLiteral,
+} = require('../ast')
 
 const grammar = ohm.grammar(fs.readFileSync('../grammar/Inkling.ohm'))
 
@@ -40,28 +48,29 @@ const astGenerator = grammar.createSemantics()
       return new ReturnStatement(arrayToNullable(e.ast()))
     },
     // Statements
-    Block(open, stmts, close) {
+    Block(_1, stmts, _2) {
       return new Block(stmts.ast())
     },
     IfStmt_ternary(trueTest, _1, test, _2, falseTest) {
       return new TernaryExpression(test.ast(), trueTest.ast(), falseTest.ast())
     },
-    IfExpr__if(_1, _2, firstTest, _3, firstBlock, _4, _5, _6, moreTests, _7, moreBlocks, _8, lastBlock) {
+    IfExpr_if(_1, _2, firstTest, _3, firstBlock, _4, _5, _6, moreTests, _7, moreBlocks, _8,
+      lastBlock) {
       return new IfStmt([firstTest.ast(), ...moreTests.ast()],
         [firstBlock.ast(), ...moreBlocks.ast()],
         arrayToNullable(lastBlock.ast()))
     },
     ForLoop(_1, id, _2, type, _3, exp, body) {
-      return new ForStmt(id.ast(), type.ast(), exp.ast(), body.ast())
+      return new ForLoop(id.ast(), type.ast(), exp.ast(), body.ast())
     },
     WhileLoop(_, _open, exp, _close, body) {
-      return new WhileStmt(exp.ast(), body.ast())
+      return new WhileLoop(exp.ast(), body.ast())
     },
 
     FuncDec_function(_funcKeyword, id, _open, params, _close, type, body) {
-      return new FuncDecStmt(id.ast(), type.ast(), exp.ast(), body.ast())
+      return new FuncDecStmt(id.ast(), params.ast(), type.ast(), body.ast())
     },
-    FuncDec_ArrowFuncDec(id, _isKeyword, _alwaysKeyword, _open, params, _close, returnType, _arrowSymbol, body) {
+    FuncDec_arrowfunction(id, _isKeyword, _alwaysKeyword, _open, params, _close, returnType, _arrowSymbol, body) {
       return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
     },
 
