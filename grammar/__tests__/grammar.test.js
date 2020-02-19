@@ -8,7 +8,7 @@
 // const ohm = require("ohm-js");
 // const grammar = ohm.grammar(fs.readFileSync('grammar/Inkling.ohm'));
 
-const syntaxCheck = require('../syntax-checker')
+const syntaxCheck = require("../syntax-checker");
 
 const program = String.raw`
     btw: this is how we write comments
@@ -17,10 +17,10 @@ const program = String.raw`
     :xoxo
     x is Num 5
     x is 10
-    y is Always Num 10
+    y is always Num 10
     x is Num 5
     x is 10
-    y is Always Num 10
+    y is always Num 10
     textWithNewline is Text "there is a new line in \n this text!"
     textWithTab is Text "there is a new line in \t this text!"
     textWithSingleQuote is Text "there is a single quote in \' this text!"
@@ -116,7 +116,7 @@ const program = String.raw`
         }
     }
 
-    arrowFunction is Always(x is Num) is Num => {
+    arrowFunction is always(x is Num) is Num => {
         gimme x + 1
     }
 
@@ -129,13 +129,12 @@ const program = String.raw`
     ourDict is Dict<Num, Text> {0: "this", 1: "is", 2: "a", 3: "legal", 4: "dict", 5: "in", 6: "Inkling"}
     aDictOfNums is Dict<Num, Num> {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7}
     aDictOfNums[0] is 0
-`
+`;
 
-describe('The syntax checker', () => {
-  test('accepts the mega program with all syntactic forms', (done) => {
-    expect(syntaxCheck(program))
-      .toBe(true)
-    done()
-  })
-})
+describe("The syntax checker", () => {
+  test("accepts the mega program with all syntactic forms", done => {
+    expect(syntaxCheck(program)).toBe(true);
+    done();
+  });
+});
 // TO TEST: dictionary
