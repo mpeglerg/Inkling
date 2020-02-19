@@ -134,7 +134,7 @@ const astGenerator = grammar.createSemantics()
       return new SetExpression(expressions.ast())
     },
     Exp5_dict(_1, keyValue, _2) {
-      return new DictionaryExpression(keyValue.ast())
+      return new DictExpression(keyValue.ast())
     },
     VarExp_field(id, _dotOperator, field) {
       return new FieldVarExp(id.ast(), field.ast())
@@ -162,7 +162,7 @@ const astGenerator = grammar.createSemantics()
       return new NumericLiteral(+this.sourceString)
     },
     txtlit(_1, chars, _2) {
-      return new StringLiteral(this.sourceString)
+      return new TextLiteral(chars.ast) // source string needed here?
     },
     boollit(_) {
       return new BooleanLiteral(this.sourceString === 'true')
