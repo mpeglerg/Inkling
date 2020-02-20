@@ -160,11 +160,11 @@ class PostfixExpression {
 }
 
 
-class Paren {
-  constructor(exp) {
-    Object.assign(this, { exp })
-  }
-}
+// class Paren {
+//   constructor(exp) {
+//     Object.assign(this, { exp })
+//   }
+// }
 
 
 class ListExpression {
@@ -267,7 +267,7 @@ module.exports = {
   PowExp,
   PrefixExpression,
   PostfixExpression,
-  Paren,
+  // Paren, not needed I believe
   ListType,
   SetType,
   DictType,
