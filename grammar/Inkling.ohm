@@ -67,7 +67,7 @@ Inkling {
                 |  "{" ListOf<KeyValue, ","> "}"                            -- dict
 
     KeyValue    =  Exp ":" Exp
-    keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "Always " | "display"
+    keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
                 |  "Bool " | "List<" | "Text " | "Set<")
 
