@@ -15,9 +15,11 @@ class Assignment {
 }
 
 class VarDeclaration {
-  constructor(id, type, exp) {
+  constructor(id, constant = false, type, exp) {
+    // constant tries to account for 'always' functionality
     Object.assign(this, {
       id,
+      constant,
       type,
       exp,
     })
@@ -45,7 +47,6 @@ class IfStmt {
     })
   }
 }
-
 
 class ForLoop {
   constructor(id, type, exp, body) {
@@ -102,7 +103,6 @@ class SubscriptedVarExp {
   }
 }
 
-
 class Param {
   constructor(id, type) {
     Object.assign(this, {
@@ -120,7 +120,6 @@ class Call {
     })
   }
 }
-
 
 class BinaryExpression {
   constructor(op, left, right) {
@@ -159,13 +158,11 @@ class PostfixExpression {
   }
 }
 
-
 // class Paren {
 //   constructor(exp) {
 //     Object.assign(this, { exp })
 //   }
 // }
-
 
 class ListExpression {
   constructor(members) {

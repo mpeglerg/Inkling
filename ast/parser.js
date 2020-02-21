@@ -22,7 +22,7 @@ const {
   KeyValueExpression,
   DictExpression,
   SetExpression,
-  PowExp,
+  PowExp, // TODO
   PrefixExpression,
   PostfixExpression,
   // Paren,  // not needed I think
@@ -72,8 +72,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new VarDeclaration(id.ast(), type.ast(), exp.ast())
   },
   SimpleStmt_constdec(id, _isKeyword, _alwaysKeyword, type, exp) {
-    // TODO: no always functionality implemented here?
-    return new VarDeclaration(id.ast(), type.ast(), exp.ast())
+    // TODO: always functionality implemented here? may be implemented now
+    return new VarDeclaration(id.ast(), true, type.ast(), exp.ast())
   },
   SimpleStmt_print(_displayKeyword, exp) {
     return new Print(exp.ast())
