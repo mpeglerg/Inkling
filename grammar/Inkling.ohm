@@ -6,8 +6,7 @@ Inkling {
                 |  newline* FuncDec newline+                                -- funcDec
                 |  newline* WhileLoop newline+                              -- whileLoop
     Block       =  "{" Stmt+ "}"
-    SimpleStmt  =  Call
-                |  VarExp "is" Exp                                          -- assign
+    SimpleStmt  =  VarExp "is" Exp                                          -- assign
                 |  id "is" "always" Type Exp                                -- constdec
                 |  id "is" Type Exp                                         -- letdec
                 |  "exit"                                                   -- break
@@ -16,9 +15,8 @@ Inkling {
                 |  Exp
     VarExp      =  VarExp "[" Exp "]"                                       -- subscripted
                 |  VarExp "." id                                            -- field
-                |  Call                                                     -- call
+                |  VarExp "(" Args ")"                                      -- call
                 |  id
-    Call        =  VarExp "(" Args ")"
     FuncDec     =  "function" id "(" Params ")" ReturnType Block            -- function
                 |  id "is" "always" "(" Params ")" ReturnType "=>" Block    -- arrowfunction
     Param       =  id "is" Type
@@ -48,17 +46,16 @@ Inkling {
                 |  Exp6 postfixOp                                           -- postfix
                 |  Exp6
     Exp6        =  "(" Exp ")"                                              -- paren
-                |  Call
                 |  boollit
                 |  txtlit
                 |  numlit
-                |  id
                 |  VarExp
+                |  id
                 |  "[" ListOf<Exp, ","> "]"                                 -- list
                 |  "{" ListOf<Exp, ","> "}"                                 -- set
                 |  "{" ListOf<KeyValue, ","> "}"                            -- dict
     KeyValue    =  Exp ":" Exp
-    keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "Always " | "display"
+    keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
                 |  "Bool " | "List<" | "Text " | "Set<")
     Type        =  (Num | Dict | Bool | List | Text | Set)
