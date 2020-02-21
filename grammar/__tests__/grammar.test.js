@@ -4,9 +4,11 @@
  * These tests check that our grammar accepts a program that features all of
  * syntactic forms of the language.
  */
-// const fs = require("fs");
-// const ohm = require("ohm-js");
-// const grammar = ohm.grammar(fs.readFileSync('grammar/Inkling.ohm'));
+// const fs = require('fs')
+//
+// const ohm = require('ohm-js')
+//
+// const grammar = ohm.grammar(fs.readFileSync('grammar/Inkling.ohm'))
 
 const syntaxCheck = require("../syntax-checker");
 
@@ -68,7 +70,7 @@ const program = String.raw`
     }
 
     function negativeChecker(x is Num) is Bool {
-        x < 0 ? gimme true : gimme false
+        gimme x < 0 ? true : false
     }
 
     trueVal is Bool negativeChecker(5)
@@ -90,6 +92,7 @@ const program = String.raw`
             gimme c
         }
     }
+    
     function testBang() is Text {
         x is Bool true
         if (!x == false) {
@@ -116,10 +119,18 @@ const program = String.raw`
         }
     }
 
-    arrowFunction is always(x is Num) is Num => {
+    arrowFunction is always (x is Num) is Num => {
+
         gimme x + 1
     }
-
+    
+    testCall is always () is List<Text> => {
+        test is List<Text> ["this", "is", "a", "legal", "list", "in", "Inkling"]
+        gimme test
+    }
+    
+    testCall[0]
+    
     ourList is List<Text> ["this", "is", "a", "legal", "list", "in", "Inkling"]
     aListOfNums is List<Text> ["1", "2", "3", "4", "5", "6", "7"]
     aListOfNums[0] is 0
@@ -131,10 +142,10 @@ const program = String.raw`
     aDictOfNums[0] is 0
 `;
 
-describe("The syntax checker", () => {
-  test("accepts the mega program with all syntactic forms", done => {
-    expect(syntaxCheck(program)).toBe(true);
-    done();
-  });
-});
+describe('The syntax checker', () => {
+  test('accepts the mega program with all syntactic forms', (done) => {
+    expect(syntaxCheck(program)).toBe(true)
+    done()
+  })
+})
 // TO TEST: dictionary

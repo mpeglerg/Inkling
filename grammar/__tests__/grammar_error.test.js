@@ -8,12 +8,12 @@ const syntaxCheck = require("../syntax-checker");
 
 const errors = [
   [
-    "unclosed comment",
-    "x is always Num 5 fyi: this comment needs to end in colon xoxo\n"
+    'unclosed comment',
+    'x is always Num 5 fyi: this comment needs to end in colon xoxo\n',
   ],
   [
-    "function missing return type",
-    "arrowFunction is always(x is Num) => {gimme x + 1}\n"
+    'function missing return type',
+    'arrowFunction is always(x is Num) => {gimme x + 1}\n',
   ],
   ["keyword as id", "while is Num 5\n"],
   ["bad character in id", "&x is Nu  1\n"],
@@ -35,8 +35,8 @@ const errors = [
 describe("The syntax checker", () => {
   errors.forEach(([scenario, program]) => {
     test(`detects the error ${scenario}`, done => {
-      expect(syntaxCheck(program)).toBe(false);
-      done();
-    });
-  });
-});
+      expect(syntaxCheck(program)).toBe(false)
+      done()
+    })
+  })
+})
