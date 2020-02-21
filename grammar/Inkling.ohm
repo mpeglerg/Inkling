@@ -5,7 +5,6 @@ Inkling {
                 |  newline* ForLoop newline+                                -- forLoop
                 |  newline* FuncDec newline+                                -- funcDec
                 |  newline* WhileLoop newline+                              -- whileLoop
-
     Block       =  "{" Stmt+ "}"
     SimpleStmt  =  Call
                 |  VarExp "is" Exp                                          -- assign
@@ -15,34 +14,27 @@ Inkling {
                 |  "display" Exp                                            -- print
                 |  "gimme" Exp?                                             -- return
                 |  Exp
-
-    Call        =  Call "(" Args ")"
-                |  VarExp
-
     VarExp      =  VarExp "[" Exp "]"                                       -- subscripted
                 |  VarExp "." id                                            -- field
+                |  Call                                                     -- call
                 |  id
-
+    Call        =  VarExp "(" Args ")"
     FuncDec     =  "function" id "(" Params ")" ReturnType Block            -- function
                 |  id "is" "always" "(" Params ")" ReturnType "=>" Block    -- arrowfunction
-
     Param       =  id "is" Type
     Params      =  ListOf<Param, ",">
     Args        =  ListOf<Exp, ",">
     ReturnType  =  "is" (Type | "void")
-
     WhileLoop   =  "while" "(" Exp ")" Block
     IfStmt      =  "if" "(" Exp ")" Block
                    ("else if" "(" Exp ")" Block)*
                    ("else" Block)?                                          -- if
-
     ForLoop     =  "for" id "is" Type "in" Exp Block
-
     Field       =  id ":" Exp
     Exp         =  Exp "?" Exp ":" Exp                                      -- ternary
                 |  Exp0
-    Exp0        =  Exp1 "and" Exp                                           -- and
-                |  Exp1 "or" Exp                                            -- or
+    Exp0        =  Exp1 "and" Exp                                           -- plus
+                |  Exp1 "or" Exp                                            -- minus
                 |  Exp1
     Exp1        =  Exp2 relop Exp2                                          -- relop
                 |  Exp2
@@ -65,12 +57,10 @@ Inkling {
                 |  "[" ListOf<Exp, ","> "]"                                 -- list
                 |  "{" ListOf<Exp, ","> "}"                                 -- set
                 |  "{" ListOf<KeyValue, ","> "}"                            -- dict
-
     KeyValue    =  Exp ":" Exp
-    keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
+    keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "Always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
                 |  "Bool " | "List<" | "Text " | "Set<")
-
     Type        =  (Num | Dict | Bool | List | Text | Set)
     Num         =  "Num"
     List        =  "List<" Type ">"
