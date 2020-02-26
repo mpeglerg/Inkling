@@ -5,6 +5,16 @@ class Program {
   }
 }
 
+// ////// Block
+// Should this be done in parser ? ask
+class Block {
+  constructor(statements) {
+    // map or filter over every statement
+    this.statements = statements.filter()
+    // this.statements = statements ??
+  }
+}
+
 class Assignment {
   constructor(id, exp) {
     Object.assign(this, {
@@ -232,17 +242,9 @@ class BooleanLiteral {
   }
 }
 
-// ////// Block
-// Should this be done in parser ? ask
-// class Block {
-//     constructor(statements) {
-//         // map or filter over every statement
-//         this.statements = statements.filter();
-//     }
-// }
-
 module.exports = {
   Program,
+  Block,
   Assignment,
   VarDeclaration,
   Print,

@@ -1,7 +1,9 @@
+/* eslint no-unused-vars: ["error", { "argsIgnorePattern": "^_" }] */
 const fs = require('fs')
 const ohm = require('ohm-js')
 const {
   Program,
+  Block,
   // Assignment,
   // we have assignment parsing functions but the classes don't match
   // I think we don't need Assignment class
@@ -22,7 +24,7 @@ const {
   KeyValueExpression,
   DictExpression,
   SetExpression,
-  PowExp, // TODO
+  PowExp,
   PrefixExpression,
   PostfixExpression,
   // Paren,  // not needed I think
@@ -40,6 +42,7 @@ function arrayToNullable(a) {
   return a.length === 0 ? null : a[0]
 }
 
+// eslint-disable-next-line no-unused-vars
 const astGenerator = grammar.createSemantics().addOperation('ast', {
   Program(stmt) {
     return new Program(stmt.ast())
@@ -47,6 +50,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
+  // SimpleStmt_return(_gimmeKeyword, exp) {
+  //     if (!exp.ast()) {
+  //         return new Return();
+  //     }
+  //     return new Return(exp.ast());
+  // }
   // Statements
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
@@ -110,14 +119,17 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Exp3_binary(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
-  Exp5_prefix(op, operand) {
-    return new PrefixExpression(op.ast(), operand.ast())
+  Exp4_pow(left, _, right) {
+    return new PowExp(left, right)
   },
   Exp4_binary(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
   Exp5_postfix(operand, op) {
     return new PostfixExpression(operand.ast(), op.ast())
+  },
+  Exp5_prefix(op, operand) {
+    return new PrefixExpression(op.ast(), operand.ast())
   },
   Exp5_parens(_1, expression, _2) {
     return expression.ast()
@@ -128,6 +140,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Exp5_set(_1, expressions, _2) {
     return new SetExpression(expressions.ast())
   },
+
   Exp5_dict(_1, keyValue, _2) {
     return new DictExpression(keyValue.ast())
   },
@@ -161,10 +174,5 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   boollit(_) {
     return new BooleanLiteral(this.sourceString === 'true')
-  }, // SimpleStmt_return(_gimmeKeyword, exp) {
-  //     if (!exp.ast()) {
-  //         return new Return();
-  //     }
-  //     return new Return(exp.ast());
-  // }
+  },
 })
