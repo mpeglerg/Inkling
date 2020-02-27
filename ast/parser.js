@@ -1,6 +1,7 @@
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "^_" }] */
 const fs = require('fs')
 const ohm = require('ohm-js')
+
 const {
   Program,
   Block,
@@ -173,3 +174,11 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new BooleanLiteral(this.sourceString === 'true')
   },
 })
+
+module.exports = (text) => {
+  const match = grammar.match(text)
+  if (!match.succeeded()) {
+    throw match.message
+  }
+  return astGenerator(match).ast()
+}

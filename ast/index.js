@@ -10,8 +10,8 @@ class Program {
 class Block {
   constructor(statements) {
     // map or filter over every statement
-    this.statements = statements.filter()
-    // this.statements = statements ??
+    // this.statements = statements.filter()
+    this.statements = statements
   }
 }
 
