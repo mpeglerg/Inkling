@@ -31,8 +31,8 @@ Inkling {
     Field       =  id ":" Exp
     Exp         =  Exp "?" Exp ":" Exp                                      -- ternary
                 |  Exp0
-    Exp0        =  Exp1 "and" Exp                                           -- plus
-                |  Exp1 "or" Exp                                            -- minus
+    Exp0        =  Exp1 "and" Exp                                           -- and
+                |  Exp1 "or" Exp                                            -- or
                 |  Exp1
     Exp1        =  Exp2 relop Exp2                                          -- relop
                 |  Exp2
@@ -45,7 +45,7 @@ Inkling {
     Exp5        =  prefixOp Exp6                                            -- prefix
                 |  Exp6 postfixOp                                           -- postfix
                 |  Exp6
-    Exp6        =  "(" Exp ")"                                              -- paren
+    Exp6        =  "(" Exp ")"                                              -- parens
                 |  boollit
                 |  txtlit
                 |  numlit
