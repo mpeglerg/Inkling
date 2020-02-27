@@ -50,13 +50,15 @@ const {
 
 const fixture = {
   declarations: [
-    String.raw`y is Text “Hello World!”`,
+    String.raw`y is Text "Hello World!"
+    `,
     new Program(
       new Block([
-        new TextLiteral('Hello World!'),
+        new TextLiteral('"Hello World!"'),
         new VarDeclaration('y', false, 'Text')]),
     ),
-    String.raw`x is always Num 5`,
+    String.raw`x is always Num 5
+    `,
     new Program(
       new Block(
         [
@@ -64,7 +66,8 @@ const fixture = {
           new VarDeclaration('x', true, 'Num')],
       ),
     ),
-    String.raw`x is Bool true`, // false?
+    String.raw`x is Bool true
+    `, // false?
     new Program(
       new Block(
         [
@@ -72,7 +75,8 @@ const fixture = {
           new VarDeclaration('x', true, 'Bool')],
       ),
     ),
-    String.raw`x is always Num 5`,
+    String.raw`x is always Num 5
+    `,
     new Program(
       new Block(
         [
