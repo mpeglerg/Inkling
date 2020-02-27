@@ -36,7 +36,7 @@ const {
   BooleanLiteral,
 } = require('../ast')
 
-const grammar = ohm.grammar(fs.readFileSync('../grammar/Inkling.ohm'))
+const grammar = ohm.grammar(fs.readFileSync('./grammar/Inkling.ohm'))
 
 function arrayToNullable(a) {
   return a.length === 0 ? null : a[0]
