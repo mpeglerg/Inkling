@@ -51,19 +51,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
-  // SimpleStmt_return(_gimmeKeyword, exp) {
-  //     if (!exp.ast()) {
-  //         return new Return();
-  //     }
-  //     return new Return(exp.ast());
-  // }
-  // Statements
+  
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
   },
   Stmt_simpleStmt(_, stmt, _1) {
-    return stmt.ast() // may need to create a new class for this, unsure, we'll
-    // see if this hacks it for now
+    return stmt.ast() 
   },
   IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7,
     moreBlock, _8, lastBlock) {
