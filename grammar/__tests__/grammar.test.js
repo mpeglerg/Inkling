@@ -120,7 +120,6 @@ const program = String.raw`
     }
 
     arrowFunction is always (x is Num) is Num => {
-
         gimme x + 1
     }
     

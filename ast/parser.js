@@ -61,6 +61,10 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
   },
+  Stmt_simpleStmt(_, stmt, _1) {
+    return stmt.ast() // may need to create a new class for this, unsure, we'll
+    // see if this hacks it for now
+  },
   IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7,
     moreBlock, _8, lastBlock) {
     return new IfStmt([firstTest.ast(), ...elifTests.ast()],
@@ -165,13 +169,14 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
 
   // literals
   numlit(_1, _2, _3, _4, _5, _6) {
-    return new NumericLiteral(+this.sourceString)
+    return new NumericLiteral(+this.sourceString) // TODO: idk if this is right,
+    // I think we might have to parse and combine each part of the parameter
   },
   txtlit(_1, chars, _2) {
-    return new TextLiteral(chars.ast) // this.sourceString() needed here?
+    return new TextLiteral(chars.sourceString)
   },
-  boollit(_) {
-    return new BooleanLiteral(this.sourceString === 'true')
+  boollit(v) {
+    return new BooleanLiteral(v.sourceString)
   },
 })
 
