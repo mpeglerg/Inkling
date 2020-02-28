@@ -53,9 +53,9 @@ const fixture = {
     String.raw`y is Text "Hello World!"
     `,
     new Program(
-      new Block([
-        new TextLiteral('"Hello World!"'),
-        new VarDeclaration('y', false, 'Text')]),
+      [
+        new VarDeclaration('y', false, 'Text',
+          new TextLiteral('"Hello World!"'))],
     ),
     String.raw`x is always Num 5
     `,

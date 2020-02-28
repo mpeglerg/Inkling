@@ -178,6 +178,10 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   boollit(v) {
     return new BooleanLiteral(v.sourceString)
   },
+  // eslint-disable-next-line no-underscore-dangle
+  _terminal() {
+    return this.sourceString
+  },
 })
 
 module.exports = (text) => {
