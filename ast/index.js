@@ -5,7 +5,7 @@ class Program {
   }
 }
 
-// ////// Block
+// ////// Block ///
 // Should this be done in parser ? ask
 class Block {
   constructor(statements) {
