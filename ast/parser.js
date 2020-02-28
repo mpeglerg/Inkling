@@ -48,12 +48,14 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
-
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
   },
   Stmt_simpleStmt(_, stmt, _1) {
     return stmt.ast()
+  },
+  Stmt_funcDec(_1, f, _2) {
+    return f.ast()
   },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
