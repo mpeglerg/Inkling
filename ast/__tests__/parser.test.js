@@ -98,11 +98,30 @@ const fixture = {
     new Program(
       new FuncDecStmt(
         'f',
-        new Param('x', 'Num'),
-        new Param('y', 'Num'),
+        [
+          new Param('x', 'Num'),
+          new Param('y', 'Num'),
+        ],
         'Num',
         new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
       ),
+    ),
+  ],
+
+  math: [
+    String.raw`
+      result is Num 3 + 10 / 5 - 3 % 2
+    `,
+    new Program(
+      [
+        new VarDeclaration('result', false, 'Num',
+          new BinaryExpression('-',
+            new BinaryExpression('+', new NumericLiteral(3),
+              new BinaryExpression('/', new NumericLiteral(10),
+                new NumericLiteral(5))),
+            new BinaryExpression('%', new NumericLiteral(3),
+              new NumericLiteral(2)))),
+      ],
     ),
   ],
   // whiles: [
