@@ -1,5 +1,4 @@
 // perhaps look at iki https://github.com/rtoal/iki-compiler/blob/master/ast/__tests__/parser.test.js
-
 /*
  * Parser Tests
  *
@@ -10,36 +9,31 @@
  *
  * Based on toal's iki parser.test.js
  */
-
 const parse = require('../parser')
-
 const {
   Program,
   Block,
-  // Assignment,
-  // we have assignment parsing functions but the classes don't match
-  // I think we don't need Assignment class
+  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
-  ForLoop,
   IfStmt,
+  ForLoop,
   FuncDecStmt,
   WhileLoop,
   FieldVarExp,
+  IdentifierExpression,
   SubscriptedVarExp,
   Param,
   Call,
   BinaryExpression,
-  IdentifierExpression,
+  PowExp,
+  PrefixExpression,
+  PostfixExpression,
   ListExpression,
   KeyValueExpression,
   DictExpression,
   SetExpression,
-  PowExp,
-  PrefixExpression,
-  PostfixExpression,
-  // Paren,  // not needed I think
   ListType,
   SetType,
   DictType,
@@ -47,7 +41,6 @@ const {
   TextLiteral,
   BooleanLiteral,
 } = require('../index')
-
 const fixture = {
   declarations: [
     String.raw`y is Text "Hello World!"
@@ -67,27 +60,71 @@ const fixture = {
       ),
     ),
     String.raw`x is Bool true
-    `, // false?
+    `,
     new Program(
       [
         new BooleanLiteral('true'),
         new VarDeclaration('x', false, 'Bool')],
     ),
     String.raw`x is Bool false
-    `, // false?
+    `,
     new Program(
       [
         new BooleanLiteral('false'),
         new VarDeclaration('x', false, 'Bool')],
     ),
   ],
-  printing: [
+  printStatements: [
     String.raw`display 5
     `,
     new Program(
       [
-        new Print(new NumericLiteral(5))],
+        new Print(new NumericLiteral(5)),
+      ],
     ),
+  ],
+  functions: [
+    String.raw`
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
+    }
+    `,
+    new Program(
+      new FuncDecStmt(
+        'f',
+        [
+          new Param('x', 'Num'),
+          new Param('y', 'Num'),
+        ],
+        'Num',
+        new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
+      ),
+    ),
+  ],
+  math: [
+    String.raw`
+      result is Num 3 + 5 / 5 - 3 
+    `,
+    new Program(
+      new FuncDecStmt(
+        'f',
+        [
+          new Param('x', 'Num'),
+          new Param('y', 'Num'),
+        ],
+        'Num',
+        new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
+      ),
+    ),
+  ],
+
+  ifelses: [
+    String.raw`if(x < 10)
+    `,
+    [
+      new VarDeclaration('x', false, 'Num', 6),
+      new IfStmt('x < 10', true, false),
+    ],
   ],
   // whiles: [
   //   String.raw`while false loop x = 3; end;`,
@@ -144,7 +181,6 @@ const fixture = {
   //   ),
   // ],
 }
-
 describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
     test(`produces the correct AST for ${name}`, (done) => {
@@ -152,7 +188,6 @@ describe('The parser', () => {
       done()
     })
   })
-
   test('throws an exception on a syntax error', (done) => {
     // We only need one test here that an exception is thrown.
     // Specific syntax errors are tested in the grammar test.
