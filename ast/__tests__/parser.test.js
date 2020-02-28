@@ -74,6 +74,7 @@ const fixture = {
         new VarDeclaration('x', false, 'Bool')],
     ),
   ],
+  
   printStatements: [
     String.raw`display 5
     `,
@@ -81,6 +82,23 @@ const fixture = {
       [
         new Print(new NumericLiteral(5)),
       ],
+    ),
+  ],
+
+  functions: [
+    String.raw`
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
+    }
+    `,
+    new Program(
+      new FuncDecStmt(
+        'f',
+        new Param('x', 'Num'),
+        new Param('y', 'Num'),
+        'Num',
+        new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
+      ),
     ),
   ],
   functions: [

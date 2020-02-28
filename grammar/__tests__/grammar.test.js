@@ -10,7 +10,7 @@
 //
 // const grammar = ohm.grammar(fs.readFileSync('grammar/Inkling.ohm'))
 
-const syntaxCheck = require("../syntax-checker");
+const syntaxCheck = require('../syntax-checker')
 
 const program = String.raw`
     btw: this is how we write comments
@@ -139,7 +139,7 @@ const program = String.raw`
     ourDict is Dict<Num, Text> {0: "this", 1: "is", 2: "a", 3: "legal", 4: "dict", 5: "in", 6: "Inkling"}
     aDictOfNums is Dict<Num, Num> {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7}
     aDictOfNums[0] is 0
-`;
+`
 
 describe('The syntax checker', () => {
   test('accepts the mega program with all syntactic forms', (done) => {
