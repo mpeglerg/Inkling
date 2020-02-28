@@ -5,7 +5,6 @@ const ohm = require('ohm-js')
 const {
   Program,
   Block,
-  // Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
@@ -74,8 +73,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   WhileLoop(_1, _2, exp, _3, body) {
     return new WhileLoop(exp.ast(), body.ast())
   },
-  FuncDec_function(_funcKeyword, id, _open, params, _close, type, body) {
-    return new FuncDecStmt(id.ast(), params.ast(), type.ast(), body.ast())
+  FuncDec_function(_funcKeyword, id, _open, params, _close, returnType, body) {
+    return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
   },
   FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
     return new FuncDecStmt(
@@ -84,6 +83,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
       returnType.ast(),
       body.ast(),
     )
+  },
+  NonemptyListOf(elem, _, elems) {
+    return elem.ast()
   },
   SimpleStmt_letdec(id, _, type, exp) {
     return new VarDeclaration(id.ast(), false, type.ast(), exp.ast())
@@ -169,6 +171,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Dict(_1, keyType, _2, valueType, _3) {
     return new DictType(keyType.ast(), valueType.ast())
   },
+  ReturnType
 
   // literals
   numlit(_1, _2, _3, _4, _5, _6) {
