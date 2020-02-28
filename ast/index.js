@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 class Program {
   constructor(stmt) {
-    this.stmt = stmt;
+    this.stmt = stmt
   }
 }
 
@@ -11,7 +11,7 @@ class Block {
   constructor(statements) {
     // map or filter over every statement
     // this.statements = statements.filter()
-    this.statements = statements;
+    this.statements = statements
   }
 }
 
@@ -19,8 +19,8 @@ class Assignment {
   constructor(id, exp) {
     Object.assign(this, {
       id,
-      exp
-    });
+      exp,
+    })
   }
 }
 
@@ -31,20 +31,20 @@ class VarDeclaration {
       id,
       constant,
       type,
-      exp
-    });
+      exp,
+    })
   }
 }
 
 class Print {
   constructor(exp) {
-    Object.assign(this, { exp });
+    Object.assign(this, { exp })
   }
 }
 
 class ReturnStatement {
   constructor(returnValue) {
-    this.returnValue = returnValue;
+    this.returnValue = returnValue
   }
 }
 
@@ -53,8 +53,8 @@ class IfStmt {
     Object.assign(this, {
       test,
       consequence,
-      alt
-    });
+      alt,
+    })
   }
 }
 
@@ -64,8 +64,8 @@ class ForLoop {
       id,
       type,
       exp,
-      body
-    });
+      body,
+    })
   }
 }
 
@@ -75,8 +75,8 @@ class FuncDecStmt {
       id,
       params,
       type,
-      body
-    });
+      body,
+    })
   }
 }
 
@@ -84,8 +84,8 @@ class WhileLoop {
   constructor(condition, body) {
     Object.assign(this, {
       condition,
-      body
-    });
+      body,
+    })
   }
 }
 
@@ -93,14 +93,14 @@ class FieldVarExp {
   constructor(id, field) {
     Object.assign(this, {
       id,
-      field
-    });
+      field,
+    })
   }
 }
 
 class IdentifierExpression {
   constructor(id) {
-    this.id = id;
+    this.id = id
   }
 }
 
@@ -108,8 +108,8 @@ class SubscriptedVarExp {
   constructor(id, key) {
     Object.assign(this, {
       id,
-      key
-    });
+      key,
+    })
   }
 }
 
@@ -117,8 +117,8 @@ class Param {
   constructor(id, type) {
     Object.assign(this, {
       id,
-      type
-    });
+      type,
+    })
   }
 }
 
@@ -126,8 +126,8 @@ class Call {
   constructor(id, args) {
     Object.assign(this, {
       id,
-      args
-    });
+      args,
+    })
   }
 }
 
@@ -136,8 +136,8 @@ class BinaryExpression {
     Object.assign(this, {
       op,
       left,
-      right
-    });
+      right,
+    })
   }
 }
 
@@ -145,8 +145,8 @@ class PowExp {
   constructor(left, right) {
     Object.assign(this, {
       left,
-      right
-    });
+      right,
+    })
   }
 }
 
@@ -154,8 +154,8 @@ class PrefixExpression {
   constructor(op, operand) {
     Object.assign(this, {
       op,
-      operand
-    });
+      operand,
+    })
   }
 }
 
@@ -163,8 +163,8 @@ class PostfixExpression {
   constructor(operand, op) {
     Object.assign(this, {
       op,
-      operand
-    });
+      operand,
+    })
   }
 }
 
@@ -176,7 +176,7 @@ class PostfixExpression {
 
 class ListExpression {
   constructor(members) {
-    this.members = members;
+    this.members = members
   }
 }
 
@@ -184,33 +184,33 @@ class KeyValueExpression {
   constructor(key, value) {
     Object.assign(this, {
       key,
-      value
-    });
+      value,
+    })
   }
 }
 
 class DictExpression {
   constructor(exp) {
-    Object.assign(this, { exp });
+    Object.assign(this, { exp })
   }
 }
 
 class SetExpression {
   constructor(members) {
-    this.members = members;
+    this.members = members
   }
 }
 
 // Types
 class ListType {
   constructor(memberType) {
-    Object.assign(this, { memberType });
+    Object.assign(this, { memberType })
   }
 }
 
 class SetType {
   constructor(memberType) {
-    Object.assign(this, { memberType });
+    Object.assign(this, { memberType })
   }
 }
 
@@ -218,27 +218,27 @@ class DictType {
   constructor(keyType, valueType) {
     Object.assign(this, {
       keyType,
-      valueType
-    });
+      valueType,
+    })
   }
 }
 
 // literals
 class NumericLiteral {
   constructor(value) {
-    this.value = value;
+    this.value = value
   }
 }
 
 class TextLiteral {
   constructor(value) {
-    this.value = value;
+    this.value = value
   }
 }
 
 class BooleanLiteral {
   constructor(value) {
-    this.value = value;
+    this.value = value
   }
 }
 
@@ -272,5 +272,5 @@ module.exports = {
   DictType,
   NumericLiteral,
   TextLiteral,
-  BooleanLiteral
-};
+  BooleanLiteral,
+}

@@ -55,25 +55,7 @@ const fixture = {
     new Program(
       [
         new VarDeclaration('y', false, 'Text',
-          new TextLiteral('"Hello World!"'))],
-    ),
-    String.raw`x is always Num 5
-    `,
-    new Program(
-      new Block(
-        [
-          new NumericLiteral('5'),
-          new VarDeclaration('x', true, 'Num')],
-      ),
-    ),
-    String.raw`x is Bool true
-    `, // false?
-    new Program(
-      new Block(
-        [
-          new BooleanLiteral('true'),
-          new VarDeclaration('x', true, 'Bool')],
-      ),
+          new TextLiteral('Hello World!'))],
     ),
     String.raw`x is always Num 5
     `,
@@ -84,8 +66,29 @@ const fixture = {
           new VarDeclaration('x', true, 'Num')],
       ),
     ),
+    String.raw`x is Bool true
+    `, // false?
+    new Program(
+      [
+        new BooleanLiteral('true'),
+        new VarDeclaration('x', false, 'Bool')],
+    ),
+    String.raw`x is Bool false
+    `, // false?
+    new Program(
+      [
+        new BooleanLiteral('false'),
+        new VarDeclaration('x', false, 'Bool')],
+    ),
   ],
-
+  printing: [
+    String.raw`display 5
+    `,
+    new Program(
+      [
+        new Print(new NumericLiteral(5))],
+    ),
+  ],
   // whiles: [
   //   String.raw`while false loop x = 3; end;`,
   //   new Program(
