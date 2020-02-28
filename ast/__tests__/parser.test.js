@@ -13,15 +13,14 @@ const parse = require('../parser')
 const {
   Program,
   Block,
-  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
   IfStmt,
-  ForLoop,
+  ForLoop, //SAM
   FuncDecStmt,
-  WhileLoop,
-  FieldVarExp,
+  WhileLoop,  //MAYA
+  FieldVarExp, 
   IdentifierExpression,
   SubscriptedVarExp,
   Param,
@@ -74,7 +73,6 @@ const fixture = {
         new VarDeclaration('x', false, 'Bool')],
     ),
   ],
-  
   printStatements: [
     String.raw`display 5
     `,
@@ -82,23 +80,6 @@ const fixture = {
       [
         new Print(new NumericLiteral(5)),
       ],
-    ),
-  ],
-
-  functions: [
-    String.raw`
-    function f(x is Num, y is Num) is Num {
-      gimme x + y
-    }
-    `,
-    new Program(
-      new FuncDecStmt(
-        'f',
-        new Param('x', 'Num'),
-        new Param('y', 'Num'),
-        'Num',
-        new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
-      ),
     ),
   ],
   functions: [
@@ -135,7 +116,6 @@ const fixture = {
       ),
     ),
   ],
-
   ifelses: [
     String.raw`if(x < 10)
     `,
@@ -144,60 +124,13 @@ const fixture = {
       new IfStmt('x < 10', true, false),
     ],
   ],
-  // whiles: [
-  //   String.raw`while false loop x = 3; end;`,
-  //   new Program(
-  //     new Block([
-  //       new WhileStatement(
-  //         new BooleanLiteral(false),
-  //         new Block([
-  //           new AssignmentStatement(new VariableExpression('x'),
-  //             new IntegerLiteral('3'))]),
-  //       ),
-  //     ]),
-  //   ),
-  // ],
-  //
-  // math: [
-  //   String.raw`read x, y; write 2 * (-5 > 7+1);`,
-  //   new Program(
-  //     new Block([
-  //       new ReadStatement(
-  //         [new VariableExpression('x'), new VariableExpression('y')]),
-  //       new WriteStatement([
-  //         new BinaryExpression(
-  //           '*',
-  //           new IntegerLiteral('2'),
-  //           new BinaryExpression(
-  //             '>',
-  //             new UnaryExpression('-', new IntegerLiteral('5')),
-  //             new BinaryExpression('+', new IntegerLiteral('7'),
-  //               new IntegerLiteral('1')),
-  //           ),
-  //         ),
-  //       ]),
-  //     ]),
-  //   ),
-  // ],
-  //
-  // logic: [
-  //   String.raw`write x and (not y or x);`,
-  //   new Program(
-  //     new Block([
-  //       new WriteStatement([
-  //         new BinaryExpression(
-  //           'and',
-  //           new VariableExpression('x'),
-  //           new BinaryExpression(
-  //             'or',
-  //             new UnaryExpression('not', new VariableExpression('y')),
-  //             new VariableExpression('x'),
-  //           ),
-  //         ),
-  //       ]),
-  //     ]),
-  //   ),
-  // ],
+  IdentifierExpression: [
+    String.raw`field is Bool`,
+    [
+      new IdentifierExpression('field'),
+
+    ],
+  ],
 }
 describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
