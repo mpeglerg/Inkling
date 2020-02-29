@@ -128,6 +128,24 @@ const fixture = {
       ],
     ),
   ],
+
+  logic: [
+    String.raw`display x and (!y or x)
+    `,
+    new Program([
+      new Print(
+        new BinaryExpression(
+          'and',
+          new IdentifierExpression('x'),
+          new BinaryExpression(
+            'or',
+            new PrefixExpression('!', new IdentifierExpression('y')),
+            new IdentifierExpression('x'),
+          ),
+        ),
+      ),
+    ]),
+  ]
   // whiles: [
   //   String.raw`while false loop x = 3; end;`,
   //   new Program(
@@ -138,28 +156,6 @@ const fixture = {
   //           new AssignmentStatement(new VariableExpression('x'),
   //             new IntegerLiteral('3'))]),
   //       ),
-  //     ]),
-  //   ),
-  // ],
-  //
-  // math: [
-  //   String.raw`read x, y; write 2 * (-5 > 7+1);`,
-  //   new Program(
-  //     new Block([
-  //       new ReadStatement(
-  //         [new VariableExpression('x'), new VariableExpression('y')]),
-  //       new WriteStatement([
-  //         new BinaryExpression(
-  //           '*',
-  //           new IntegerLiteral('2'),
-  //           new BinaryExpression(
-  //             '>',
-  //             new UnaryExpression('-', new IntegerLiteral('5')),
-  //             new BinaryExpression('+', new IntegerLiteral('7'),
-  //               new IntegerLiteral('1')),
-  //           ),
-  //         ),
-  //       ]),
   //     ]),
   //   ),
   // ],
