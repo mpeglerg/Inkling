@@ -45,7 +45,7 @@ const program = String.raw`
         }
     }
 
-    function fizzbuzz(x is Num) is void {
+    function fizzbuzz(x is Num) is Void {
         for i is Num in range(0,x) {
             if (i%3 == 0 and i%5 == 0) {
                 display "fizzbuzz"

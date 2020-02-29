@@ -22,7 +22,7 @@ Inkling {
     Param       =  id "is" Type
     Params      =  ListOf<Param, ",">
     Args        =  ListOf<Exp, ",">
-    ReturnType  =  "is" (Type | "void")
+    ReturnType  =  "is" (Type | "Void")
     WhileLoop   =  "while" "(" Exp ")" Block
     IfStmt      =  "if" "(" Exp ")" Block
                    ("else if" "(" Exp ")" Block)*
@@ -57,7 +57,7 @@ Inkling {
     KeyValue    =  Exp ":" Exp
     keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
-                |  "Bool " | "List<" | "Text " | "Set<")
+                |  "Bool " | "List<" | "Text " | "Set<" | "Void")
     Type        =  (Num | Dict | Bool | List | Text | Set)
     Num         =  "Num"
     List        =  "List<" Type ">"
