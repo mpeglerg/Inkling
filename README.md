@@ -71,6 +71,10 @@ function countToX(x is Num) {
         display i
     }
 }
+
+x is always (x is Text) is Num => {
+    gimme x
+}
 ```
 
 ## Ternary
