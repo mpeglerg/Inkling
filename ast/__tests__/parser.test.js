@@ -104,17 +104,7 @@ const fixture = {
     String.raw`
       result is Num 3 + 5 / 5 - 3 
     `,
-    new Program(
-      new FuncDecStmt(
-        'f',
-        [
-          new Param('x', 'Num'),
-          new Param('y', 'Num'),
-        ],
-        'Num',
-        new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
-      ),
-    ),
+
   ],
   ifelses: [
     String.raw`if(x < 10)
@@ -124,7 +114,7 @@ const fixture = {
       new IfStmt('x < 10', true, false),
     ],
   ],
-  IdentifierExpression: [
+  identifierExpression: [
     String.raw`field is Bool`,
     [
       new IdentifierExpression('field'),
@@ -132,6 +122,7 @@ const fixture = {
     ],
   ],
 }
+
 describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
     test(`produces the correct AST for ${name}`, (done) => {
