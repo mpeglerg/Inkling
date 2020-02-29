@@ -51,12 +51,15 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
-  
+
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
   },
   Stmt_simpleStmt(_, stmt, _1) {
-    return stmt.ast() 
+    return stmt.ast()
+  },
+  Stmt_funcDec(_1, f, _2) {
+    return f.ast()
   },
   IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7,
     moreBlock, _8, lastBlock) {
@@ -74,6 +77,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
     return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
+  },
+  NonemptyListOf(first, _separator, rest) {
+    return [first.ast(), ...rest.ast()];
   },
   SimpleStmt_letdec(id, _, type, exp) {
     return new VarDeclaration(id.ast(), type.ast(), exp.ast())
@@ -170,6 +176,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   boollit(v) {
     return new BooleanLiteral(v.sourceString)
+  },
+  _terminal() {
+    return this.sourceString;
   },
 })
 
