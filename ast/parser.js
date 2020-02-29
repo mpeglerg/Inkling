@@ -5,7 +5,6 @@ const ohm = require('ohm-js')
 const {
   Program,
   Block,
-  // Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
@@ -48,12 +47,14 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
-
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
   },
   Stmt_simpleStmt(_, stmt, _1) {
     return stmt.ast()
+  },
+  Stmt_funcDec(_1, f, _2) {
+    return f.ast()
   },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
@@ -72,8 +73,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   WhileLoop(_1, _2, exp, _3, body) {
     return new WhileLoop(exp.ast(), body.ast())
   },
-  FuncDec_function(_funcKeyword, id, _open, params, _close, type, body) {
-    return new FuncDecStmt(id.ast(), params.ast(), type.ast(), body.ast())
+  FuncDec_function(_funcKeyword, id, _open, params, _close, returnType, body) {
+    return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
   },
   FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
     return new FuncDecStmt(
@@ -82,6 +83,15 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
       returnType.ast(),
       body.ast(),
     )
+  },
+  Params(params) {
+    return params.ast()
+  },
+  NonemptyListOf(first, _separator, rest) {
+    return [first.ast(), ...rest.ast()]
+  },
+  EmptyListOf() {
+    return []
   },
   SimpleStmt_letdec(id, _, type, exp) {
     return new VarDeclaration(id.ast(), false, type.ast(), exp.ast())
@@ -167,11 +177,13 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Dict(_1, keyType, _2, valueType, _3) {
     return new DictType(keyType.ast(), valueType.ast())
   },
+  ReturnType(_, type) {
+    return type.ast()
+  },
 
   // literals
   numlit(_1, _2, _3, _4, _5, _6) {
-    return new NumericLiteral(+this.sourceString) // TODO: idk if this is right,
-    // I think we might have to parse and combine each part of the parameter
+    return new NumericLiteral(+this.sourceString)
   },
   txtlit(_1, chars, _2) {
     return new TextLiteral(chars.sourceString)

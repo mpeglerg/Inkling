@@ -16,30 +16,27 @@ const parse = require('../parser')
 const {
   Program,
   Block,
-  // Assignment,
-  // we have assignment parsing functions but the classes don't match
-  // I think we don't need Assignment class
+  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
-  ForLoop,
   IfStmt,
+  ForLoop,
   FuncDecStmt,
   WhileLoop,
   FieldVarExp,
+  IdentifierExpression,
   SubscriptedVarExp,
   Param,
   Call,
   BinaryExpression,
-  IdentifierExpression,
+  PowExp,
+  PrefixExpression,
+  PostfixExpression,
   ListExpression,
   KeyValueExpression,
   DictExpression,
   SetExpression,
-  PowExp,
-  PrefixExpression,
-  PostfixExpression,
-  // Paren,  // not needed I think
   ListType,
   SetType,
   DictType,
@@ -67,26 +64,68 @@ const fixture = {
       ),
     ),
     String.raw`x is Bool true
-    `, // false?
+    `,
     new Program(
       [
         new BooleanLiteral('true'),
         new VarDeclaration('x', false, 'Bool')],
     ),
     String.raw`x is Bool false
-    `, // false?
+    `,
     new Program(
       [
         new BooleanLiteral('false'),
         new VarDeclaration('x', false, 'Bool')],
     ),
   ],
-  printing: [
+
+  printStatements: [
     String.raw`display 5
     `,
     new Program(
       [
-        new Print(new NumericLiteral(5))],
+        new Print(new NumericLiteral(5)),
+      ],
+    ),
+  ],
+
+  functions: [
+    String.raw`
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
+    }
+    `,
+    new Program(
+      [
+        new FuncDecStmt(
+          'f',
+          [
+            new Param('x', 'Num'),
+            new Param('y', 'Num'),
+          ],
+          'Num',
+          new Block([
+            new ReturnStatement(new BinaryExpression('+', new IdentifierExpression('x'), new IdentifierExpression('y'))),
+          ]),
+        ),
+      ],
+    ),
+  ],
+
+  math: [
+    String.raw`
+      result is Num 3 + 10 / 5 - 3 % 2
+    `,
+    new Program(
+      [
+        new VarDeclaration('result', false, 'Num',
+          new BinaryExpression('-',
+            new BinaryExpression('+', new NumericLiteral(3),
+              new BinaryExpression('/', new NumericLiteral(10),
+                new NumericLiteral(5))),
+            new BinaryExpression('%', new NumericLiteral(3),
+              new NumericLiteral(2)))),
+      ],
     ),
   ],
   // whiles: [
