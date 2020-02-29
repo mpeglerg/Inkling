@@ -5,30 +5,26 @@ const ohm = require('ohm-js')
 const {
   Program,
   Block,
-  // Assignment,
-  // we have assignment parsing functions but the classes don't match
-  // I think we don't need Assignment class
   VarDeclaration,
   Print,
   ReturnStatement,
-  ForLoop,
   IfStmt,
+  ForLoop,
   FuncDecStmt,
   WhileLoop,
   FieldVarExp,
+  IdentifierExpression,
   SubscriptedVarExp,
   Param,
   Call,
   BinaryExpression,
-  IdentifierExpression,
+  PowExp,
+  PrefixExpression,
+  PostfixExpression,
   ListExpression,
   KeyValueExpression,
   DictExpression,
   SetExpression,
-  PowExp,
-  PrefixExpression,
-  PostfixExpression,
-  // Paren,  // not needed I think
   ListType,
   SetType,
   DictType,
@@ -51,7 +47,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
-
   Block(_1, stmts, _2) {
     return new Block(stmts.ast())
   },
@@ -61,10 +56,16 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Stmt_funcDec(_1, f, _2) {
     return f.ast()
   },
-  IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7,
-    moreBlock, _8, lastBlock) {
-    return new IfStmt([firstTest.ast(), ...elifTests.ast()],
-      [firstBlock.ast(), ...moreBlock.ast()], arrayToNullable(lastBlock.ast()))
+  // SimpleStmt_break(_) {
+  //   return new BreakStatement()
+  // },
+  IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7, moreBlock,
+    _8, lastBlock) {
+    return new IfStmt(
+      [firstTest.ast(), ...elifTests.ast()],
+      [firstBlock.ast(), ...moreBlock.ast()],
+      arrayToNullable(lastBlock.ast()),
+    )
   },
   ForLoop(_1, id, _2, type, _3, exp, body) {
     return new ForLoop(id.ast(), type.ast(), exp.ast(), body.ast())
@@ -72,17 +73,28 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   WhileLoop(_1, _2, exp, _3, body) {
     return new WhileLoop(exp.ast(), body.ast())
   },
-  FuncDec_function(_funcKeyword, id, _open, params, _close, type, body) {
-    return new FuncDecStmt(id.ast(), params.ast(), type.ast(), body.ast())
-  },
-  FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
+  FuncDec_function(_funcKeyword, id, _open, params, _close, returnType, body) {
     return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
   },
+  FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
+    return new FuncDecStmt(
+      id.ast(),
+      params.ast(),
+      returnType.ast(),
+      body.ast(),
+    )
+  },
+  Params(params) {
+    return params.ast()
+  },
   NonemptyListOf(first, _separator, rest) {
-    return [first.ast(), ...rest.ast()];
+    return [first.ast(), ...rest.ast()]
+  },
+  EmptyListOf() {
+    return []
   },
   SimpleStmt_letdec(id, _, type, exp) {
-    return new VarDeclaration(id.ast(), type.ast(), exp.ast())
+    return new VarDeclaration(id.ast(), false, type.ast(), exp.ast())
   },
   SimpleStmt_constdec(id, _isKeyword, _alwaysKeyword, type, exp) {
     // TODO: always functionality implemented here? may be implemented now
@@ -165,11 +177,13 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Dict(_1, keyType, _2, valueType, _3) {
     return new DictType(keyType.ast(), valueType.ast())
   },
+  ReturnType(_, type) {
+    return type.ast()
+  },
 
   // literals
   numlit(_1, _2, _3, _4, _5, _6) {
-    return new NumericLiteral(+this.sourceString) // TODO: idk if this is right,
-    // I think we might have to parse and combine each part of the parameter
+    return new NumericLiteral(+this.sourceString)
   },
   txtlit(_1, chars, _2) {
     return new TextLiteral(chars.sourceString)
@@ -177,8 +191,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   boollit(v) {
     return new BooleanLiteral(v.sourceString)
   },
+  // eslint-disable-next-line no-underscore-dangle
   _terminal() {
-    return this.sourceString;
+    return this.sourceString
   },
 })
 

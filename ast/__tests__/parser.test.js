@@ -1,4 +1,5 @@
 // perhaps look at iki https://github.com/rtoal/iki-compiler/blob/master/ast/__tests__/parser.test.js
+
 /*
  * Parser Tests
  *
@@ -9,17 +10,20 @@
  *
  * Based on toal's iki parser.test.js
  */
+
 const parse = require('../parser')
+
 const {
   Program,
   Block,
+  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
   IfStmt,
-  ForLoop, //SAM
+  ForLoop,
   FuncDecStmt,
-  WhileLoop,  //MAYA
+  WhileLoop,
   FieldVarExp,
   IdentifierExpression,
   SubscriptedVarExp,
@@ -40,6 +44,7 @@ const {
   TextLiteral,
   BooleanLiteral,
 } = require('../index')
+
 const fixture = {
   declarations: [
     String.raw`y is Text "Hello World!"
@@ -73,6 +78,7 @@ const fixture = {
         new VarDeclaration('x', false, 'Bool')],
     ),
   ],
+
   printStatements: [
     String.raw`display 5
     `,
@@ -82,52 +88,102 @@ const fixture = {
       ],
     ),
   ],
+
   functions: [
     String.raw`
-    function f(x is Num) is Num {
-      gimme x + 2
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
     }
     `,
     new Program(
-      new FuncDecStmt(
-        'f',
-        [
-          new Param('x', 'Num'),
-        ],
-        'Num',
-        new Block([new ReturnStatement(new BinaryExpression('+', 'x', '2'))]),
-      ),
+      [
+        new FuncDecStmt(
+          'f',
+          [
+            new Param('x', 'Num'),
+            new Param('y', 'Num'),
+          ],
+          'Num',
+          new Block([
+            new ReturnStatement(new BinaryExpression('+', new IdentifierExpression('x'), new IdentifierExpression('y'))),
+          ]),
+        ),
+      ],
     ),
   ],
+
   math: [
     String.raw`
-      result is Num 3 + 5 / 5 - 3
+      result is Num 3 + 10 / 5 - 3 % 2
     `,
+    new Program(
+      [
+        new VarDeclaration('result', false, 'Num',
+          new BinaryExpression('-',
+            new BinaryExpression('+', new NumericLiteral(3),
+              new BinaryExpression('/', new NumericLiteral(10),
+                new NumericLiteral(5))),
+            new BinaryExpression('%', new NumericLiteral(3),
+              new NumericLiteral(2)))),
+      ],
+    ),
   ],
-  ifelses: [
-    String.raw`if(x < 10)
-    `,
-    [
-      new VarDeclaration('x', false, 'Num', 6),
-      new IfStmt('x < 10', true, false),
-    ],
-  ],
-  idExpressions: [
-    String.raw`field is Bool
-    `,
-    [
-      new IdentifierExpression('field'),
-    ],
-  ],
-  powExpressions: [
-    String.raw`x^3
-    `,
-    [
-      new VarDeclaration('x', false, 'Num', 4),
-      new PowExp('x', 3),
-    ],
-  ],
+  // whiles: [
+  //   String.raw`while false loop x = 3; end;`,
+  //   new Program(
+  //     new Block([
+  //       new WhileStatement(
+  //         new BooleanLiteral(false),
+  //         new Block([
+  //           new AssignmentStatement(new VariableExpression('x'),
+  //             new IntegerLiteral('3'))]),
+  //       ),
+  //     ]),
+  //   ),
+  // ],
+  //
+  // math: [
+  //   String.raw`read x, y; write 2 * (-5 > 7+1);`,
+  //   new Program(
+  //     new Block([
+  //       new ReadStatement(
+  //         [new VariableExpression('x'), new VariableExpression('y')]),
+  //       new WriteStatement([
+  //         new BinaryExpression(
+  //           '*',
+  //           new IntegerLiteral('2'),
+  //           new BinaryExpression(
+  //             '>',
+  //             new UnaryExpression('-', new IntegerLiteral('5')),
+  //             new BinaryExpression('+', new IntegerLiteral('7'),
+  //               new IntegerLiteral('1')),
+  //           ),
+  //         ),
+  //       ]),
+  //     ]),
+  //   ),
+  // ],
+  //
+  // logic: [
+  //   String.raw`write x and (not y or x);`,
+  //   new Program(
+  //     new Block([
+  //       new WriteStatement([
+  //         new BinaryExpression(
+  //           'and',
+  //           new VariableExpression('x'),
+  //           new BinaryExpression(
+  //             'or',
+  //             new UnaryExpression('not', new VariableExpression('y')),
+  //             new VariableExpression('x'),
+  //           ),
+  //         ),
+  //       ]),
+  //     ]),
+  //   ),
+  // ],
 }
+
 describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
     test(`produces the correct AST for ${name}`, (done) => {
@@ -135,6 +191,7 @@ describe('The parser', () => {
       done()
     })
   })
+
   test('throws an exception on a syntax error', (done) => {
     // We only need one test here that an exception is thrown.
     // Specific syntax errors are tested in the grammar test.

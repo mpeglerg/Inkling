@@ -15,8 +15,6 @@ class Block {
   }
 }
 
-
-
 class Assignment {
   constructor(id, exp) {
     Object.assign(this, {
@@ -122,6 +120,10 @@ class Param {
       type,
     })
   }
+}
+
+class Params {
+  constructor() {}
 }
 
 class Call {
