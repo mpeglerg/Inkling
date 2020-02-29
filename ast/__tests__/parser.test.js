@@ -96,15 +96,19 @@ const fixture = {
     }
     `,
     new Program(
-      new FuncDecStmt(
-        'f',
-        [
-          new Param('x', 'Num'),
-          new Param('y', 'Num'),
-        ],
-        'Num',
-        new Block([new ReturnStatement(new BinaryExpression('+', 'x', 'y'))]),
-      ),
+      [
+        new FuncDecStmt(
+          'f',
+          [
+            new Param('x', 'Num'),
+            new Param('y', 'Num'),
+          ],
+          'Num',
+          new Block([
+            new ReturnStatement(new BinaryExpression('+', new IdentifierExpression('x'), new IdentifierExpression('y'))),
+          ]),
+        ),
+      ],
     ),
   ],
 

@@ -84,8 +84,14 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
       body.ast(),
     )
   },
-  NonemptyListOf(elem, _, elems) {
-    return elem.ast()
+  Params(params) {
+    return params.ast()
+  },
+  NonemptyListOf(first, _separator, rest) {
+    return [first.ast(), ...rest.ast()]
+  },
+  EmptyListOf() {
+    return []
   },
   SimpleStmt_letdec(id, _, type, exp) {
     return new VarDeclaration(id.ast(), false, type.ast(), exp.ast())
@@ -171,7 +177,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Dict(_1, keyType, _2, valueType, _3) {
     return new DictType(keyType.ast(), valueType.ast())
   },
-  ReturnType
+  ReturnType(_, type) {
+    return type.ast()
+  },
 
   // literals
   numlit(_1, _2, _3, _4, _5, _6) {
