@@ -183,8 +183,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
 
   // literals
   numlit(_1, _2, _3, _4, _5, _6) {
-    return new NumericLiteral(+this.sourceString) // TODO: idk if this is right,
-    // I think we might have to parse and combine each part of the parameter
+    return new NumericLiteral(+this.sourceString)
   },
   txtlit(_1, chars, _2) {
     return new TextLiteral(chars.sourceString)
