@@ -104,7 +104,6 @@ const fixture = {
     String.raw`
       result is Num 3 + 5 / 5 - 3 
     `,
-
   ],
   ifelses: [
     String.raw`if(x < 10)
@@ -114,15 +113,23 @@ const fixture = {
       new IfStmt('x < 10', true, false),
     ],
   ],
-  identifierExpression: [
-    String.raw`field is Bool`,
+  idExpressions: [
+    String.raw`field is Bool
+    `,
     [
       new IdentifierExpression('field'),
 
     ],
   ],
+  powExpressions: [
+    String.raw`x^3
+    `,
+    [
+      new VarDeclaration('x', false, 'Num', 4),
+      new PowExp('x', 3),
+    ],
+  ],
 }
-
 describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
     test(`produces the correct AST for ${name}`, (done) => {
