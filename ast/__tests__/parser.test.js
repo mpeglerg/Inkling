@@ -79,7 +79,7 @@ const fixture = {
     ),
   ],
 
-  printStatements: [
+  printing: [
     String.raw`display 5
     `,
     new Program(
@@ -105,10 +105,53 @@ const fixture = {
           ],
           'Num',
           new Block([
-            new ReturnStatement(new BinaryExpression('+', new IdentifierExpression('x'), new IdentifierExpression('y'))),
+            new ReturnStatement(
+              new BinaryExpression('+', new IdentifierExpression('x'),
+                new IdentifierExpression('y')),
+            ),
           ]),
         ),
       ],
+    ),
+    String.raw`
+    x is always (x is Num, y is Num) is Num => {
+      gimme x + y
+    }
+    `,
+    new Program(
+      [
+        new VarDeclaration('x', true, new FuncDecStmt( // i feel like there should be a return something node here but tests pass..
+          'f',
+          [
+            new Param('x', 'Num'),
+            new Param('y', 'Num'),
+          ],
+          'Num',
+          new Block([
+            new ReturnStatement(
+              new BinaryExpression('+', new IdentifierExpression('x'),
+                new IdentifierExpression('y')),
+            ),
+          ]),
+        )),
+      ],
+    ),
+    String.raw`
+    function helloWorld() is Void {
+      display "Hello world!"
+    }
+    `,
+    new Program(
+      new FuncDecStmt(
+        'hellowWorld',
+        [],
+        'Void',
+        new Block([
+          new Print(
+            new TextLiteral('Hello world!'),
+          ),
+        ]),
+      ),
     ),
   ],
 
@@ -128,60 +171,6 @@ const fixture = {
       ],
     ),
   ],
-  // whiles: [
-  //   String.raw`while false loop x = 3; end;`,
-  //   new Program(
-  //     new Block([
-  //       new WhileStatement(
-  //         new BooleanLiteral(false),
-  //         new Block([
-  //           new AssignmentStatement(new VariableExpression('x'),
-  //             new IntegerLiteral('3'))]),
-  //       ),
-  //     ]),
-  //   ),
-  // ],
-  //
-  // math: [
-  //   String.raw`read x, y; write 2 * (-5 > 7+1);`,
-  //   new Program(
-  //     new Block([
-  //       new ReadStatement(
-  //         [new VariableExpression('x'), new VariableExpression('y')]),
-  //       new WriteStatement([
-  //         new BinaryExpression(
-  //           '*',
-  //           new IntegerLiteral('2'),
-  //           new BinaryExpression(
-  //             '>',
-  //             new UnaryExpression('-', new IntegerLiteral('5')),
-  //             new BinaryExpression('+', new IntegerLiteral('7'),
-  //               new IntegerLiteral('1')),
-  //           ),
-  //         ),
-  //       ]),
-  //     ]),
-  //   ),
-  // ],
-  //
-  // logic: [
-  //   String.raw`write x and (not y or x);`,
-  //   new Program(
-  //     new Block([
-  //       new WriteStatement([
-  //         new BinaryExpression(
-  //           'and',
-  //           new VariableExpression('x'),
-  //           new BinaryExpression(
-  //             'or',
-  //             new UnaryExpression('not', new VariableExpression('y')),
-  //             new VariableExpression('x'),
-  //           ),
-  //         ),
-  //       ]),
-  //     ]),
-  //   ),
-  // ],
 }
 
 describe('The parser', () => {
