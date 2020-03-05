@@ -64,8 +64,7 @@ const fixture = {
       new BooleanLiteral("true"),
       new VarDeclaration("x", true, "Bool")
     ]),
-    String.raw`x is always Num 5
-    `,
+    String.raw`x is always Num 5`,
     new Program([new NumericLiteral(5), new VarDeclaration("x", true, "Num")])
   ],
 
@@ -75,7 +74,24 @@ const fixture = {
       gimme x + y
     }
     `,
-    new Program(
+    new Program(      [
+      new Print(new NumericLiteral(5))],
+  ),
+],
+// whiles: [
+//   String.raw`while false loop x = 3; end;`,
+//   new Program(
+//     new Block([
+//       new WhileStatement(
+//         new BooleanLiteral(false),
+//         new Block([
+//           new AssignmentStatement(new VariableExpression('x'),
+//             new IntegerLiteral('3'))]),
+//       ),
+//     ]),
+//   ),
+// ],
+<<<<<<< HEAD
       new FuncDecStmt(
         "f",
         new Param("x", "Num"),
@@ -122,6 +138,9 @@ const fixture = {
   //   ])
   // ]
 
+=======
+
+>>>>>>> d1cdda269f16bd84296674a016f3b3bf1b5f735e
   //
   // math: [
   //   String.raw`read x, y; write 2 * (-5 > 7+1);`,
