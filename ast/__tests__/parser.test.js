@@ -34,7 +34,7 @@ const {
   PrefixExpression, // working
   PostfixExpression, // in Call test (call test not done yet)
   ListExpression, // done
-  KeyValueExpression, // done
+  KeyValuePair, // done
   DictExpression, // done
   SetExpression, // done
   ListType, // done
@@ -46,30 +46,37 @@ const {
 } = require('../index')
 
 const fixture = {
-  declarations: [
+  stringDeclarations: [
     String.raw`y is Text "Hello World!"
     `,
     new Program([
-      new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!')),
-    ]),
+        new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!'))
+      ]
+    )
+  ],
+  constNumDeclarations: [
     String.raw`x is always Num 5
     `,
-    new Program(
-      new Block([new NumericLiteral(5), new VarDeclaration('x', true, 'Num')]),
-    ),
+    new Program([
+        new VarDeclaration('x', true, 'Num', new NumericLiteral(5)),
+    ])
+  ],
+  boolTrueDeclarations: [
     String.raw`x is Bool true
     `,
     new Program([
-      new BooleanLiteral('true'),
-      new VarDeclaration('x', false, 'Bool'),
-    ]),
+        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true'))
+    ])
+  ],
+  boolFalseDeclarations: [
     String.raw`x is Bool false
     `,
     new Program([
-      new BooleanLiteral('false'),
-      new VarDeclaration('x', false, 'Bool'),
-    ]),
-    String.raw` ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
+        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false'))
+    ])
+  ],
+  dictDeclarations: [
+    String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
     `,
     new Program([
       new VarDeclaration(
@@ -77,14 +84,43 @@ const fixture = {
         false,
         new DictType('Text', 'Num'),
         new DictExpression([
-          new KeyValueExpression(
-            new TextLiteral('Sam'),
-            new NumericLiteral(21),
+          new KeyValuePair(
+            new TextLiteral("Sam"),
+            new NumericLiteral(21)
           ),
-          new KeyValueExpression(
-            new TextLiteral('Talia'),
-            new NumericLiteral(20),
-          ),
+          new KeyValuePair(
+            new TextLiteral("Talia"),
+            new NumericLiteral(20)
+          )
+        ])
+      )
+    ])
+  ],
+  setDeclarations: [
+    String.raw`aSetOfNums is Set<Num> {1, 2}
+   `,
+     new Program([
+       new VarDeclaration(
+         "aSetOfNums",
+         false,
+         new SetType("Num"),
+         new SetExpression([new NumericLiteral(1), new NumericLiteral(2)])
+       )
+     ])
+  ],
+
+  listDeclarations: [
+    String.raw`ourList is List<Text> ["this", "a", "list"]
+    `,
+    new Program([
+      new VarDeclaration(
+        'ourList',
+        false,
+        new ListType('Text'),
+        new ListExpression([
+          new TextLiteral('this'),
+          new TextLiteral('a'),
+          new TextLiteral('list'),
         ]),
       ),
     ]),
@@ -122,37 +158,6 @@ const fixture = {
     new Program([new Print(new NumericLiteral(5))]),
   ],
 
-  set: [
-    String.raw`aSetOfNums is Set<Num> {1, 2}
-  `,
-
-    new Program([
-      new VarDeclaration(
-        'aSetOfNums',
-        false,
-        new SetType('Num'),
-        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)]),
-      ),
-    ]),
-  ],
-
-  list: [
-    String.raw`ourList is List<Text> ["this", "a", "list"]
-    `,
-    new Program([
-      new VarDeclaration(
-        'ourList',
-        false,
-        new ListType('Text'),
-        new ListExpression([
-          new TextLiteral('this'),
-          new TextLiteral('a'),
-          new TextLiteral('list'),
-        ]),
-      ),
-    ]),
-  ],
-
   functions: [
     String.raw`
     function f(x is Num, y is Num) is Num {
@@ -176,15 +181,17 @@ const fixture = {
           ]),
         ),
       ],
-    ),
+    )
+  ],
+  hellowWorld: [
     String.raw`
     function helloWorld() is Void {
       display "Hello world!"
     }
     `,
-    new Program(
+    new Program([
       new FuncDecStmt(
-        'hellowWorld',
+        'helloWorld',
         [],
         'Void',
         new Block([
@@ -193,7 +200,7 @@ const fixture = {
           ),
         ]),
       ),
-    ),
+    ]),
   ],
 
   arrowFunctions: [
@@ -219,20 +226,6 @@ const fixture = {
         ),
       ),
     ]),
-    String.raw`
-    function helloWorld() is Void {
-      display "Hello world!
-      "
-    }
-    `,
-    new Program(
-      new FuncDecStmt(
-        'hellowWorld',
-        [],
-        'Void',
-        new Block([new Print(new TextLiteral('Hello world!'))]),
-      ),
-    ),
   ],
 
   while: [
@@ -257,7 +250,7 @@ const fixture = {
     ]),
   ],
 
-  math: [
+  addDivideSubtractMod: [
     String.raw`
       result is Num 3 + 10 / 5 - 3 % 2
     `,
@@ -269,15 +262,22 @@ const fixture = {
               new NumericLiteral(5))),
           new BinaryExpression('%', new NumericLiteral(3),
             new NumericLiteral(2)))),
-    ]),
+    ])
+  ],
+  pow: [
     String.raw`
       result is Num 2^3
     `,
-    new Program(
-      [
-        new VarDeclaration('result', false, 'Num', new PowExp(2, 3)),
-      ],
-    ),
+    new Program([
+      new VarDeclaration('result', false, 'Num',
+        new PowExp(
+          new NumericLiteral(2),
+           new NumericLiteral(3)
+        )
+      )
+    ]),
+  ],
+  multiplyParensPlus: [
     String.raw`
       result is Num 3 * (3 + 2)
     `,
@@ -285,7 +285,7 @@ const fixture = {
       [
         new VarDeclaration('result', false, 'Num',
           new BinaryExpression('*', new NumericLiteral(3),
-            new BinaryExpression('+', new NumericLiteral(2), new NumericLiteral(2)))),
+            new BinaryExpression('+', new NumericLiteral(3), new NumericLiteral(2)))),
       ],
     ),
   ],
@@ -309,6 +309,34 @@ const fixture = {
         false,
       ),
     ]),
+  ],
+
+  logic: [
+    String.raw`display x and (!y or x)
+    `,
+    new Program([
+      new Print(
+        new BinaryExpression(
+          'and',
+          new IdentifierExpression('x'),
+          new BinaryExpression(
+            'or',
+            new PrefixExpression('!', new IdentifierExpression('y')),
+            new IdentifierExpression('x'),
+          ),
+        ),
+      ),
+    ]),
+  ],
+
+  call: [
+    String.raw`collatz(420)++
+    `,
+    new Program([
+      new PostfixExpression(
+        new Call(new IdentifierExpression('collatz'), [new NumericLiteral(420)]),
+        '++')
+    ])
   ],
 }
 

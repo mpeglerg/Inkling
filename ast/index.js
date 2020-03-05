@@ -173,7 +173,7 @@ class ListExpression {
   }
 }
 
-class KeyValueExpression {
+class KeyValuePair {
   constructor(key, value) {
     Object.assign(this, {
       key,
@@ -253,7 +253,7 @@ module.exports = {
   BinaryExpression,
   IdentifierExpression,
   ListExpression,
-  KeyValueExpression,
+  KeyValuePair,
   DictExpression,
   SetExpression,
   PowExp,

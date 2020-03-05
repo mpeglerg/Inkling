@@ -22,7 +22,7 @@ const {
   PrefixExpression,
   PostfixExpression,
   ListExpression,
-  KeyValueExpression,
+  KeyValuePair,
   DictExpression,
   SetExpression,
   ListType,
@@ -119,7 +119,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return this.sourceString
   },
   KeyValue(id, _, exp) {
-    return new KeyValueExpression(id.ast(), exp.ast())
+    return new KeyValuePair(id.ast(), exp.ast())
   },
 
   // Expressions
@@ -142,7 +142,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
   Exp4_pow(left, _, right) {
-    return new PowExp(left, right)
+    return new PowExp(left.ast(), right.ast())
   },
   Exp5_postfix(operand, op) {
     return new PostfixExpression(operand.ast(), op.ast())
