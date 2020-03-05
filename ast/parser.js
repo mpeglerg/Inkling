@@ -56,6 +56,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Stmt_funcDec(_1, f, _2) {
     return f.ast()
   },
+  Stmt_whileLoop(_1, loop, _2) {
+    return loop.ast()
+  },
+  Stmt_forLoop(_1, loop, _2) {
+    return loop.ast()
+  },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
@@ -67,8 +73,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
       arrayToNullable(lastBlock.ast()),
     )
   },
-  ForLoop(_1, id, _2, type, _3, exp, body) {
-    return new ForLoop(id.ast(), type.ast(), exp.ast(), body.ast())
+  ForLoop(_1, id, _2, exp, body) {
+    return new ForLoop(id.ast(), exp.ast(), body.ast())
   },
   WhileLoop(_1, _2, exp, _3, body) {
     return new WhileLoop(exp.ast(), body.ast())

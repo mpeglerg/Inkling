@@ -46,7 +46,7 @@ const program = String.raw`
     }
 
     function fizzbuzz(x is Num) is void {
-        for i is Num in range(0,x) {
+        for i in range(0,x) {
             if (i%3 == 0 and i%5 == 0) {
                 display "fizzbuzz"
             } else if (i % 3 == 0) {
@@ -76,7 +76,7 @@ const program = String.raw`
     trueVal is Bool negativeChecker(5)
 
     function findFirstOdd(x is Num) is Num {
-        for i is Num in range(0, x) {
+        for i in range(0, x) {
             if(i % 2 != 0) {
                 gimme i
             }

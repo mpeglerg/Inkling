@@ -177,21 +177,63 @@ const fixture = {
     ]),
   ],
 
+  call: [
+    String.raw`collatz(420)++
+    `,
+    new Program([
+      new PostfixExpression(
+        new Call(new IdentifierExpression('collatz'), [new NumericLiteral(420)]),
+        '++')
+    ])
+  ],
 
-  // whiles: [
-  //   String.raw`while false loop x = 3; end;`,
-  //   new Program(
-  //     new Block([
-  //       new WhileStatement(
-  //         new BooleanLiteral(false),
-  //         new Block([
-  //           new AssignmentStatement(new VariableExpression('x'),
-  //             new IntegerLiteral('3'))]),
-  //       ),
-  //     ]),
-  //   ),
-  // ],
-  //
+  whileLoop: [
+   String.raw`
+     i is Num 10
+     while(i > 0) {
+       --i
+   }
+   `,
+   new Program([
+     new VarDeclaration(
+       "i",
+       false,
+       "Num",
+       new NumericLiteral(10)
+     ),
+     new WhileLoop(
+       new BinaryExpression(
+         ">",
+         new IdentifierExpression("i"),
+        new NumericLiteral(0)
+        ),
+       new Block([new PrefixExpression("--", new IdentifierExpression("i"))])
+    ),
+   ])
+ ],
+
+ forLoop: [
+    String.raw`
+    for i in [1, 2, 3] {
+      display 3 + i
+    }
+    `,
+    new Program(
+      [
+        new ForLoop(
+          'i', // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
+          new ListExpression([
+            new NumericLiteral(1),
+            new NumericLiteral(2),
+            new NumericLiteral(3)]),
+          new Block([
+            new Print(new BinaryExpression('+', new NumericLiteral(3),
+              new IdentifierExpression('i'))),
+          ])),
+      ],
+    ),
+  ],
+
 }
 
 describe('The parser', () => {

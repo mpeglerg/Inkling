@@ -59,10 +59,9 @@ class IfStmt {
 }
 
 class ForLoop {
-  constructor(id, type, exp, body) {
+  constructor(id, exp, body) {
     Object.assign(this, {
       id,
-      type,
       exp,
       body,
     })
