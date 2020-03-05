@@ -284,7 +284,7 @@ const fixture = {
     ),
   ],
 
-  ifElses: [
+  ifElseIfElse: [
     String.raw`
     x is Num 6
     if (x < 10) {
@@ -304,6 +304,52 @@ const fixture = {
         [
           new Block([new Print(new IdentifierExpression('x'))]),
           new Block([new Print(new NumericLiteral(1))])],
+        new Block([
+          new Print(
+            new PrefixExpression('-', new NumericLiteral(1)),
+          ),
+        ]),
+      ),
+    ]),
+  ],
+
+  ifElseIf: [
+    String.raw`
+    x is Num 6
+    if (x < 10) {
+      display x
+    } else if (x < 20) {
+      display 1
+    }
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
+      new IfStmt(
+        [
+          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
+          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20))],
+        [
+          new Block([new Print(new IdentifierExpression('x'))]),
+          new Block([new Print(new NumericLiteral(1))])],
+        null,
+      ),
+    ]),
+  ],
+
+  ifElse: [
+    String.raw`
+    x is Num 6
+    if (x < 10) {
+      display x
+    } else {
+      display -1
+    }
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
+      new IfStmt(
+        [new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10))],
+        [new Block([new Print(new IdentifierExpression('x'))])],
         new Block([
           new Print(
             new PrefixExpression('-', new NumericLiteral(1)),
