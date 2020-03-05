@@ -62,6 +62,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Stmt_forLoop(_1, loop, _2) {
     return loop.ast()
   },
+  Stmt_ifBlock(_1, block, _2){
+    return block.ast()
+  },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },

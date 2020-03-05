@@ -205,16 +205,13 @@ const fixture = {
 
   arrowFunctions: [
     String.raw`
-    x is always (x is Num, y is Num) is Num => {
+    f is always (x is Num, y is Num) is Num => {
       gimme x + y
     }
     `,
     new Program([
-      new VarDeclaration(
-        'x',
-        true,
         new FuncDecStmt( // i feel like there should be a return node here but tests pass..
-          'f',
+          'f',          // also should this have a variable declaration or not, also return node is in block
           [new Param('x', 'Num'), new Param('y', 'Num')],
           'Num',
           new Block([
@@ -224,7 +221,6 @@ const fixture = {
             ),
           ]),
         ),
-      ),
     ]),
   ],
 
@@ -296,17 +292,31 @@ const fixture = {
     if (x < 10) {
       display x
     } else if (x < 20) {
-      display x
+      display 1
     } else {
       display -1
     }
     `,
     new Program([
-      new VarDeclaration('x', false, 'Num', 6),
+      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
-        new BinaryExpression('<', 'x', new NumericLiteral(10)),
-        true,
-        false,
+        new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
+        new Block([
+          new Print(new IdentifierExpression('x'))
+        ]),
+        new Block([
+          new IfStmt(
+            new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20)),
+            new Block([
+              new Print(new NumericLiteral(1))
+            ]),
+            new Block([
+              new Print(
+                new PrefixExpression('-', new NumericLiteral(1))
+              )
+            ])
+          )
+        ]),
       ),
     ]),
   ],
