@@ -120,7 +120,7 @@ const fixture = {
     `,
     new Program(
       [
-        new VarDeclaration('x', true, new FuncDecStmt( // i feel like there should be a return node here but tests pass..
+        new VarDeclaration('x', true, new FuncDecStmt(
           'f',
           [
             new Param('x', 'Num'),
@@ -138,8 +138,7 @@ const fixture = {
     ),
     String.raw`
     function helloWorld() is Void {
-      display "Hello world!
-      "
+      display "Hello world!"
     }
     `,
     new Program(
@@ -179,6 +178,12 @@ const fixture = {
         new VarDeclaration('result', false, 'Num', new PowExp(2, 3)),
       ],
     ),
+    String.raw`display 3 + i
+    `,
+    new Program([
+      new Print(new BinaryExpression('+', new NumericLiteral(3),
+        new IdentifierExpression('i'))),
+    ]),
     String.raw`
       result is Num 3 * (3 + 2)
     `,
@@ -192,28 +197,42 @@ const fixture = {
     ),
   ],
 
-  ifElses: [
+  // ifElses: [
+  //   String.raw`
+  //   x is Num 6
+  //   if (x < 10) {
+  //     display x
+  //   } else if (x < 20) {
+  //     display x
+  //   } else {
+  //     display -1
+  //   }
+  //   `,
+  //   [
+  //     new VarDeclaration('x', false, 'Num', 6),
+  //     new IfStmt(new BinaryExpression('<', 'x', new NumericLiteral(10)), true, false),
+  //   ],
+  // ],
+
+  forLoop: [
     String.raw`
-    x is Num 6
-    if (x < 10) {
-      display x
-    } else if (x < 20) {
-      display x
-    } else {
-      display -1
+    for i in [1, 2, 3] {
+      display 3 + i
     }
     `,
-    [
-      new VarDeclaration('x', false, 'Num', 6),
-      new IfStmt(new BinaryExpression('<', 'x', new NumericLiteral(10)), true, false),
-    ],
-  ],
-  idExpressions: [
-    String.raw`field is Bool
-    `,
-    [
-      new IdentifierExpression('field'),
-    ],
+    new Program(
+      [
+        new ForLoop(new IdentifierExpression('i'), // TODO: ask toal re: the 'i' should be wrapped in a IdentifierExpression I think but the ast wants this. due to difference between calling an id from VarExp and from elsewhere
+          new ListExpression([
+            new NumericLiteral(1),
+            new NumericLiteral(2),
+            new NumericLiteral(3)]),
+          new Block([
+            new Print(new BinaryExpression('+', new NumericLiteral(3),
+              new IdentifierExpression('i'))),
+          ])),
+      ],
+    ),
   ],
 
 }
