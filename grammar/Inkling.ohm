@@ -27,7 +27,7 @@ Inkling {
     IfStmt      =  "if" "(" Exp ")" Block
                    ("else if" "(" Exp ")" Block)*
                    ("else" Block)?                                          -- if
-    ForLoop     =  "for" id "is" Type "in" Exp Block
+    ForLoop     =  "for" id "in" Exp Block
     Field       =  id ":" Exp
     Exp         =  Exp "?" Exp ":" Exp                                      -- ternary
                 |  Exp0
