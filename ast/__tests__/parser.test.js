@@ -74,73 +74,21 @@ const fixture = {
       gimme x + y
     }
     `,
-    new Program(      [
-      new Print(new NumericLiteral(5))],
-  ),
-],
-// whiles: [
-//   String.raw`while false loop x = 3; end;`,
-//   new Program(
-//     new Block([
-//       new WhileStatement(
-//         new BooleanLiteral(false),
-//         new Block([
-//           new AssignmentStatement(new VariableExpression('x'),
-//             new IntegerLiteral('3'))]),
-//       ),
-//     ]),
-//   ),
-// ],
-<<<<<<< HEAD
-      new FuncDecStmt(
-        "f",
-        new Param("x", "Num"),
-        new Param("y", "Num"),
-        "Num",
-        new Block([new ReturnStatement(new BinaryExpression("+", "x", "y"))])
-      )
-    )
-  ],
-
-  whiles: [
-    String.raw`
-      x is Num 2
-      y is Num 4
-      while(x <= y) {
-        display 'hi'
-        x++
-      }
-  `,
-    new Program([
-      new WhileLoop(
-        new BinaryExpression(
-          "<=",
-          new VarDeclaration("x", false, "Num", new NumericLiteral(2)),
-          new VarDeclaration("y", false, "Num", new NumericLiteral(4))
-        ),
-        new Block([new Print(new TextLiteral("hi"))]),
-        new PostfixExpression("x", "++")
-      )
-    ])
+    new Program([new Print(new NumericLiteral(5))])
   ]
-
-  // fors: [
-  //   String.raw`
-  //   for x is Num in range(0, 10){
-  //     display 'hi'
-  //   }
-  // `,
-  //   new Program([
-  //     new ForLoop(
-  //       new IdentifierExpression('x'),
-  //       new
-  //     )
-  //   ])
-  // ]
-
-=======
-
->>>>>>> d1cdda269f16bd84296674a016f3b3bf1b5f735e
+  // whiles: [
+  //   String.raw`while false loop x = 3; end;`,
+  //   new Program(
+  //     new Block([
+  //       new WhileStatement(
+  //         new BooleanLiteral(false),
+  //         new Block([
+  //           new AssignmentStatement(new VariableExpression('x'),
+  //             new IntegerLiteral('3'))]),
+  //       ),
+  //     ]),
+  //   ),
+  // ],
   //
   // math: [
   //   String.raw`read x, y; write 2 * (-5 > 7+1);`,

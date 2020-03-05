@@ -122,6 +122,10 @@ class Param {
   }
 }
 
+class Params {
+  constructor() {}
+}
+
 class Call {
   constructor(id, args) {
     Object.assign(this, {
