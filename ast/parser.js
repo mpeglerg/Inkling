@@ -5,6 +5,7 @@ const ohm = require('ohm-js')
 const {
   Program,
   Block,
+  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
@@ -109,6 +110,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     // TODO: always functionality implemented here? may be implemented now
     return new VarDeclaration(id.ast(), true, type.ast(), exp.ast())
   },
+  SimpleStmt_assign(id, _, exp) {
+    return new Assignment(id.ast(), exp.ast())
+  },
   SimpleStmt_print(_displayKeyword, exp) {
     return new Print(exp.ast())
   },
@@ -127,7 +131,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
 
   // Expressions
   Exp_ternary(testExp, _1, returnOnTrue, _2, returnOnFalse) {
-    return new IfStmt(test.ast(), returnOnTrue.ast(), returnOnFalse.ast())
+    return new IfStmt(testExp.ast(), returnOnTrue.ast(), returnOnFalse.ast())
   },
   Exp0_or(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())

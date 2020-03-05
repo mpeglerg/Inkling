@@ -348,6 +348,56 @@ const fixture = {
         '++')
     ])
   ],
+
+  ternary: [
+    String.raw`x < 0 ? -1 : 1
+    `,
+    new Program([
+      new IfStmt(
+        new BinaryExpression('<',
+          new IdentifierExpression('x'),
+          new NumericLiteral(0)
+        ),
+        new PrefixExpression('-',
+          new NumericLiteral(1)
+        ),
+        new NumericLiteral(1)
+      )
+    ])
+  ],
+
+  fieldVarExp: [ //Similar to Call it wants the FieldVarExp to be wrapped in a IdentifierExpression
+    String.raw`inkTeam.sam
+    `,
+    new Program([
+      new FieldVarExp(
+        new IdentifierExpression('inkTeam'),
+        'sam' //should the field be an IdentifierExpression???
+      )
+    ])
+  ],
+
+  subscriptedVarExp: [ //just like FieldVarExp it wants the SubscriptedVarExp to be wrapped in a IdentifierExpression
+    String.raw`inkTeam[420]
+    `,
+    new Program([
+      new SubscriptedVarExp(
+        new IdentifierExpression('inkTeam'),
+        new NumericLiteral(420)
+      )
+    ])
+  ],
+
+  assign: [
+    String.raw`sam is "kewl"
+    `,
+    new Program([
+      new Assignment(
+        new IdentifierExpression('sam'),
+        new TextLiteral('kewl')
+      )
+    ])
+  ]
 }
 
 describe('The parser', () => {
