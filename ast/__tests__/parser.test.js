@@ -34,7 +34,7 @@ const {
   PrefixExpression,
   PostfixExpression,
   ListExpression,
-  KeyValueExpression,
+  KeyValuePair,
   DictExpression,
   SetExpression,
   ListType,
@@ -46,37 +46,67 @@ const {
 } = require('../index')
 
 const fixture = {
-  declarations: [
+  stringDeclarations: [
     String.raw`y is Text "Hello World!"
     `,
-    new Program(
-      [
-        new VarDeclaration('y', false, 'Text',
-          new TextLiteral('Hello World!'))],
-    ),
+    new Program([
+        new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!'))
+      ]
+    )
+  ],
+  constNumDeclarations: [
     String.raw`x is always Num 5
     `,
-    new Program(
-      new Block(
-        [
-          new NumericLiteral(5),
-          new VarDeclaration('x', true, 'Num')],
-      ),
-    ),
+    new Program([
+        new VarDeclaration('x', true, 'Num', new NumericLiteral(5)),
+    ])
+  ],
+  boolTrueDeclarations: [
     String.raw`x is Bool true
     `,
-    new Program(
-      [
-        new BooleanLiteral('true'),
-        new VarDeclaration('x', false, 'Bool')],
-    ),
+    new Program([
+        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true'))
+    ])
+  ],
+  boolFalseDeclarations: [
     String.raw`x is Bool false
     `,
-    new Program(
-      [
-        new BooleanLiteral('false'),
-        new VarDeclaration('x', false, 'Bool')],
-    ),
+    new Program([
+        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false'))
+    ])
+  ],
+  dictDeclarations: [
+    String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
+    `,
+    new Program([
+      new VarDeclaration(
+        'ageDictionary',
+        false,
+        new DictType('Text', 'Num'),
+        new DictExpression([
+          new KeyValuePair(
+            new TextLiteral("Sam"),
+            new NumericLiteral(21)
+          ),
+          new KeyValuePair(
+            new TextLiteral("Talia"),
+            new NumericLiteral(20)
+          )
+        ])
+      )
+    ])
+  ],
+  setDeclarations: [
+    String.raw`aSetOfNums is Set<Num> {1, 2}
+   `,
+     new Program([
+       new VarDeclaration(
+         "aSetOfNums",
+         false,
+         new SetType("Num"),
+         new SetExpression([new NumericLiteral(1), new NumericLiteral(2)])
+       )
+     ])
   ],
 
   printStatements: [
@@ -145,7 +175,9 @@ const fixture = {
         ),
       ),
     ]),
-  ]
+  ],
+
+
   // whiles: [
   //   String.raw`while false loop x = 3; end;`,
   //   new Program(
@@ -160,24 +192,6 @@ const fixture = {
   //   ),
   // ],
   //
-  // logic: [
-  //   String.raw`write x and (not y or x);`,
-  //   new Program(
-  //     new Block([
-  //       new WriteStatement([
-  //         new BinaryExpression(
-  //           'and',
-  //           new VariableExpression('x'),
-  //           new BinaryExpression(
-  //             'or',
-  //             new UnaryExpression('not', new VariableExpression('y')),
-  //             new VariableExpression('x'),
-  //           ),
-  //         ),
-  //       ]),
-  //     ]),
-  //   ),
-  // ],
 }
 
 describe('The parser', () => {
