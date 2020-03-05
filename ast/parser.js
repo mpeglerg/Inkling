@@ -56,6 +56,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Stmt_funcDec(_1, f, _2) {
     return f.ast()
   },
+  Stmt_forLoop(_1, f, _2) {
+    return f.ast()
+  },
+  Stmt_whileLoop(_1, w, _2) {
+    return w.ast()
+  },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
@@ -67,8 +73,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
       arrayToNullable(lastBlock.ast()),
     )
   },
-  ForLoop(_1, id, _2, type, _3, exp, body) {
-    return new ForLoop(id.ast(), type.ast(), exp.ast(), body.ast())
+  ForLoop(_1, id, _2, exp, body) {
+    return new ForLoop(id.ast(), exp.ast(), body.ast())
   },
   WhileLoop(_1, _2, exp, _3, body) {
     return new WhileLoop(exp.ast(), body.ast())
@@ -126,7 +132,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Exp0_and(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
-  // TODO: should all these create a new BinaryExpression node??
   Exp1_relop(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
@@ -150,6 +155,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   Exp6_list(_1, expressions, _2) {
     return new ListExpression(expressions.ast())
+    // expressions.ast().length === 0 ? [] : expressions.ast()[0]
+    // ^ toal's solution for optionals ie elements?, not sure if it will apply to us
   },
   Exp6_set(_1, expressions, _2) {
     return new SetExpression(expressions.ast())
