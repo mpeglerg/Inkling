@@ -50,30 +50,29 @@ const fixture = {
     String.raw`y is Text "Hello World!"
     `,
     new Program([
-        new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!'))
-      ]
-    )
+      new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!')),
+    ]),
   ],
   constNumDeclarations: [
     String.raw`x is always Num 5
     `,
     new Program([
-        new VarDeclaration('x', true, 'Num', new NumericLiteral(5)),
-    ])
+      new VarDeclaration('x', true, 'Num', new NumericLiteral(5)),
+    ]),
   ],
   boolTrueDeclarations: [
     String.raw`x is Bool true
     `,
     new Program([
-        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true'))
-    ])
+      new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true')),
+    ]),
   ],
   boolFalseDeclarations: [
     String.raw`x is Bool false
     `,
     new Program([
-        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false'))
-    ])
+      new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false')),
+    ]),
   ],
   dictDeclarations: [
     String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
@@ -85,28 +84,28 @@ const fixture = {
         new DictType('Text', 'Num'),
         new DictExpression([
           new KeyValuePair(
-            new TextLiteral("Sam"),
-            new NumericLiteral(21)
+            new TextLiteral('Sam'),
+            new NumericLiteral(21),
           ),
           new KeyValuePair(
-            new TextLiteral("Talia"),
-            new NumericLiteral(20)
-          )
-        ])
-      )
-    ])
+            new TextLiteral('Talia'),
+            new NumericLiteral(20),
+          ),
+        ]),
+      ),
+    ]),
   ],
   setDeclarations: [
     String.raw`aSetOfNums is Set<Num> {1, 2}
    `,
-     new Program([
-       new VarDeclaration(
-         "aSetOfNums",
-         false,
-         new SetType("Num"),
-         new SetExpression([new NumericLiteral(1), new NumericLiteral(2)])
-       )
-     ])
+    new Program([
+      new VarDeclaration(
+        'aSetOfNums',
+        false,
+        new SetType('Num'),
+        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)]),
+      ),
+    ]),
   ],
 
   listDeclarations: [
@@ -181,7 +180,7 @@ const fixture = {
           ]),
         ),
       ],
-    )
+    ),
   ],
   hellowWorld: [
     String.raw`
@@ -210,17 +209,17 @@ const fixture = {
     }
     `,
     new Program([
-        new FuncDecStmt( // i feel like there should be a return node here but tests pass..
-          'f',          // also should this have a variable declaration or not, also return node is in block
-          [new Param('x', 'Num'), new Param('y', 'Num')],
-          'Num',
-          new Block([
-            new ReturnStatement(
-              new BinaryExpression('+', new IdentifierExpression('x'),
-                new IdentifierExpression('y')),
-            ),
-          ]),
-        ),
+      new FuncDecStmt( // i feel like there should be a return node here but tests pass..
+        'f', // also should this have a variable declaration or not, also return node is in block
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
+        new Block([
+          new ReturnStatement(
+            new BinaryExpression('+', new IdentifierExpression('x'),
+              new IdentifierExpression('y')),
+          ),
+        ]),
+      ),
     ]),
   ],
 
@@ -258,7 +257,7 @@ const fixture = {
               new NumericLiteral(5))),
           new BinaryExpression('%', new NumericLiteral(3),
             new NumericLiteral(2)))),
-    ])
+    ]),
   ],
   pow: [
     String.raw`
@@ -268,9 +267,8 @@ const fixture = {
       new VarDeclaration('result', false, 'Num',
         new PowExp(
           new NumericLiteral(2),
-           new NumericLiteral(3)
-        )
-      )
+          new NumericLiteral(3),
+        )),
     ]),
   ],
   multiplyParensPlus: [
@@ -300,22 +298,16 @@ const fixture = {
     new Program([
       new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
-        new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
+        [
+          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
+          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20))],
+        [
+          new Block([new Print(new IdentifierExpression('x'))]),
+          new Block([new Print(new NumericLiteral(1))])],
         new Block([
-          new Print(new IdentifierExpression('x'))
-        ]),
-        new Block([
-          new IfStmt(
-            new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20)),
-            new Block([
-              new Print(new NumericLiteral(1))
-            ]),
-            new Block([
-              new Print(
-                new PrefixExpression('-', new NumericLiteral(1))
-              )
-            ])
-          )
+          new Print(
+            new PrefixExpression('-', new NumericLiteral(1)),
+          ),
         ]),
       ),
     ]),
@@ -345,8 +337,9 @@ const fixture = {
     new Program([
       new PostfixExpression(
         new Call(new IdentifierExpression('collatz'), [new NumericLiteral(420)]),
-        '++')
-    ])
+        '++',
+      ),
+    ]),
   ],
 
   ternary: [
@@ -356,36 +349,34 @@ const fixture = {
       new IfStmt(
         new BinaryExpression('<',
           new IdentifierExpression('x'),
-          new NumericLiteral(0)
-        ),
+          new NumericLiteral(0)),
         new PrefixExpression('-',
-          new NumericLiteral(1)
-        ),
-        new NumericLiteral(1)
-      )
-    ])
+          new NumericLiteral(1)),
+        new NumericLiteral(1),
+      ),
+    ]),
   ],
 
-  fieldVarExp: [ //Similar to Call it wants the FieldVarExp to be wrapped in a IdentifierExpression
+  fieldVarExp: [ // Similar to Call it wants the FieldVarExp to be wrapped in a IdentifierExpression
     String.raw`inkTeam.sam
     `,
     new Program([
       new FieldVarExp(
         new IdentifierExpression('inkTeam'),
-        'sam' //should the field be an IdentifierExpression???
-      )
-    ])
+        'sam', // should the field be an IdentifierExpression???
+      ),
+    ]),
   ],
 
-  subscriptedVarExp: [ //just like FieldVarExp it wants the SubscriptedVarExp to be wrapped in a IdentifierExpression
+  subscriptedVarExp: [ // just like FieldVarExp it wants the SubscriptedVarExp to be wrapped in a IdentifierExpression
     String.raw`inkTeam[420]
     `,
     new Program([
       new SubscriptedVarExp(
         new IdentifierExpression('inkTeam'),
-        new NumericLiteral(420)
-      )
-    ])
+        new NumericLiteral(420),
+      ),
+    ]),
   ],
 
   assign: [
@@ -394,10 +385,10 @@ const fixture = {
     new Program([
       new Assignment(
         new IdentifierExpression('sam'),
-        new TextLiteral('kewl')
-      )
-    ])
-  ]
+        new TextLiteral('kewl'),
+      ),
+    ]),
+  ],
 }
 
 describe('The parser', () => {
