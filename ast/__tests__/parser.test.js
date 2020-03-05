@@ -114,29 +114,6 @@ const fixture = {
       ],
     ),
     String.raw`
-    x is always (x is Num, y is Num) is Num => {
-      gimme x + y
-    }
-    `,
-    new Program(
-      [
-        new VarDeclaration('x', true, new FuncDecStmt(
-          'f',
-          [
-            new Param('x', 'Num'),
-            new Param('y', 'Num'),
-          ],
-          'Num',
-          new Block([
-            new ReturnStatement(
-              new BinaryExpression('+', new IdentifierExpression('x'),
-                new IdentifierExpression('y')),
-            ),
-          ]),
-        )),
-      ],
-    ),
-    String.raw`
     function helloWorld() is Void {
       display "Hello world!"
     }
@@ -152,6 +129,32 @@ const fixture = {
           ),
         ]),
       ),
+    ),
+  ],
+
+  arrowFunctions: [
+    String.raw`
+    x is always (x is Num, y is Num) is Num => {
+      gimme x + y
+    }
+    `,
+    new Program(
+      [
+        new VarDeclaration('x', true, new FuncDecStmt(
+          '',
+          [
+            new Param('x', 'Num'),
+            new Param('y', 'Num'),
+          ],
+          'Num',
+          new Block([
+            new ReturnStatement(
+              new BinaryExpression('+', new IdentifierExpression('x'),
+                new IdentifierExpression('y')),
+            ),
+          ]),
+        )),
+      ],
     ),
   ],
 
