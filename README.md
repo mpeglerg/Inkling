@@ -109,7 +109,8 @@ while (x < 0) {
 
 ## Comments
 
-```btw: this is how you leave a single-line comment
+```
+btw: this is how you leave a single-line comment
 
 fyi: if you need to leave a multi-line
      you can leave it like this :xoxo
