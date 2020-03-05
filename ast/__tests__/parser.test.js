@@ -11,23 +11,23 @@
  */
 const parse = require("../parser");
 const {
-  Program,
-  Block,
+  Program, //done
+  Block, //done
   Assignment,
-  VarDeclaration,
-  Print,
-  ReturnStatement,
-  IfStmt,
+  VarDeclaration, //done
+  Print, //done
+  ReturnStatement, //done
+  IfStmt, //done
   ForLoop,
-  FuncDecStmt,
+  FuncDecStmt, //done
   WhileLoop,
   FieldVarExp,
-  IdentifierExpression,
+  IdentifierExpression, //Veda
   SubscriptedVarExp,
-  Param,
+  Param, //done
   Call,
-  BinaryExpression,
-  PowExp,
+  BinaryExpression, //done
+  PowExp, //veda
   PrefixExpression,
   PostfixExpression,
   ListExpression,
@@ -37,9 +37,9 @@ const {
   ListType,
   SetType,
   DictType,
-  NumericLiteral,
+  NumericLiteral, //done
   TextLiteral,
-  BooleanLiteral
+  BooleanLiteral //done
 } = require("../index");
 const fixture = {
   declarations: [
@@ -122,21 +122,27 @@ const fixture = {
         )
       )
     ])
+  ],
+  whiles: [
+    String.raw`while (true) { 
+      x is Num 3 
+    }
+    `,
+    new Program(
+      new Block([
+        new WhileLoop(
+          new IdentifierExpression(new BooleanLiteral(true)),
+          new Block([
+            new Assignment(
+              new IdentifierExpression("x"),
+              new NumericLiteral("3")
+            )
+          ])
+        )
+      ])
+    )
   ]
-  // whiles: [
-  //   String.raw`while false loop x = 3; end;`,
-  //   new Program(
-  //     new Block([
-  //       new WhileStatement(
-  //         new BooleanLiteral(false),
-  //         new Block([
-  //           new AssignmentStatement(new VariableExpression('x'),
-  //             new IntegerLiteral('3'))]),
-  //       ),
-  //     ]),
-  //   ),
-  // ],
-  //
+
   // math: [
   //   String.raw`read x, y; write 2 * (-5 > 7+1);`,
   //   new Program(
