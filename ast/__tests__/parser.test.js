@@ -14,82 +14,80 @@
 const parse = require('../parser')
 
 const {
-  Program, //done
-  Block, //done
+  Program, // done
+  Block, // done
   Assignment,
-  VarDeclaration, //done
-  Print, //done
-  ReturnStatement, //done
-  IfStmt, //done -- need to test ternaries
-  ForLoop, //Cooper did
-  FuncDecStmt, //done
+  VarDeclaration, // done
+  Print, // done
+  ReturnStatement, // done
+  IfStmt, // done -- need to test ternaries
+  ForLoop, // Cooper did
+  FuncDecStmt, // done
   WhileLoop, // done
   FieldVarExp,
-  IdentifierExpression, //done
+  IdentifierExpression, // done
   SubscriptedVarExp,
-  Param, //done
+  Param, // done
   Call,
-  BinaryExpression, //done
-  PowExp, //Veda working on
-  PrefixExpression, //working
-  PostfixExpression, //in Call test (call test not done yet)
-  ListExpression, //done
-  KeyValueExpression, //done
-  DictExpression, //done
-  SetExpression, //done
-  ListType, //done
-  SetType, //done
-  DictType, //done
-  NumericLiteral, //done
-  TextLiteral, //done
-  BooleanLiteral //done
-} = require("../index");
+  BinaryExpression, // done
+  PowExp, // Veda working on
+  PrefixExpression, // working
+  PostfixExpression, // in Call test (call test not done yet)
+  ListExpression, // done
+  KeyValueExpression, // done
+  DictExpression, // done
+  SetExpression, // done
+  ListType, // done
+  SetType, // done
+  DictType, // done
+  NumericLiteral, // done
+  TextLiteral, // done
+  BooleanLiteral, // done
+} = require('../index')
 
 const fixture = {
   declarations: [
     String.raw`y is Text "Hello World!"
     `,
     new Program([
-      new VarDeclaration("y", false, "Text", new TextLiteral("Hello World!"))
+      new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!')),
     ]),
     String.raw`x is always Num 5
     `,
     new Program(
-      new Block([new NumericLiteral(5), new VarDeclaration("x", true, "Num")])
+      new Block([new NumericLiteral(5), new VarDeclaration('x', true, 'Num')]),
     ),
     String.raw`x is Bool true
     `,
     new Program([
-      new BooleanLiteral("true"),
-      new VarDeclaration("x", false, "Bool")
+      new BooleanLiteral('true'),
+      new VarDeclaration('x', false, 'Bool'),
     ]),
     String.raw`x is Bool false
     `,
     new Program([
-      new BooleanLiteral("false"),
-      new VarDeclaration("x", false, "Bool")
+      new BooleanLiteral('false'),
+      new VarDeclaration('x', false, 'Bool'),
     ]),
     String.raw` ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
     `,
-    [
-      new Program([
-        new VarDeclaration(
-          "ageDictionary",
-          false,
-          new DictType("Text", "Num"),
-          new DictExpression([
-            new KeyValueExpression(
-              new TextLiteral("Sam"),
-              new NumericLiteral(21)
-            ),
-            new KeyValueExpression(
-              new TextLiteral("Talia"),
-              new NumericLiteral(20)
-            )
-          ])
-        )
-      ])
-    ]
+    new Program([
+      new VarDeclaration(
+        'ageDictionary',
+        false,
+        new DictType('Text', 'Num'),
+        new DictExpression([
+          new KeyValueExpression(
+            new TextLiteral('Sam'),
+            new NumericLiteral(21),
+          ),
+          new KeyValueExpression(
+            new TextLiteral('Talia'),
+            new NumericLiteral(20),
+          ),
+        ]),
+      ),
+    ]),
   ],
 
   forLoop: [
@@ -100,28 +98,28 @@ const fixture = {
     `,
     new Program([
       new ForLoop(
-        "i", // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
+        'i', // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
         new ListExpression([
           new NumericLiteral(1),
           new NumericLiteral(2),
-          new NumericLiteral(3)
+          new NumericLiteral(3),
         ]),
         new Block([
           new Print(
             new BinaryExpression(
-              "+",
+              '+',
               new NumericLiteral(3),
-              new IdentifierExpression("i")
-            )
-          )
-        ])
-      )
-    ])
+              new IdentifierExpression('i'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
   ],
   printing: [
     String.raw`display 5
     `,
-    new Program([new Print(new NumericLiteral(5))])
+    new Program([new Print(new NumericLiteral(5))]),
   ],
 
   set: [
@@ -130,12 +128,12 @@ const fixture = {
 
     new Program([
       new VarDeclaration(
-        "aSetOfNums",
+        'aSetOfNums',
         false,
-        new SetType("Num"),
-        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)])
-      )
-    ])
+        new SetType('Num'),
+        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)]),
+      ),
+    ]),
   ],
 
   list: [
@@ -143,16 +141,16 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "ourList",
+        'ourList',
         false,
-        new ListType("Text"),
+        new ListType('Text'),
         new ListExpression([
-          new TextLiteral("this"),
-          new TextLiteral("a"),
-          new TextLiteral("list")
-        ])
-      )
-    ])
+          new TextLiteral('this'),
+          new TextLiteral('a'),
+          new TextLiteral('list'),
+        ]),
+      ),
+    ]),
   ],
 
   functions: [
@@ -206,20 +204,11 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "x",
+        'x',
         true,
         new FuncDecStmt( // i feel like there should be a return node here but tests pass..
-          "f",
-          [new Param("x", "Num"), new Param("y", "Num")],
-          "Num",
-    new Program(
-      [
-        new VarDeclaration('x', true, new FuncDecStmt(
-          '',
-          [
-            new Param('x', 'Num'),
-            new Param('y', 'Num'),
-          ],
+          'f',
+          [new Param('x', 'Num'), new Param('y', 'Num')],
           'Num',
           new Block([
             new ReturnStatement(
@@ -227,18 +216,8 @@ const fixture = {
                 new IdentifierExpression('y')),
             ),
           ]),
-        )),
-      ],
-    ),
-              new BinaryExpression(
-                "+",
-                new IdentifierExpression("x"),
-                new IdentifierExpression("y")
-              )
-            )
-          ])
-        )
-      )
+        ),
+      ),
     ]),
     String.raw`
     function helloWorld() is Void {
@@ -248,27 +227,13 @@ const fixture = {
     `,
     new Program(
       new FuncDecStmt(
-        "hellowWorld",
+        'hellowWorld',
         [],
-        "Void",
-        new Block([new Print(new TextLiteral("Hello world!"))])
-      )
-    )
+        'Void',
+        new Block([new Print(new TextLiteral('Hello world!'))]),
+      ),
+    ),
   ],
-
-  // whiles: [
-  //   String.raw`while false loop x = 3; end;`,
-  //   new Program(
-  //     new Block([
-  //       new WhileStatement(
-  //         new BooleanLiteral(false),
-  //         new Block([
-  //           new AssignmentStatement(new VariableExpression('x'),
-  //             new IntegerLiteral('3'))]),
-  //       ),
-  //     ]),
-  //   ),
-  // ],
 
   while: [
     String.raw`
@@ -278,33 +243,33 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("i", false, "Num", new NumericLiteral(10)),
+      new VarDeclaration('i', false, 'Num', new NumericLiteral(10)),
       new WhileLoop(
         new BinaryExpression(
-          ">",
-          new IdentifierExpression("i"),
-          new NumericLiteral(0)
+          '>',
+          new IdentifierExpression('i'),
+          new NumericLiteral(0),
         ),
-        new Block([new PrefixExpression("--", new IdentifierExpression("i"))])
-      )
-    ])
+        new Block(
+          [new PrefixExpression('--', new IdentifierExpression('i'))],
+        ),
+      ),
+    ]),
   ],
 
   math: [
     String.raw`
       result is Num 3 + 10 / 5 - 3 % 2
     `,
-    new Program(
-      [
-        new VarDeclaration('result', false, 'Num',
-          new BinaryExpression('-',
-            new BinaryExpression('+', new NumericLiteral(3),
-              new BinaryExpression('/', new NumericLiteral(10),
-                new NumericLiteral(5))),
-            new BinaryExpression('%', new NumericLiteral(3),
-              new NumericLiteral(2)))),
-      ],
-    ),
+    new Program([
+      new VarDeclaration('result', false, 'Num',
+        new BinaryExpression('-',
+          new BinaryExpression('+', new NumericLiteral(3),
+            new BinaryExpression('/', new NumericLiteral(10),
+              new NumericLiteral(5))),
+          new BinaryExpression('%', new NumericLiteral(3),
+            new NumericLiteral(2)))),
+    ]),
     String.raw`
       result is Num 2^3
     `,
@@ -320,35 +285,13 @@ const fixture = {
       [
         new VarDeclaration('result', false, 'Num',
           new BinaryExpression('*', new NumericLiteral(3),
-            new BinaryExpression('+', new NumericLiteral(2),
-              new NumericLiteral(2)))),
+            new BinaryExpression('+', new NumericLiteral(2), new NumericLiteral(2)))),
       ],
     ),
   ],
 
   ifElses: [
     String.raw`
-    for i in [1, 2, 3] {
-      display 3 + i
-    }
-    `,
-    new Program(
-      [
-        new ForLoop(new IdentifierExpression('i'), // TODO: ask toal re: the 'i' should be wrapped in a IdentifierExpression I think but the ast wants this. due to difference between calling an id from VarExp and from elsewhere
-          new ListExpression([
-            new NumericLiteral(1),
-            new NumericLiteral(2),
-            new NumericLiteral(3)]),
-          new Block([
-            new Print(new BinaryExpression('+', new NumericLiteral(3),
-              new IdentifierExpression('i'))),
-          ])),
-      ],
-    ),
-  ],
-
-  ifElses: [
-  String.raw`
     x is Num 6
     if (x < 10) {
       display x
@@ -358,16 +301,15 @@ const fixture = {
       display -1
     }
     `,
-  [
-    new VarDeclaration("x", false, "Num", 6),
-    new IfStmt(
-      new BinaryExpression("<", "x", new NumericLiteral(10)),
-      true,
-      false
-    )
-  ]
-]
-
+    new Program([
+      new VarDeclaration('x', false, 'Num', 6),
+      new IfStmt(
+        new BinaryExpression('<', 'x', new NumericLiteral(10)),
+        true,
+        false,
+      ),
+    ]),
+  ],
 }
 
 describe('The parser', () => {
