@@ -21,18 +21,18 @@ const {
   Print, //done
   ReturnStatement, //done
   IfStmt, //done -- need to test ternaries
-  ForLoop,
+  ForLoop, //Cooper did
   FuncDecStmt, //done
-  WhileLoop, // Maya and Talia
+  WhileLoop, // done
   FieldVarExp,
   IdentifierExpression, //done
   SubscriptedVarExp,
   Param, //done
   Call,
   BinaryExpression, //done
-  PowExp,
-  PrefixExpression,
-  PostfixExpression,
+  PowExp, //Veda working on
+  PrefixExpression, //working
+  PostfixExpression, //in Call test (call test not done yet)
   ListExpression, //done
   KeyValueExpression, //done
   DictExpression, //done
@@ -92,6 +92,32 @@ const fixture = {
     ]
   ],
 
+  forLoop: [
+    String.raw`
+    for i in [1, 2, 3] {
+      display 3 + i
+    }
+    `,
+    new Program([
+      new ForLoop(
+        "i", // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
+        new ListExpression([
+          new NumericLiteral(1),
+          new NumericLiteral(2),
+          new NumericLiteral(3)
+        ]),
+        new Block([
+          new Print(
+            new BinaryExpression(
+              "+",
+              new NumericLiteral(3),
+              new IdentifierExpression("i")
+            )
+          )
+        ])
+      )
+    ])
+  ],
   printing: [
     String.raw`display 5
     `,
@@ -214,18 +240,14 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration(
-        new TextLiteral("i"),
-        false,
-        "Num",
-        new NumericLiteral(10)
-      ),
+      new VarDeclaration("i", false, "Num", new NumericLiteral(10)),
       new WhileLoop(
         new BinaryExpression(
           ">",
-          new IdentifierExpression(new TextLiteral("i"), new NumericLiteral(10))
+          new IdentifierExpression("i"),
+          new NumericLiteral(0)
         ),
-        new Block(new PrefixExpression("--", new IdentifierExpression("i")))
+        new Block([new PrefixExpression("--", new IdentifierExpression("i"))])
       )
     ])
   ],
@@ -302,12 +324,12 @@ const fixture = {
         false
       )
     ]
-  ],
-  idExpressions: [
-    String.raw`field is Bool
-    `,
-    [new IdentifierExpression("field")]
   ]
+  // idExpressions: [
+  //   String.raw`x is Bool
+  //   `,
+  //   [new IdentifierExpression("x")]
+  // ]
 };
 
 describe("The parser", () => {
@@ -335,12 +357,6 @@ describe("The parser", () => {
 //       new IfStmt(new BinaryExpression('<', 'x', new NumericLiteral(10)), true, false),
 //     ],
 //   ],
-
-idExpressions: [
-  String.raw`field is Bool
-    `,
-  [new IdentifierExpression("field")]
-];
 
 // }
 
