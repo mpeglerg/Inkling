@@ -1,4 +1,8 @@
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "^_" }] */
+
+/*NOTE: As of right now, we have yet to implement new lines within expressions.
+        We will get this functionality implemented by the next deadline.*/
+
 const fs = require("fs");
 const ohm = require("ohm-js");
 
