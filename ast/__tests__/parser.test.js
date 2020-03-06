@@ -1,5 +1,4 @@
 // perhaps look at iki https://github.com/rtoal/iki-compiler/blob/master/ast/__tests__/parser.test.js
-
 /*
  * Parser Tests
  *
@@ -10,9 +9,7 @@
  *
  * Based on toal's iki parser.test.js
  */
-
 const parse = require('../parser')
-
 const {
   Program, // done
   Block, // done
@@ -247,6 +244,29 @@ const fixture = {
 
   addDivideSubtractMod: [
     String.raw`
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
+    }
+    `,
+    new Program([
+      new FuncDecStmt(
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
+        new Block([
+          new ReturnStatement(
+            new BinaryExpression(
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
+  ],
+  math: [
+    String.raw`
       result is Num 3 + 10 / 5 - 3 % 2
     `,
     new Program([
@@ -448,7 +468,6 @@ describe('The parser', () => {
       done()
     })
   })
-
   test('throws an exception on a syntax error', (done) => {
     // We only need one test here that an exception is thrown.
     // Specific syntax errors are tested in the grammar test.
@@ -456,32 +475,3 @@ describe('The parser', () => {
     done()
   })
 })
-
-//       display x
-//     } else {
-//       display -1
-//     }
-//     `,
-//     [
-//       new VarDeclaration('x', false, 'Num', 6),
-//       new IfStmt(new BinaryExpression('<', 'x', new NumericLiteral(10)), true, false),
-//     ],
-//   ],
-
-// }
-
-// describe('The parser', () => {
-//   Object.entries(fixture).forEach(([name, [source, expected]]) => {
-//     test(`produces the correct AST for ${name}`, (done) => {
-//       expect(parse(source)).toEqual(expected)
-//       done()
-//     })
-//   })
-
-//   test('throws an exception on a syntax error', (done) => {
-//     // We only need one test here that an exception is thrown.
-//     // Specific syntax errors are tested in the grammar test.
-//     expect(() => parse('as$df^&%*$&')).toThrow()
-//     done()
-//   })
-// })
