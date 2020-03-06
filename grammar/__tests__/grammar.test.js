@@ -75,12 +75,51 @@ const program = String.raw`
 
     trueVal is Bool negativeChecker(5)
 
-    function findFirstOdd(x is Num) is Num {
+    function findFirstOdd(x is Num, y is Num) is Num {
         for i in range(0, x) {
             if(i % 2 != 0) {
-                gimme i
+                gimme i + 
+                3 +
+                 2 + 4
             }
         }
+    }
+    
+    function findFirstOdd(x is Num) is Num 
+    {
+        while (x > 2)
+        
+        
+        {
+            gimme x
+        }
+        
+        
+        for i in range(0, 5)
+        
+        
+        {
+            gimme 3
+        }
+        
+        if (x < 3)
+        
+        {
+            gimme 3
+        }
+        
+        else if (x > 4)
+        
+        {
+            gimme 4
+        }
+        
+        else
+        
+        {
+            gimme 5
+        }
+        
     }
 
     function findGreatest(a is Num, b is Num, c is Num) is Num {

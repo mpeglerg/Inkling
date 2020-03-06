@@ -48,7 +48,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   SimpleStmt_return(_, e) {
     return new ReturnStatement(arrayToNullable(e.ast()))
   },
-  Block(_1, stmts, _2) {
+  Block(_1, _2, stmts, _3) {
     return new Block(stmts.ast())
   },
   Stmt_simpleStmt(_, stmt, _1) {
@@ -69,7 +69,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
-  IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7, moreBlock,
+  IfStmt_if(_n, _1, _2, firstTest, _3, firstBlock, _n2, _4, _5, elifTests, _7, moreBlock,
     _8, lastBlock) {
     return new IfStmt(
       [firstTest.ast(), ...elifTests.ast()],

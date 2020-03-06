@@ -5,7 +5,7 @@ Inkling {
                 |  newline* ForLoop newline+                                -- forLoop
                 |  newline* FuncDec newline+                                -- funcDec
                 |  newline* WhileLoop newline+                              -- whileLoop
-    Block       =  "{" Stmt+ "}"
+    Block       =  newline* "{" Stmt+ "}"
     SimpleStmt  =  VarExp "is" Exp                                          -- assign
                 |  id "is" "always" Type Exp                                -- constdec
                 |  id "is" Type Exp                                         -- letdec
@@ -25,8 +25,8 @@ Inkling {
     ReturnType  =  "is" (Type | "Void")
     WhileLoop   =  "while" "(" Exp ")" Block
     IfStmt      =  "if" "(" Exp ")" Block
-                   ("else if" "(" Exp ")" Block)*
-                   ("else" Block)?                                          -- if
+                   (newline* "else if" "(" Exp ")" Block)*
+                   (newline* "else" Block)?                                          -- if
     ForLoop     =  "for" id "in" Exp Block
     Field       =  id ":" Exp
     Exp         =  Exp "?" Exp ":" Exp                                      -- ternary
@@ -36,7 +36,7 @@ Inkling {
                 |  Exp1
     Exp1        =  Exp2 relop Exp2                                          -- relop
                 |  Exp2
-    Exp2        =  Exp2 addop Exp3                                          -- addop
+    Exp2        =  Exp2 newline* addop newline* Exp3                                          -- addop
                 |  Exp3
     Exp3        =  Exp3 mulop Exp4                                          -- mulop
                 |  Exp4
@@ -51,13 +51,14 @@ Inkling {
                 |  numlit
                 |  VarExp
                 |  id
+                |  "Nada"                                                   -- nada
                 |  "[" ListOf<Exp, ","> "]"                                 -- list
                 |  "{" ListOf<Exp, ","> "}"                                 -- set
                 |  "{" ListOf<KeyValue, ","> "}"                            -- dict
     KeyValue    =  Exp ":" Exp
     keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
-                |  "Bool " | "List<" | "Text " | "Set<" | "Void")
+                |  "Bool " | "List<" | "Text " | "Set<" | "Void" | "Nada")
     Type        =  (Num | Dict | Bool | List | Text | Set)
     Num         =  "Num"
     List        =  "List<" Type ">"
