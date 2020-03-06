@@ -130,7 +130,7 @@ const fixture = {
     `,
     new Program([
       new ForLoop(
-        'i', // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
+        'i',
         new ListExpression([
           new NumericLiteral(1),
           new NumericLiteral(2),
@@ -179,7 +179,7 @@ const fixture = {
       ],
     ),
   ],
-  hellowWorld: [
+  helloWorld: [
     String.raw`
     function helloWorld() is Void {
       display "Hello world!"
@@ -206,8 +206,8 @@ const fixture = {
     }
     `,
     new Program([
-      new FuncDecStmt( // i feel like there should be a return node here but tests pass..
-        'f', // also should this have a variable declaration or not, also return node is in block
+      new FuncDecStmt(
+        'f',
         [new Param('x', 'Num'), new Param('y', 'Num')],
         'Num',
         new Block([
@@ -430,9 +430,11 @@ const fixture = {
     String.raw`inkTeam.sam
     `,
     new Program([
-      new FieldVarExp(
-        new IdentifierExpression('inkTeam'),
-        'sam', // should the field be an IdentifierExpression???
+      new IdentifierExpression(
+        new FieldVarExp(
+          new IdentifierExpression('inkTeam'),
+          'sam', // should the field be an IdentifierExpression???
+        ),
       ),
     ]),
   ],
@@ -442,10 +444,12 @@ const fixture = {
     String.raw`inkTeam[420]
     `,
     new Program([
-      new SubscriptedVarExp(
-        new IdentifierExpression('inkTeam'),
-        new NumericLiteral(420),
-      ),
+      new IdentifierExpression(
+        new SubscriptedVarExp(
+          new IdentifierExpression('inkTeam'),
+          new NumericLiteral(420),
+        ),
+      ),  
     ]),
   ],
 
