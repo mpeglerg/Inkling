@@ -8,7 +8,7 @@
  *
  * Based on toal's iki parser.test.js
  */
-const parse = require("../parser");
+const parse = require('../parser')
 const {
   Program,
   Block,
@@ -38,62 +38,62 @@ const {
   DictType,
   NumericLiteral,
   TextLiteral,
-  BooleanLiteral
-} = require("../index");
+  BooleanLiteral,
+} = require('../index')
 
 const fixture = {
   stringDeclarations: [
     String.raw`y is Text "Hello World!"
     `,
     new Program([
-      new VarDeclaration("y", false, "Text", new TextLiteral("Hello World!"))
-    ])
+      new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!')),
+    ]),
   ],
   constNumDeclarations: [
     String.raw`x is always Num 5
     `,
-    new Program([new VarDeclaration("x", true, "Num", new NumericLiteral(5))])
+    new Program([new VarDeclaration('x', true, 'Num', new NumericLiteral(5))]),
   ],
   boolTrueDeclarations: [
     String.raw`x is Bool true
     `,
     new Program([
-      new VarDeclaration("x", false, "Bool", new BooleanLiteral("true"))
-    ])
+      new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true')),
+    ]),
   ],
   boolFalseDeclarations: [
     String.raw`x is Bool false
     `,
     new Program([
-      new VarDeclaration("x", false, "Bool", new BooleanLiteral("false"))
-    ])
+      new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false')),
+    ]),
   ],
   dictDeclarations: [
     String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
     `,
     new Program([
       new VarDeclaration(
-        "ageDictionary",
+        'ageDictionary',
         false,
-        new DictType("Text", "Num"),
+        new DictType('Text', 'Num'),
         new DictExpression([
-          new KeyValuePair(new TextLiteral("Sam"), new NumericLiteral(21)),
-          new KeyValuePair(new TextLiteral("Talia"), new NumericLiteral(20))
-        ])
-      )
-    ])
+          new KeyValuePair(new TextLiteral('Sam'), new NumericLiteral(21)),
+          new KeyValuePair(new TextLiteral('Talia'), new NumericLiteral(20)),
+        ]),
+      ),
+    ]),
   ],
   setDeclarations: [
     String.raw`aSetOfNums is Set<Num> {1, 2}
    `,
     new Program([
       new VarDeclaration(
-        "aSetOfNums",
+        'aSetOfNums',
         false,
-        new SetType("Num"),
-        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)])
-      )
-    ])
+        new SetType('Num'),
+        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)]),
+      ),
+    ]),
   ],
 
   listDeclarations: [
@@ -101,16 +101,16 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "ourList",
+        'ourList',
         false,
-        new ListType("Text"),
+        new ListType('Text'),
         new ListExpression([
-          new TextLiteral("this"),
-          new TextLiteral("a"),
-          new TextLiteral("list")
-        ])
-      )
-    ])
+          new TextLiteral('this'),
+          new TextLiteral('a'),
+          new TextLiteral('list'),
+        ]),
+      ),
+    ]),
   ],
 
   forLoop: [
@@ -121,28 +121,28 @@ const fixture = {
     `,
     new Program([
       new ForLoop(
-        "i",
+        'i',
         new ListExpression([
           new NumericLiteral(1),
           new NumericLiteral(2),
-          new NumericLiteral(3)
+          new NumericLiteral(3),
         ]),
         new Block([
           new Print(
             new BinaryExpression(
-              "+",
+              '+',
               new NumericLiteral(3),
-              new IdentifierExpression("i")
-            )
-          )
-        ])
-      )
-    ])
+              new IdentifierExpression('i'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
   ],
   printing: [
     String.raw`display 5
     `,
-    new Program([new Print(new NumericLiteral(5))])
+    new Program([new Print(new NumericLiteral(5))]),
   ],
 
   functions: [
@@ -153,20 +153,20 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "f",
-        [new Param("x", "Num"), new Param("y", "Num")],
-        "Num",
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
         new Block([
           new ReturnStatement(
             new BinaryExpression(
-              "+",
-              new IdentifierExpression("x"),
-              new IdentifierExpression("y")
-            )
-          )
-        ])
-      )
-    ])
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
   ],
   helloWorld: [
     String.raw`
@@ -176,12 +176,12 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "helloWorld",
+        'helloWorld',
         [],
-        "Void",
-        new Block([new Print(new TextLiteral("Hello world!"))])
-      )
-    ])
+        'Void',
+        new Block([new Print(new TextLiteral('Hello world!'))]),
+      ),
+    ]),
   ],
 
   arrowFunctions: [
@@ -192,20 +192,20 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "f",
-        [new Param("x", "Num"), new Param("y", "Num")],
-        "Num",
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
         new Block([
           new ReturnStatement(
             new BinaryExpression(
-              "+",
-              new IdentifierExpression("x"),
-              new IdentifierExpression("y")
-            )
-          )
-        ])
-      )
-    ])
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
   ],
 
   while: [
@@ -216,16 +216,16 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("i", false, "Num", new NumericLiteral(10)),
+      new VarDeclaration('i', false, 'Num', new NumericLiteral(10)),
       new WhileLoop(
         new BinaryExpression(
-          ">",
-          new IdentifierExpression("i"),
-          new NumericLiteral(0)
+          '>',
+          new IdentifierExpression('i'),
+          new NumericLiteral(0),
         ),
-        new Block([new PrefixExpression("--", new IdentifierExpression("i"))])
-      )
-    ])
+        new Block([new PrefixExpression('--', new IdentifierExpression('i'))]),
+      ),
+    ]),
   ],
 
   addDivideSubtractMod: [
@@ -236,20 +236,20 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "f",
-        [new Param("x", "Num"), new Param("y", "Num")],
-        "Num",
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
         new Block([
           new ReturnStatement(
             new BinaryExpression(
-              "+",
-              new IdentifierExpression("x"),
-              new IdentifierExpression("y")
-            )
-          )
-        ])
-      )
-    ])
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
   ],
   math: [
     String.raw`
@@ -257,28 +257,28 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "result",
+        'result',
         false,
-        "Num",
+        'Num',
         new BinaryExpression(
-          "-",
+          '-',
           new BinaryExpression(
-            "+",
+            '+',
             new NumericLiteral(3),
             new BinaryExpression(
-              "/",
+              '/',
               new NumericLiteral(10),
-              new NumericLiteral(5)
-            )
+              new NumericLiteral(5),
+            ),
           ),
           new BinaryExpression(
-            "%",
+            '%',
             new NumericLiteral(3),
-            new NumericLiteral(2)
-          )
-        )
-      )
-    ])
+            new NumericLiteral(2),
+          ),
+        ),
+      ),
+    ]),
   ],
   pow: [
     String.raw`
@@ -286,12 +286,12 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "result",
+        'result',
         false,
-        "Num",
-        new PowExp(new NumericLiteral(2), new NumericLiteral(3))
-      )
-    ])
+        'Num',
+        new PowExp(new NumericLiteral(2), new NumericLiteral(3)),
+      ),
+    ]),
   ],
   multiplyParensPlus: [
     String.raw`
@@ -299,20 +299,20 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "result",
+        'result',
         false,
-        "Num",
+        'Num',
         new BinaryExpression(
-          "*",
+          '*',
           new NumericLiteral(3),
           new BinaryExpression(
-            "+",
+            '+',
             new NumericLiteral(3),
-            new NumericLiteral(2)
-          )
-        )
-      )
-    ])
+            new NumericLiteral(2),
+          ),
+        ),
+      ),
+    ]),
   ],
 
   ifElseIfElse: [
@@ -327,27 +327,27 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("x", false, "Num", new NumericLiteral(6)),
+      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
         [
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new NumericLiteral(10)
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(10),
           ),
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new NumericLiteral(20)
-          )
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(20),
+          ),
         ],
         [
-          new Block([new Print(new IdentifierExpression("x"))]),
-          new Block([new Print(new NumericLiteral(1))])
+          new Block([new Print(new IdentifierExpression('x'))]),
+          new Block([new Print(new NumericLiteral(1))]),
         ],
-        new Block([new Print(new PrefixExpression("-", new NumericLiteral(1)))])
-      )
-    ])
+        new Block([new Print(new PrefixExpression('-', new NumericLiteral(1)))]),
+      ),
+    ]),
   ],
 
   ifElseIf: [
@@ -360,27 +360,27 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("x", false, "Num", new NumericLiteral(6)),
+      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
         [
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new NumericLiteral(10)
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(10),
           ),
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new NumericLiteral(20)
-          )
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(20),
+          ),
         ],
         [
-          new Block([new Print(new IdentifierExpression("x"))]),
-          new Block([new Print(new NumericLiteral(1))])
+          new Block([new Print(new IdentifierExpression('x'))]),
+          new Block([new Print(new NumericLiteral(1))]),
         ],
-        null
-      )
-    ])
+        null,
+      ),
+    ]),
   ],
 
   ifElse: [
@@ -393,19 +393,19 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("x", false, "Num", new NumericLiteral(6)),
+      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
         [
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new NumericLiteral(10)
-          )
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(10),
+          ),
         ],
-        [new Block([new Print(new IdentifierExpression("x"))])],
-        new Block([new Print(new PrefixExpression("-", new NumericLiteral(1)))])
-      )
-    ])
+        [new Block([new Print(new IdentifierExpression('x'))])],
+        new Block([new Print(new PrefixExpression('-', new NumericLiteral(1)))]),
+      ),
+    ]),
   ],
 
   logic: [
@@ -414,16 +414,16 @@ const fixture = {
     new Program([
       new Print(
         new BinaryExpression(
-          "and",
-          new IdentifierExpression("x"),
+          'and',
+          new IdentifierExpression('x'),
           new BinaryExpression(
-            "or",
-            new PrefixExpression("!", new IdentifierExpression("y")),
-            new IdentifierExpression("x")
-          )
-        )
-      )
-    ])
+            'or',
+            new PrefixExpression('!', new IdentifierExpression('y')),
+            new IdentifierExpression('x'),
+          ),
+        ),
+      ),
+    ]),
   ],
 
   call: [
@@ -432,13 +432,13 @@ const fixture = {
     new Program([
       new PostfixExpression(
         new IdentifierExpression(
-          new Call(new IdentifierExpression("collatz"), [
-            new NumericLiteral(420)
-          ])
+          new Call(new IdentifierExpression('collatz'), [
+            new NumericLiteral(420),
+          ]),
         ),
-        "++"
-      )
-    ])
+        '++',
+      ),
+    ]),
   ],
 
   ternary: [
@@ -447,14 +447,14 @@ const fixture = {
     new Program([
       new IfStmt(
         new BinaryExpression(
-          "<",
-          new IdentifierExpression("x"),
-          new NumericLiteral(0)
+          '<',
+          new IdentifierExpression('x'),
+          new NumericLiteral(0),
         ),
-        new PrefixExpression("-", new NumericLiteral(1)),
-        new NumericLiteral(1)
-      )
-    ])
+        new PrefixExpression('-', new NumericLiteral(1)),
+        new NumericLiteral(1),
+      ),
+    ]),
   ],
 
   fieldVarExp: [
@@ -463,9 +463,9 @@ const fixture = {
     `,
     new Program([
       new IdentifierExpression(
-        new FieldVarExp(new IdentifierExpression("inkTeam"), "sam")
-      )
-    ])
+        new FieldVarExp(new IdentifierExpression('inkTeam'), 'sam'),
+      ),
+    ]),
   ],
 
   subscriptedVarExp: [
@@ -476,33 +476,33 @@ const fixture = {
     new Program([
       new IdentifierExpression(
         new SubscriptedVarExp(
-          new IdentifierExpression("inkTeam"),
-          new NumericLiteral(420)
-        )
-      )
-    ])
+          new IdentifierExpression('inkTeam'),
+          new NumericLiteral(420),
+        ),
+      ),
+    ]),
   ],
 
   assign: [
     String.raw`sam is "kewl"
     `,
     new Program([
-      new Assignment(new IdentifierExpression("sam"), new TextLiteral("kewl"))
-    ])
-  ]
-};
+      new Assignment(new IdentifierExpression('sam'), new TextLiteral('kewl')),
+    ]),
+  ],
+}
 
-describe("The parser", () => {
+describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
-    test(`produces the correct AST for ${name}`, done => {
-      expect(parse(source)).toEqual(expected);
-      done();
-    });
-  });
-  test("throws an exception on a syntax error", done => {
+    test(`produces the correct AST for ${name}`, (done) => {
+      expect(parse(source)).toEqual(expected)
+      done()
+    })
+  })
+  test('throws an exception on a syntax error', (done) => {
     // We only need one test here that an exception is thrown.
     // Specific syntax errors are tested in the grammar test.
-    expect(() => parse("as$df^&%*$&")).toThrow();
-    done();
-  });
-});
+    expect(() => parse('as$df^&%*$&')).toThrow()
+    done()
+  })
+})
