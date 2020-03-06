@@ -12,7 +12,7 @@ Inkling {
                 |  "exit"                                                   -- break
                 |  "display" Exp                                            -- print
                 |  "gimme" Exp?                                             -- return
-                |  Exp
+                |  Exp 
     VarExp      =  VarExp "[" Exp "]"                                       -- subscripted
                 |  VarExp "." id                                            -- field
                 |  VarExp "(" Args ")"                                      -- call
