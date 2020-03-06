@@ -92,7 +92,7 @@ const program = String.raw`
             gimme c
         }
     }
-    
+
     function testBang() is Text {
         x is Bool true
         if (!x == false) {
@@ -122,14 +122,14 @@ const program = String.raw`
     arrowFunction is always (x is Num) is Num => {
         gimme x + 1
     }
-    
+
     testCall is always () is List<Text> => {
         test is List<Text> ["this", "is", "a", "legal", "list", "in", "Inkling"]
         gimme test
     }
-    
+
     testCall[0]
-    
+
     ourList is List<Text> ["this", "is", "a", "legal", "list", "in", "Inkling"]
     aListOfNums is List<Text> ["1", "2", "3", "4", "5", "6", "7"]
     aListOfNums[0] is 0
@@ -147,4 +147,3 @@ describe('The syntax checker', () => {
     done()
   })
 })
-// TO TEST: dictionary
