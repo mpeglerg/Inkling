@@ -327,7 +327,8 @@ const fixture = {
       new IfStmt(
         [
           new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
-          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20))],
+          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20))
+        ],
         [
           new Block([new Print(new IdentifierExpression('x'))]),
           new Block([new Print(new NumericLiteral(1))])],
@@ -349,7 +350,9 @@ const fixture = {
       new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
         [new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10))],
-        [new Block([new Print(new IdentifierExpression('x'))])],
+        [new Block([
+          new Print(new IdentifierExpression('x'))
+        ])],
         new Block([
           new Print(
             new PrefixExpression('-', new NumericLiteral(1)),
