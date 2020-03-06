@@ -5,6 +5,7 @@ const ohm = require('ohm-js')
 const {
   Program,
   Block,
+  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
@@ -22,7 +23,7 @@ const {
   PrefixExpression,
   PostfixExpression,
   ListExpression,
-  KeyValueExpression,
+  KeyValuePair,
   DictExpression,
   SetExpression,
   ListType,
@@ -56,6 +57,15 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Stmt_funcDec(_1, f, _2) {
     return f.ast()
   },
+  Stmt_whileLoop(_1, loop, _2) {
+    return loop.ast()
+  },
+  Stmt_forLoop(_1, loop, _2) {
+    return loop.ast()
+  },
+  Stmt_ifBlock(_1, block, _2) {
+    return block.ast()
+  },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
@@ -67,8 +77,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
       arrayToNullable(lastBlock.ast()),
     )
   },
-  ForLoop(_1, id, _2, type, _3, exp, body) {
-    return new ForLoop(id.ast(), type.ast(), exp.ast(), body.ast())
+  ForLoop(_1, id, _2, exp, body) {
+    return new ForLoop(id.ast(), exp.ast(), body.ast())
   },
   WhileLoop(_1, _2, exp, _3, body) {
     return new WhileLoop(exp.ast(), body.ast())
@@ -100,6 +110,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     // TODO: always functionality implemented here? may be implemented now
     return new VarDeclaration(id.ast(), true, type.ast(), exp.ast())
   },
+  SimpleStmt_assign(id, _, exp) {
+    return new Assignment(id.ast(), exp.ast())
+  },
   SimpleStmt_print(_displayKeyword, exp) {
     return new Print(exp.ast())
   },
@@ -113,12 +126,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return this.sourceString
   },
   KeyValue(id, _, exp) {
-    return new KeyValueExpression(id.ast(), exp.ast())
+    return new KeyValuePair(id.ast(), exp.ast())
   },
 
   // Expressions
   Exp_ternary(testExp, _1, returnOnTrue, _2, returnOnFalse) {
-    return new IfStmt(test.ast(), returnOnTrue.ast(), returnOnFalse.ast())
+    return new IfStmt(testExp.ast(), returnOnTrue.ast(), returnOnFalse.ast())
   },
   Exp0_or(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
@@ -126,7 +139,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Exp0_and(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
-  // TODO: should all these create a new BinaryExpression node??
   Exp1_relop(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
@@ -137,7 +149,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
   Exp4_pow(left, _, right) {
-    return new PowExp(left, right)
+    return new PowExp(left.ast(), right.ast())
   },
   Exp5_postfix(operand, op) {
     return new PostfixExpression(operand.ast(), op.ast())
@@ -150,6 +162,8 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   Exp6_list(_1, expressions, _2) {
     return new ListExpression(expressions.ast())
+    // expressions.ast().length === 0 ? [] : expressions.ast()[0]
+    // ^ toal's solution for optionals ie elements?, not sure if it will apply to us
   },
   Exp6_set(_1, expressions, _2) {
     return new SetExpression(expressions.ast())

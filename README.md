@@ -62,14 +62,18 @@ y is “Inkling is amazing”
 ## Function Declaration
 
 ```
-function helloWorld() Text {
+function helloWorld() is Text {
     gimme "Hello world"
 }
 
-function countToX(x is Num) {
+function countToX(x is Num) is Void {
     for i is Num in range(0, x) {
         display i
     }
+}
+
+x is always (x is Text) is Num => {
+    gimme x
 }
 ```
 
@@ -105,7 +109,8 @@ while (x < 0) {
 
 ## Comments
 
-```btw: this is how you leave a single-line comment
+```
+btw: this is how you leave a single-line comment
 
 fyi: if you need to leave a multi-line
      you can leave it like this :xoxo

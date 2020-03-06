@@ -59,10 +59,9 @@ class IfStmt {
 }
 
 class ForLoop {
-  constructor(id, type, exp, body) {
+  constructor(id, exp, body) {
     Object.assign(this, {
       id,
-      type,
       exp,
       body,
     })
@@ -122,10 +121,6 @@ class Param {
   }
 }
 
-class Params {
-  constructor() {}
-}
-
 class Call {
   constructor(id, args) {
     Object.assign(this, {
@@ -172,19 +167,13 @@ class PostfixExpression {
   }
 }
 
-// class Paren {
-//   constructor(exp) {
-//     Object.assign(this, { exp })
-//   }
-// }
-
 class ListExpression {
   constructor(members) {
     this.members = members
   }
 }
 
-class KeyValueExpression {
+class KeyValuePair {
   constructor(key, value) {
     Object.assign(this, {
       key,
@@ -264,13 +253,12 @@ module.exports = {
   BinaryExpression,
   IdentifierExpression,
   ListExpression,
-  KeyValueExpression,
+  KeyValuePair,
   DictExpression,
   SetExpression,
   PowExp,
   PrefixExpression,
   PostfixExpression,
-  // Paren, not needed I believe
   ListType,
   SetType,
   DictType,
