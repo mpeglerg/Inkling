@@ -414,7 +414,8 @@ const fixture = {
     ]),
   ],
 
-  subscriptedVarExp: [ // just like FieldVarExp it wants the SubscriptedVarExp to be wrapped in a IdentifierExpression
+  subscriptedVarExp: [ // just like FieldVarExp it wants the SubscriptedVarExp to
+    // be wrapped in a IdentifierExpression
     String.raw`inkTeam[420]
     `,
     new Program([
