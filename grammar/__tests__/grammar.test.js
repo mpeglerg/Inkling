@@ -4,12 +4,6 @@
  * These tests check that our grammar accepts a program that features all of
  * syntactic forms of the language.
  */
-// const fs = require('fs')
-//
-// const ohm = require('ohm-js')
-//
-// const grammar = ohm.grammar(fs.readFileSync('grammar/Inkling.ohm'))
-
 const syntaxCheck = require('../syntax-checker')
 
 const program = String.raw`

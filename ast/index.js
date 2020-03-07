@@ -5,12 +5,8 @@ class Program {
   }
 }
 
-// ////// Block ///
-// Should this be done in parser ? ask
 class Block {
   constructor(statements) {
-    // map or filter over every statement
-    // this.statements = statements.filter()
     this.statements = statements
   }
 }
@@ -25,8 +21,8 @@ class Assignment {
 }
 
 class VarDeclaration {
-  constructor(id, constant = false, type, exp) {
-    // constant tries to account for 'always' functionality
+  constructor(id, constant, type, exp) {
+    // constant accounts for 'always' functionality
     Object.assign(this, {
       id,
       constant,
@@ -216,7 +212,7 @@ class DictType {
   }
 }
 
-// literals
+// Literals
 class NumericLiteral {
   constructor(value) {
     this.value = value

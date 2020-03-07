@@ -1,4 +1,8 @@
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "^_" }] */
+
+/* NOTE: As of right now, we have yet to implement new lines within expressions.
+        We will get this functionality implemented by the next deadline. */
+
 const fs = require('fs')
 const ohm = require('ohm-js')
 
@@ -69,8 +73,20 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
-  IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7, moreBlock,
-    _8, lastBlock) {
+  IfStmt_if(
+    _1,
+    _2,
+    firstTest,
+    _3,
+    firstBlock,
+    _4,
+    _5,
+    elifTests,
+    _7,
+    moreBlock,
+    _8,
+    lastBlock,
+  ) {
     return new IfStmt(
       [firstTest.ast(), ...elifTests.ast()],
       [firstBlock.ast(), ...moreBlock.ast()],
@@ -84,7 +100,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new WhileLoop(exp.ast(), body.ast())
   },
   FuncDec_function(_funcKeyword, id, _open, params, _close, returnType, body) {
-    return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
+    return new FuncDecStmt(
+      id.ast(),
+      params.ast(),
+      returnType.ast(),
+      body.ast(),
+    )
   },
   FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
     return new FuncDecStmt(
@@ -107,7 +128,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new VarDeclaration(id.ast(), false, type.ast(), exp.ast())
   },
   SimpleStmt_constdec(id, _isKeyword, _alwaysKeyword, type, exp) {
-    // TODO: always functionality implemented here? may be implemented now
     return new VarDeclaration(id.ast(), true, type.ast(), exp.ast())
   },
   SimpleStmt_assign(id, _, exp) {
@@ -162,8 +182,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   Exp6_list(_1, expressions, _2) {
     return new ListExpression(expressions.ast())
-    // expressions.ast().length === 0 ? [] : expressions.ast()[0]
-    // ^ toal's solution for optionals ie elements?, not sure if it will apply to us
   },
   Exp6_set(_1, expressions, _2) {
     return new SetExpression(expressions.ast())
@@ -195,7 +213,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return type.ast()
   },
 
-  // literals
+  // Literals
   numlit(_1, _2, _3, _4, _5, _6) {
     return new NumericLiteral(+this.sourceString)
   },

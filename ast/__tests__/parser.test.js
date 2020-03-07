@@ -1,4 +1,3 @@
-// perhaps look at iki https://github.com/rtoal/iki-compiler/blob/master/ast/__tests__/parser.test.js
 /*
  * Parser Tests
  *
@@ -11,35 +10,35 @@
  */
 const parse = require('../parser')
 const {
-  Program, // done
-  Block, // done
+  Program,
+  Block,
   Assignment,
-  VarDeclaration, // done
-  Print, // done
-  ReturnStatement, // done
-  IfStmt, // done -- need to test ternaries
-  ForLoop, // Cooper did
-  FuncDecStmt, // done
-  WhileLoop, // done
+  VarDeclaration,
+  Print,
+  ReturnStatement,
+  IfStmt,
+  ForLoop,
+  FuncDecStmt,
+  WhileLoop,
   FieldVarExp,
-  IdentifierExpression, // done
+  IdentifierExpression,
   SubscriptedVarExp,
-  Param, // done
+  Param,
   Call,
-  BinaryExpression, // done
-  PowExp, // Veda working on
-  PrefixExpression, // working
-  PostfixExpression, // in Call test (call test not done yet)
-  ListExpression, // done
-  KeyValuePair, // done
-  DictExpression, // done
-  SetExpression, // done
-  ListType, // done
-  SetType, // done
-  DictType, // done
-  NumericLiteral, // done
-  TextLiteral, // done
-  BooleanLiteral, // done
+  BinaryExpression,
+  PowExp,
+  PrefixExpression,
+  PostfixExpression,
+  ListExpression,
+  KeyValuePair,
+  DictExpression,
+  SetExpression,
+  ListType,
+  SetType,
+  DictType,
+  NumericLiteral,
+  TextLiteral,
+  BooleanLiteral,
 } = require('../index')
 
 const fixture = {
@@ -53,9 +52,7 @@ const fixture = {
   constNumDeclarations: [
     String.raw`x is always Num 5
     `,
-    new Program([
-      new VarDeclaration('x', true, 'Num', new NumericLiteral(5)),
-    ]),
+    new Program([new VarDeclaration('x', true, 'Num', new NumericLiteral(5))]),
   ],
   boolTrueDeclarations: [
     String.raw`x is Bool true
@@ -80,14 +77,8 @@ const fixture = {
         false,
         new DictType('Text', 'Num'),
         new DictExpression([
-          new KeyValuePair(
-            new TextLiteral('Sam'),
-            new NumericLiteral(21),
-          ),
-          new KeyValuePair(
-            new TextLiteral('Talia'),
-            new NumericLiteral(20),
-          ),
+          new KeyValuePair(new TextLiteral('Sam'), new NumericLiteral(21)),
+          new KeyValuePair(new TextLiteral('Talia'), new NumericLiteral(20)),
         ]),
       ),
     ]),
@@ -130,7 +121,7 @@ const fixture = {
     `,
     new Program([
       new ForLoop(
-        'i', // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
+        'i',
         new ListExpression([
           new NumericLiteral(1),
           new NumericLiteral(2),
@@ -160,26 +151,24 @@ const fixture = {
       gimme x + y
     }
     `,
-    new Program(
-      [
-        new FuncDecStmt(
-          'f',
-          [
-            new Param('x', 'Num'),
-            new Param('y', 'Num'),
-          ],
-          'Num',
-          new Block([
-            new ReturnStatement(
-              new BinaryExpression('+', new IdentifierExpression('x'),
-                new IdentifierExpression('y')),
+    new Program([
+      new FuncDecStmt(
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
+        new Block([
+          new ReturnStatement(
+            new BinaryExpression(
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
             ),
-          ]),
-        ),
-      ],
-    ),
+          ),
+        ]),
+      ),
+    ]),
   ],
-  hellowWorld: [
+  helloWorld: [
     String.raw`
     function helloWorld() is Void {
       display "Hello world!"
@@ -190,11 +179,7 @@ const fixture = {
         'helloWorld',
         [],
         'Void',
-        new Block([
-          new Print(
-            new TextLiteral('Hello world!'),
-          ),
-        ]),
+        new Block([new Print(new TextLiteral('Hello world!'))]),
       ),
     ]),
   ],
@@ -206,14 +191,17 @@ const fixture = {
     }
     `,
     new Program([
-      new FuncDecStmt( // i feel like there should be a return node here but tests pass..
-        'f', // also should this have a variable declaration or not, also return node is in block
+      new FuncDecStmt(
+        'f',
         [new Param('x', 'Num'), new Param('y', 'Num')],
         'Num',
         new Block([
           new ReturnStatement(
-            new BinaryExpression('+', new IdentifierExpression('x'),
-              new IdentifierExpression('y')),
+            new BinaryExpression(
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
           ),
         ]),
       ),
@@ -235,14 +223,17 @@ const fixture = {
           new IdentifierExpression('i'),
           new NumericLiteral(0),
         ),
-        new Block(
-          [new PrefixExpression('--', new IdentifierExpression('i'))],
-        ),
+        new Block([new PrefixExpression('--', new IdentifierExpression('i'))]),
       ),
     ]),
   ],
 
   addDivideSubtractMod: [
+    String.raw`
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
+    }
+    `,
     new Program([
       new FuncDecStmt(
         'f',
@@ -265,13 +256,28 @@ const fixture = {
       result is Num 3 + 10 / 5 - 3 % 2
     `,
     new Program([
-      new VarDeclaration('result', false, 'Num',
-        new BinaryExpression('-',
-          new BinaryExpression('+', new NumericLiteral(3),
-            new BinaryExpression('/', new NumericLiteral(10),
-              new NumericLiteral(5))),
-          new BinaryExpression('%', new NumericLiteral(3),
-            new NumericLiteral(2)))),
+      new VarDeclaration(
+        'result',
+        false,
+        'Num',
+        new BinaryExpression(
+          '-',
+          new BinaryExpression(
+            '+',
+            new NumericLiteral(3),
+            new BinaryExpression(
+              '/',
+              new NumericLiteral(10),
+              new NumericLiteral(5),
+            ),
+          ),
+          new BinaryExpression(
+            '%',
+            new NumericLiteral(3),
+            new NumericLiteral(2),
+          ),
+        ),
+      ),
     ]),
   ],
   pow: [
@@ -279,24 +285,34 @@ const fixture = {
       result is Num 2^3
     `,
     new Program([
-      new VarDeclaration('result', false, 'Num',
-        new PowExp(
-          new NumericLiteral(2),
-          new NumericLiteral(3),
-        )),
+      new VarDeclaration(
+        'result',
+        false,
+        'Num',
+        new PowExp(new NumericLiteral(2), new NumericLiteral(3)),
+      ),
     ]),
   ],
   multiplyParensPlus: [
     String.raw`
       result is Num 3 * (3 + 2)
     `,
-    new Program(
-      [
-        new VarDeclaration('result', false, 'Num',
-          new BinaryExpression('*', new NumericLiteral(3),
-            new BinaryExpression('+', new NumericLiteral(3), new NumericLiteral(2)))),
-      ],
-    ),
+    new Program([
+      new VarDeclaration(
+        'result',
+        false,
+        'Num',
+        new BinaryExpression(
+          '*',
+          new NumericLiteral(3),
+          new BinaryExpression(
+            '+',
+            new NumericLiteral(3),
+            new NumericLiteral(2),
+          ),
+        ),
+      ),
+    ]),
   ],
 
   ifElseIfElse: [
@@ -314,16 +330,22 @@ const fixture = {
       new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
         [
-          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
-          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20))],
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(10),
+          ),
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(20),
+          ),
+        ],
         [
           new Block([new Print(new IdentifierExpression('x'))]),
-          new Block([new Print(new NumericLiteral(1))])],
-        new Block([
-          new Print(
-            new PrefixExpression('-', new NumericLiteral(1)),
-          ),
-        ]),
+          new Block([new Print(new NumericLiteral(1))]),
+        ],
+        new Block([new Print(new PrefixExpression('-', new NumericLiteral(1)))]),
       ),
     ]),
   ],
@@ -341,11 +363,21 @@ const fixture = {
       new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
         [
-          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10)),
-          new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(20))],
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(10),
+          ),
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(20),
+          ),
+        ],
         [
           new Block([new Print(new IdentifierExpression('x'))]),
-          new Block([new Print(new NumericLiteral(1))])],
+          new Block([new Print(new NumericLiteral(1))]),
+        ],
         null,
       ),
     ]),
@@ -363,13 +395,15 @@ const fixture = {
     new Program([
       new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
       new IfStmt(
-        [new BinaryExpression('<', new IdentifierExpression('x'), new NumericLiteral(10))],
-        [new Block([new Print(new IdentifierExpression('x'))])],
-        new Block([
-          new Print(
-            new PrefixExpression('-', new NumericLiteral(1)),
+        [
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new NumericLiteral(10),
           ),
-        ]),
+        ],
+        [new Block([new Print(new IdentifierExpression('x'))])],
+        new Block([new Print(new PrefixExpression('-', new NumericLiteral(1)))]),
       ),
     ]),
   ],
@@ -397,7 +431,11 @@ const fixture = {
     `,
     new Program([
       new PostfixExpression(
-        new Call(new IdentifierExpression('collatz'), [new NumericLiteral(420)]),
+        new IdentifierExpression(
+          new Call(new IdentifierExpression('collatz'), [
+            new NumericLiteral(420),
+          ]),
+        ),
         '++',
       ),
     ]),
@@ -408,35 +446,39 @@ const fixture = {
     `,
     new Program([
       new IfStmt(
-        new BinaryExpression('<',
+        new BinaryExpression(
+          '<',
           new IdentifierExpression('x'),
-          new NumericLiteral(0)),
-        new PrefixExpression('-',
-          new NumericLiteral(1)),
+          new NumericLiteral(0),
+        ),
+        new PrefixExpression('-', new NumericLiteral(1)),
         new NumericLiteral(1),
       ),
     ]),
   ],
 
-  fieldVarExp: [ // Similar to Call it wants the FieldVarExp to be wrapped in a IdentifierExpression
+  fieldVarExp: [
+    // Similar to Call it wants the FieldVarExp to be wrapped in a IdentifierExpression
     String.raw`inkTeam.sam
     `,
     new Program([
-      new FieldVarExp(
-        new IdentifierExpression('inkTeam'),
-        'sam', // should the field be an IdentifierExpression???
+      new IdentifierExpression(
+        new FieldVarExp(new IdentifierExpression('inkTeam'), 'sam'),
       ),
     ]),
   ],
 
-  subscriptedVarExp: [ // just like FieldVarExp it wants the SubscriptedVarExp to
+  subscriptedVarExp: [
+    // just like FieldVarExp it wants the SubscriptedVarExp to
     // be wrapped in a IdentifierExpression
     String.raw`inkTeam[420]
     `,
     new Program([
-      new SubscriptedVarExp(
-        new IdentifierExpression('inkTeam'),
-        new NumericLiteral(420),
+      new IdentifierExpression(
+        new SubscriptedVarExp(
+          new IdentifierExpression('inkTeam'),
+          new NumericLiteral(420),
+        ),
       ),
     ]),
   ],
@@ -445,10 +487,7 @@ const fixture = {
     String.raw`sam is "kewl"
     `,
     new Program([
-      new Assignment(
-        new IdentifierExpression('sam'),
-        new TextLiteral('kewl'),
-      ),
+      new Assignment(new IdentifierExpression('sam'), new TextLiteral('kewl')),
     ]),
   ],
 }
