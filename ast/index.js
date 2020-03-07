@@ -47,7 +47,7 @@ class ReturnStatement {
 class IfStmt {
   constructor(tests, consequence, alt) {
     Object.assign(this, {
-      test,
+      tests,
       consequence,
       alt,
     })

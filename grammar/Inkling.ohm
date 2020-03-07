@@ -12,7 +12,7 @@ Inkling {
                 |  "exit"                                                   -- break
                 |  "display" Exp                                            -- print
                 |  "gimme" Exp?                                             -- return
-                |  Exp 
+                |  Exp
     VarExp      =  VarExp "[" Exp "]"                                       -- subscripted
                 |  VarExp "." id                                            -- field
                 |  VarExp "(" Args ")"                                      -- call
@@ -68,7 +68,7 @@ Inkling {
     id          =  ~keyword letter alnum*
     numlit      =  digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
     boollit     =  "true" | "false"
-    txtlit      =  "\"" (~"\\" ~"\"" ~"\n" ~ "\t" any | escape)* "\""
+    txtlit      =  "\"" (~"\\" ~"\"" ~newline ~"\t" any | escape)* "\""
     escape      =  "\\" ("\"" | "\'" | "n" | "t")?                          -- escape
                 |  "\\u{" hexDigit+ "}"                                     -- hexDigit
     mulop       =  "*" | "/" | "%"
