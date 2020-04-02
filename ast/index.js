@@ -212,6 +212,12 @@ class DictType {
   }
 }
 
+class PrimitiveType {
+  constructor(id) {
+    Object.assign(this, { id })
+  }
+}
+
 // Literals
 class NumericLiteral {
   constructor(value) {
@@ -261,4 +267,5 @@ module.exports = {
   NumericLiteral,
   TextLiteral,
   BooleanLiteral,
+  PrimitiveType,
 }
