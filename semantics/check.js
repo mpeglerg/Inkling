@@ -6,7 +6,7 @@ const {
   FuncDecStmt,
   IdentifierExpression
 } = require("../ast");
-const { NumType, TextType, BoolType } = require("./builtins");
+const { NumType, TextType, BoolType, NoneType } = require("./builtins");
 
 function doCheck(condition, message) {
   if (!condition) {
@@ -58,10 +58,10 @@ module.exports = {
   },
 
   // Can we assign expression to a variable/param/field of type type?
-  // How the fuck do we handle none here???????? 
+  // How the fuck do we handle none here????????
   isAssignableTo(expression, type) {
     doCheck(
-      expression.type === type
+      expression.type === type || expression.type === NoneType,
       `Expression of type ${util.format(
         expression.type
       )} not compatible with type ${util.format(type)}`
