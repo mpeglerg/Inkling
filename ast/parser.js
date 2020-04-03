@@ -1,10 +1,15 @@
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "^_" }] */
+
+/* NOTE: As of right now, we have yet to implement new lines within expressions.
+        We will get this functionality implemented by the next deadline. */
+
 const fs = require('fs')
 const ohm = require('ohm-js')
 
 const {
   Program,
   Block,
+  Assignment,
   VarDeclaration,
   Print,
   ReturnStatement,
@@ -28,9 +33,7 @@ const {
   ListType,
   SetType,
   DictType,
-  NumericLiteral,
-  TextLiteral,
-  BooleanLiteral,
+  Literal,
 } = require('../ast')
 
 const grammar = ohm.grammar(fs.readFileSync('./grammar/Inkling.ohm'))
@@ -62,11 +65,26 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Stmt_forLoop(_1, loop, _2) {
     return loop.ast()
   },
+  Stmt_ifBlock(_1, block, _2) {
+    return block.ast()
+  },
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
-  IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7, moreBlock,
-    _8, lastBlock) {
+  IfStmt_if(
+    _1,
+    _2,
+    firstTest,
+    _3,
+    firstBlock,
+    _4,
+    _5,
+    elifTests,
+    _7,
+    moreBlock,
+    _8,
+    lastBlock,
+  ) {
     return new IfStmt(
       [firstTest.ast(), ...elifTests.ast()],
       [firstBlock.ast(), ...moreBlock.ast()],
@@ -80,7 +98,12 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new WhileLoop(exp.ast(), body.ast())
   },
   FuncDec_function(_funcKeyword, id, _open, params, _close, returnType, body) {
-    return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast())
+    return new FuncDecStmt(
+      id.ast(),
+      params.ast(),
+      returnType.ast(),
+      body.ast(),
+    )
   },
   FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
     return new FuncDecStmt(
@@ -103,8 +126,10 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new VarDeclaration(id.ast(), false, type.ast(), exp.ast())
   },
   SimpleStmt_constdec(id, _isKeyword, _alwaysKeyword, type, exp) {
-    // TODO: always functionality implemented here? may be implemented now
     return new VarDeclaration(id.ast(), true, type.ast(), exp.ast())
+  },
+  SimpleStmt_assign(id, _, exp) {
+    return new Assignment(id.ast(), exp.ast())
   },
   SimpleStmt_print(_displayKeyword, exp) {
     return new Print(exp.ast())
@@ -124,7 +149,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
 
   // Expressions
   Exp_ternary(testExp, _1, returnOnTrue, _2, returnOnFalse) {
-    return new IfStmt(test.ast(), returnOnTrue.ast(), returnOnFalse.ast())
+    return new IfStmt(testExp.ast(), returnOnTrue.ast(), returnOnFalse.ast())
   },
   Exp0_or(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
@@ -132,7 +157,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   Exp0_and(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
-  // TODO: should all these create a new BinaryExpression node??
   Exp1_relop(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
@@ -143,7 +167,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return new BinaryExpression(op.ast(), left.ast(), right.ast())
   },
   Exp4_pow(left, _, right) {
-    return new PowExp(left, right)
+    return new PowExp(left.ast(), right.ast())
   },
   Exp5_postfix(operand, op) {
     return new PostfixExpression(operand.ast(), op.ast())
@@ -187,15 +211,15 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
     return type.ast()
   },
 
-  // literals
+  // Literals
   numlit(_1, _2, _3, _4, _5, _6) {
-    return new NumericLiteral(+this.sourceString)
+    return new Literal(+this.sourceString)
   },
   txtlit(_1, chars, _2) {
-    return new TextLiteral(chars.sourceString)
+    return new Literal(chars.sourceString)
   },
   boollit(v) {
-    return new BooleanLiteral(v.sourceString)
+    return new Literal(v.sourceString)
   },
   // eslint-disable-next-line no-underscore-dangle
   _terminal() {

@@ -1,5 +1,3 @@
-// perhaps look at iki https://github.com/rtoal/iki-compiler/blob/master/ast/__tests__/parser.test.js
-
 /*
  * Parser Tests
  *
@@ -10,9 +8,7 @@
  *
  * Based on toal's iki parser.test.js
  */
-
 const parse = require('../parser')
-
 const {
   Program,
   Block,
@@ -40,43 +36,47 @@ const {
   ListType,
   SetType,
   DictType,
-  NumericLiteral,
-  TextLiteral,
-  BooleanLiteral,
+  Literal,
 } = require('../index')
 
 const fixture = {
-  stringDeclarations: [
+  textDeclarations: [
     String.raw`y is Text "Hello World!"
     `,
     new Program([
-        new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!'))
-      ]
-    )
+      new VarDeclaration('y', false, 'Text', new Literal('Hello World!')),
+    ]),
   ],
   constNumDeclarations: [
     String.raw`x is always Num 5
     `,
-    new Program([
-        new VarDeclaration('x', true, 'Num', new NumericLiteral(5)),
-    ])
+    new Program([new VarDeclaration('x', true, 'Num', new Literal(5))]),
   ],
   boolTrueDeclarations: [
     String.raw`x is Bool true
     `,
     new Program([
-        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true'))
-    ])
+      new VarDeclaration('x', false, 'Bool', new Literal('true')),
+    ]),
   ],
   boolFalseDeclarations: [
     String.raw`x is Bool false
     `,
     new Program([
-        new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false'))
-    ])
+      new VarDeclaration('x', false, 'Bool', new Literal('false')),
+    ]),
+  ],
+  noneDeclarations: [
+    String.raw`x is Num none
+    x is 5
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', 'none'),
+      new Assignment(new IdentifierExpression('x'), new Literal(5)),
+    ]),
   ],
   dictDeclarations: [
-    String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
+    String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia": 20}
     `,
     new Program([
       new VarDeclaration(
@@ -84,39 +84,72 @@ const fixture = {
         false,
         new DictType('Text', 'Num'),
         new DictExpression([
-          new KeyValuePair(
-            new TextLiteral("Sam"),
-            new NumericLiteral(21)
-          ),
-          new KeyValuePair(
-            new TextLiteral("Talia"),
-            new NumericLiteral(20)
-          )
-        ])
-      )
-    ])
+          new KeyValuePair(new Literal('Sam'), new Literal(21)),
+          new KeyValuePair(new Literal('Talia'), new Literal(20)),
+        ]),
+      ),
+    ]),
   ],
   setDeclarations: [
     String.raw`aSetOfNums is Set<Num> {1, 2}
    `,
-     new Program([
-       new VarDeclaration(
-         "aSetOfNums",
-         false,
-         new SetType("Num"),
-         new SetExpression([new NumericLiteral(1), new NumericLiteral(2)])
-       )
-     ])
+    new Program([
+      new VarDeclaration(
+        'aSetOfNums',
+        false,
+        new SetType('Num'),
+        new SetExpression([new Literal(1), new Literal(2)]),
+      ),
+    ]),
   ],
 
-  printStatements: [
+  listDeclarations: [
+    String.raw`ourList is List<Text> ["this", "a", "list"]
+    `,
+    new Program([
+      new VarDeclaration(
+        'ourList',
+        false,
+        new ListType('Text'),
+        new ListExpression([
+          new Literal('this'),
+          new Literal('a'),
+          new Literal('list'),
+        ]),
+      ),
+    ]),
+  ],
+
+  forLoop: [
+    String.raw`
+    for i in [1, 2, 3] {
+      display 3 + i
+    }
+    `,
+    new Program([
+      new ForLoop(
+        'i',
+        new ListExpression([
+          new Literal(1),
+          new Literal(2),
+          new Literal(3),
+        ]),
+        new Block([
+          new Print(
+            new BinaryExpression(
+              '+',
+              new Literal(3),
+              new IdentifierExpression('i'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
+  ],
+  printing: [
     String.raw`display 5
     `,
-    new Program(
-      [
-        new Print(new NumericLiteral(5)),
-      ],
-    ),
+    new Program([new Print(new Literal(5))]),
   ],
 
   functions: [
@@ -125,38 +158,261 @@ const fixture = {
       gimme x + y
     }
     `,
-    new Program(
-      [
-        new FuncDecStmt(
-          'f',
-          [
-            new Param('x', 'Num'),
-            new Param('y', 'Num'),
-          ],
-          'Num',
-          new Block([
-            new ReturnStatement(new BinaryExpression('+', new IdentifierExpression('x'), new IdentifierExpression('y'))),
-          ]),
-        ),
-      ],
-    ),
+    new Program([
+      new FuncDecStmt(
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
+        new Block([
+          new ReturnStatement(
+            new BinaryExpression(
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
+  ],
+  helloWorld: [
+    String.raw`
+    function helloWorld() is Void {
+      display "Hello world!"
+    }
+    `,
+    new Program([
+      new FuncDecStmt(
+        'helloWorld',
+        [],
+        'Void',
+        new Block([new Print(new Literal('Hello world!'))]),
+      ),
+    ]),
   ],
 
+  arrowFunctions: [
+    String.raw`
+    f is always (x is Num, y is Num) is Num => {
+      gimme x + y
+    }
+    `,
+    new Program([
+      new FuncDecStmt(
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
+        new Block([
+          new ReturnStatement(
+            new BinaryExpression(
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
+  ],
+
+  while: [
+    String.raw`
+      i is Num 10
+      while(i > 0) {
+        --i
+    }
+    `,
+    new Program([
+      new VarDeclaration('i', false, 'Num', new Literal(10)),
+      new WhileLoop(
+        new BinaryExpression(
+          '>',
+          new IdentifierExpression('i'),
+          new Literal(0),
+        ),
+        new Block([new PrefixExpression('--', new IdentifierExpression('i'))]),
+      ),
+    ]),
+  ],
+
+  addDivideSubtractMod: [
+    String.raw`
+    function f(x is Num, y is Num) is Num {
+      gimme x + y
+    }
+    `,
+    new Program([
+      new FuncDecStmt(
+        'f',
+        [new Param('x', 'Num'), new Param('y', 'Num')],
+        'Num',
+        new Block([
+          new ReturnStatement(
+            new BinaryExpression(
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
+          ),
+        ]),
+      ),
+    ]),
+  ],
   math: [
     String.raw`
       result is Num 3 + 10 / 5 - 3 % 2
     `,
-    new Program(
-      [
-        new VarDeclaration('result', false, 'Num',
-          new BinaryExpression('-',
-            new BinaryExpression('+', new NumericLiteral(3),
-              new BinaryExpression('/', new NumericLiteral(10),
-                new NumericLiteral(5))),
-            new BinaryExpression('%', new NumericLiteral(3),
-              new NumericLiteral(2)))),
-      ],
-    ),
+    new Program([
+      new VarDeclaration(
+        'result',
+        false,
+        'Num',
+        new BinaryExpression(
+          '-',
+          new BinaryExpression(
+            '+',
+            new Literal(3),
+            new BinaryExpression(
+              '/',
+              new Literal(10),
+              new Literal(5),
+            ),
+          ),
+          new BinaryExpression(
+            '%',
+            new Literal(3),
+            new Literal(2),
+          ),
+        ),
+      ),
+    ]),
+  ],
+  pow: [
+    String.raw`
+      result is Num 2^3
+    `,
+    new Program([
+      new VarDeclaration(
+        'result',
+        false,
+        'Num',
+        new PowExp(new Literal(2), new Literal(3)),
+      ),
+    ]),
+  ],
+  multiplyParensPlus: [
+    String.raw`
+      result is Num 3 * (3 + 2)
+    `,
+    new Program([
+      new VarDeclaration(
+        'result',
+        false,
+        'Num',
+        new BinaryExpression(
+          '*',
+          new Literal(3),
+          new BinaryExpression(
+            '+',
+            new Literal(3),
+            new Literal(2),
+          ),
+        ),
+      ),
+    ]),
+  ],
+
+  ifElseIfElse: [
+    String.raw`
+    x is Num 6
+    if (x < 10) {
+      display x
+    } else if (x < 20) {
+      display 1
+    } else {
+      display -1
+    }
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', new Literal(6)),
+      new IfStmt(
+        [
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(10),
+          ),
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(20),
+          ),
+        ],
+        [
+          new Block([new Print(new IdentifierExpression('x'))]),
+          new Block([new Print(new Literal(1))]),
+        ],
+        new Block([new Print(new PrefixExpression('-', new Literal(1)))]),
+      ),
+    ]),
+  ],
+
+  ifElseIf: [
+    String.raw`
+    x is Num 6
+    if (x < 10) {
+      display x
+    } else if (x < 20) {
+      display 1
+    }
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', new Literal(6)),
+      new IfStmt(
+        [
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(10),
+          ),
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(20),
+          ),
+        ],
+        [
+          new Block([new Print(new IdentifierExpression('x'))]),
+          new Block([new Print(new Literal(1))]),
+        ],
+        null,
+      ),
+    ]),
+  ],
+
+  ifElse: [
+    String.raw`
+    x is Num 6
+    if (x < 10) {
+      display x
+    } else {
+      display -1
+    }
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', new Literal(6)),
+      new IfStmt(
+        [
+          new BinaryExpression(
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(10),
+          ),
+        ],
+        [new Block([new Print(new IdentifierExpression('x'))])],
+        new Block([new Print(new PrefixExpression('-', new Literal(1)))]),
+      ),
+    ]),
   ],
 
   logic: [
@@ -182,58 +438,65 @@ const fixture = {
     `,
     new Program([
       new PostfixExpression(
-        new Call(new IdentifierExpression('collatz'), [new NumericLiteral(420)]),
-        '++')
-    ])
-  ],
-
-  whileLoop: [
-   String.raw`
-     i is Num 10
-     while(i > 0) {
-       --i
-   }
-   `,
-   new Program([
-     new VarDeclaration(
-       "i",
-       false,
-       "Num",
-       new NumericLiteral(10)
-     ),
-     new WhileLoop(
-       new BinaryExpression(
-         ">",
-         new IdentifierExpression("i"),
-        new NumericLiteral(0)
+        new IdentifierExpression(
+          new Call(new IdentifierExpression('collatz'), [
+            new Literal(420),
+          ]),
         ),
-       new Block([new PrefixExpression("--", new IdentifierExpression("i"))])
-    ),
-   ])
- ],
-
- forLoop: [
-    String.raw`
-    for i in [1, 2, 3] {
-      display 3 + i
-    }
-    `,
-    new Program(
-      [
-        new ForLoop(
-          'i', // the 'i' should be wrapped in a IdentifierExpression iIthink but the ast wants this
-          new ListExpression([
-            new NumericLiteral(1),
-            new NumericLiteral(2),
-            new NumericLiteral(3)]),
-          new Block([
-            new Print(new BinaryExpression('+', new NumericLiteral(3),
-              new IdentifierExpression('i'))),
-          ])),
-      ],
-    ),
+        '++',
+      ),
+    ]),
   ],
 
+  ternary: [
+    String.raw`x < 0 ? -1 : 1
+    `,
+    new Program([
+      new IfStmt(
+        new BinaryExpression(
+          '<',
+          new IdentifierExpression('x'),
+          new Literal(0),
+        ),
+        new PrefixExpression('-', new Literal(1)),
+        new Literal(1),
+      ),
+    ]),
+  ],
+
+  fieldVarExp: [
+    // Similar to Call it wants the FieldVarExp to be wrapped in a IdentifierExpression
+    String.raw`inkTeam.sam
+    `,
+    new Program([
+      new IdentifierExpression(
+        new FieldVarExp(new IdentifierExpression('inkTeam'), 'sam'),
+      ),
+    ]),
+  ],
+
+  subscriptedVarExp: [
+    // just like FieldVarExp it wants the SubscriptedVarExp to
+    // be wrapped in a IdentifierExpression
+    String.raw`inkTeam[420]
+    `,
+    new Program([
+      new IdentifierExpression(
+        new SubscriptedVarExp(
+          new IdentifierExpression('inkTeam'),
+          new Literal(420),
+        ),
+      ),
+    ]),
+  ],
+
+  assign: [
+    String.raw`sam is "kewl"
+    `,
+    new Program([
+      new Assignment(new IdentifierExpression('sam'), new Literal('kewl')),
+    ]),
+  ],
 }
 
 describe('The parser', () => {
@@ -243,7 +506,6 @@ describe('The parser', () => {
       done()
     })
   })
-
   test('throws an exception on a syntax error', (done) => {
     // We only need one test here that an exception is thrown.
     // Specific syntax errors are tested in the grammar test.
