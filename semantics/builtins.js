@@ -13,12 +13,12 @@ const Text = new PrimitiveType('text')
 
 const standardFunctions = [
   new FuncDecStmt('display', [new Param('s', Text)]),
-  new FuncDecStmt('length', [new Param('s', Text)]),
+  new FuncDecStmt('length', [new Param('s', Text)], Void),
   // no idea if we can overload like this, if we can't it's gonna get messy
-  new FuncDecStmt('length', [new Param('s', ListType)]),
-  new FuncDecStmt('length', [new Param('s', SetType)]),
-  new FuncDecStmt('length', [new Param('s', DictType)]),
-  new FuncDecStmt('exit', [new Param('code', Numeric)]),
+  new FuncDecStmt('length', [new Param('s', ListType)], Numeric),
+  new FuncDecStmt('length', [new Param('s', SetType)], Numeric),
+  new FuncDecStmt('length', [new Param('s', DictType)], Numeric),
+  new FuncDecStmt('exit', [new Param('code', Numeric)], Numeric),
 ]
 
 const stringFunctions = [
@@ -61,6 +61,7 @@ module.exports = {
   Numeric,
   Text,
   Boolean,
+  Void,
   standardFunctions,
   stringFunctions,
   mathFunctions,

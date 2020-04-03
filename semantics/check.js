@@ -1,6 +1,6 @@
 const util = require('util')
 const {
-  ListType, FuncDecStmt, RecordType, VarDeclaration,
+  ListType, FuncDecStmt, VarDeclaration,
 } = require('../ast')
 const { Numeric, Text } = require('./builtins')
 
@@ -16,36 +16,25 @@ module.exports = {
     doCheck(type.constructor === ListType, 'Not a list type')
   },
 
-  // isRecordType(type) {
-  //   doCheck(type.constructor === RecordType, 'Not a record type')
-  // },
-
   // Is the type of this expression a list type?
   isArray(expression) {
     doCheck(expression.type.constructor === ListType, 'Not a list')
   },
 
-  // isRecord(expression) {
-  //   doCheck(expression.type.constructor === RecordType, 'Not a record')
-  // },
+  isInteger(expression) {
+    doCheck(expression.type === Numeric, 'Not an integer')
+  },
 
-  // TODO
-  // isInteger(expression) {
-  //   doCheck(expression.type === Numeric, 'Not an integer')
-  // },
+  mustNotHaveAType(expression) {
+    doCheck(!expression.type, 'Expression must not have a type')
+  },
 
-  // idk if we need this
-  // mustNotHaveAType(expression) {
-  //   doCheck(!expression.type, 'Expression must not have a type')
-  // },
-
-  // TODO
-  // isIntegerOrString(expression) {
-  //   doCheck(
-  //     expression.type === Numeric || expression.type === Text,
-  //     'Not an integer or string',
-  //   )
-  // },
+  isIntegerOrString(expression) {
+    doCheck(
+      expression.type === Numeric || expression.type === Text,
+      'Not an integer or string',
+    )
+  },
 
   isFunction(value) {
     doCheck(value.constructor === FuncDecStmt, 'Not a function')
@@ -57,10 +46,9 @@ module.exports = {
   },
 
   // Can we assign expression to a variable/param/field of type type?
-  // TODO: needs a lot of work
   isAssignableTo(expression, type) {
     doCheck(
-      (expression.type === NilType && type.constructor === RecordType) || expression.type === type,
+      expression.type === type,
       `Expression of type ${util.format(expression.type)} not compatible with type ${util.format(
         type,
       )}`,
@@ -69,7 +57,7 @@ module.exports = {
 
   isNotReadOnly(lvalue) {
     doCheck(
-      !(lvalue.constructor === VarDeclaration && lvalue.ref.always === 'true'),
+      !(lvalue.constructor === VarDeclaration && lvalue.always === 'true'),
       'Assignment to read-only variable',
     )
   },
@@ -89,10 +77,5 @@ module.exports = {
       `Expected ${params.length} args in call, got ${args.length}`,
     )
     args.forEach((arg, i) => this.isAssignableTo(arg, params[i].type))
-  },
-
-  // If there is a cycle in types, they must go through a record
-  noRecursiveTypeCyclesWithoutRecordTypes() {
-    /* TODO - not looking forward to this one */
   },
 }
