@@ -218,6 +218,11 @@ class PrimitiveType {
   }
 }
 
+// Is this necessary???
+class None {
+
+}
+
 // Literals
 class Literal {
   constructor(value) {
@@ -254,4 +259,5 @@ module.exports = {
   SetType,
   DictType,
   Literal,
+  None
 };

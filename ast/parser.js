@@ -34,6 +34,7 @@ const {
   SetType,
   DictType,
   Literal,
+  None,
 } = require('../ast')
 
 const grammar = ohm.grammar(fs.readFileSync('./grammar/Inkling.ohm'))
@@ -212,6 +213,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
 
   // Literals
+  // do we need a nonelit if so wtf is it??
   numlit(_1, _2, _3, _4, _5, _6) {
     return new Literal(+this.sourceString)
   },
@@ -220,6 +222,9 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
   boollit(v) {
     return new Literal(v.sourceString)
+  },
+  nonelit(none){
+    return new None()
   },
   // eslint-disable-next-line no-underscore-dangle
   _terminal() {

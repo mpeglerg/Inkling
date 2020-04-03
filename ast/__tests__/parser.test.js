@@ -37,6 +37,7 @@ const {
   SetType,
   DictType,
   Literal,
+  None,
 } = require('../index')
 
 const fixture = {
@@ -71,7 +72,7 @@ const fixture = {
     x is 5
     `,
     new Program([
-      new VarDeclaration('x', false, 'Num', 'none'),
+      new VarDeclaration('x', false, 'Num', new None()),
       new Assignment(new IdentifierExpression('x'), new Literal(5)),
     ]),
   ],

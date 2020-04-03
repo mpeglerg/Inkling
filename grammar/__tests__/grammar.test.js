@@ -4,12 +4,6 @@
  * These tests check that our grammar accepts a program that features all of
  * syntactic forms of the language.
  */
-// const fs = require('fs')
-//
-// const ohm = require('ohm-js')
-//
-// const grammar = ohm.grammar(fs.readFileSync('grammar/Inkling.ohm'))
-
 const syntaxCheck = require('../syntax-checker')
 
 const program = String.raw`
@@ -23,6 +17,7 @@ const program = String.raw`
     x is Num 5
     x is 10
     y is always Num 10
+    x is Num none
     textWithNewline is Text "there is a new line in \n this text!"
     textWithTab is Text "there is a new line in \t this text!"
     textWithSingleQuote is Text "there is a single quote in \' this text!"
@@ -45,7 +40,7 @@ const program = String.raw`
         }
     }
 
-    function fizzbuzz(x is Num) is void {
+    function fizzbuzz(x is Num) is Void {
         for i in range(0,x) {
             if (i%3 == 0 and i%5 == 0) {
                 display "fizzbuzz"
