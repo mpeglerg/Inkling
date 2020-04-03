@@ -23,7 +23,7 @@ const standardFunctions = [
 
 const stringFunctions = [
   new FuncDecStmt(
-    'substring',
+    'slice',
     [
       new Param('s', Text),
       new Param('begin', Numeric),
@@ -31,11 +31,11 @@ const stringFunctions = [
     ],
     Text,
   ),
-  new FuncDecStmt(
-    'concat', // feels very old, maybe just use '+' for string concat
-    [new Param('first', Text), new Param('second', Text)],
-    Text,
-  ),
+  // new FuncDecStmt(
+  //   'concat', // feels very old, maybe just use '+' for string concat maybe use for arrays
+  //   [new Param('first', Text), new Param('second', Text)],
+  //   Text,
+  // ),
   // new Func('not', [new Param('x', IntType)], IntType),
   new FuncDecStmt('charAt', [new Param('s', Numeric)], Text),
 ]
