@@ -66,15 +66,11 @@ class ForLoop {
 
 class FuncDecStmt {
   constructor(id, params, type, body) {
-    Object.assign(this, {
-      id,
-      params,
-      type,
-      body,
-    });
+    this.id = id;
+    this.function = new FuncObject(type, id, params, body);
   }
 }
-class FunctionObject {
+class FuncObject {
   constructor(type, id, params, body) {
     Object.assign(this, { type, id, params, body });
   }
@@ -252,7 +248,7 @@ module.exports = {
   ForLoop,
   IfStmt,
   FuncDecStmt,
-  FunctionObject,
+  FuncObject,
   WhileLoop,
   FieldVarExp,
   SubscriptedVarExp,

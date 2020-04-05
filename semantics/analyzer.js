@@ -7,14 +7,12 @@ const {
   IfStmt,
   WhileLoop,
   FuncDecStmt,
+  FuncObject,
+  Parameter,
+  ReturnStatement,
 } = require("../ast");
 const check = require("../semantics/check");
-const {
-  NumType,
-  BoolType,
-  TextType,
-  VoidType,
-} = require("../semantics/builtins");
+const { NumType, BoolType, TextType } = require("../semantics/builtins");
 
 Program.prototype.analyze = function (context) {
   this.stmts.forEach((stmt) => {
@@ -78,4 +76,28 @@ WhileLoop.prototype.analyze = function (context) {
   this.body.forEach((s) => s.analyze(bodyContext));
 };
 
-FuncDecStmt.prototype.analyze = function (context) {};
+FuncDecStmt.prototype.analyze = function (context) {
+  context.add(this.function);
+  this.function.analyze(context.createChildContextForFunctionBody(this));
+};
+
+FuncObject.prototype.analyze = function (context) {
+  this.params = this.params.map((p) => new Parameter(p.type, p.id));
+  this.params.forEach((p) => p.analyze(context));
+  this.body.forEach((s) => s.analyze(context));
+
+  const returnStatement = this.body.filter(
+    (b) => b.constructor === ReturnStatement
+  );
+  if (returnStatement.length === 0 && this.type !== "void") {
+    throw new Error("No return statement found");
+  } else if (returnStatement.length > 0) {
+    if (this.type === "void") {
+      throw new Error("Void functions do not have return statements");
+    }
+    check.isAssignableTo(returnStatement[0].returnValue.type, this.type);
+  }
+};
+
+Parameter.prototype.analyze = function (context) {};
+ReturnStatement.prototype.analyze = function (context) {};
