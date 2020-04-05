@@ -74,6 +74,11 @@ class FuncDecStmt {
     });
   }
 }
+class FunctionObject {
+  constructor(type, id, params, body) {
+    Object.assign(this, { type, id, params, body });
+  }
+}
 
 class WhileLoop {
   constructor(condition, body) {
@@ -247,6 +252,7 @@ module.exports = {
   ForLoop,
   IfStmt,
   FuncDecStmt,
+  FunctionObject,
   WhileLoop,
   FieldVarExp,
   SubscriptedVarExp,

@@ -5,6 +5,8 @@ const {
   TextLiteral,
   BinaryExpression,
   IfStmt,
+  WhileLoop,
+  FuncDecStmt,
 } = require("../ast");
 const check = require("../semantics/check");
 const {
@@ -70,3 +72,10 @@ BinaryExpression.prototype.analyze = function (context) {
     this.type = NumType;
   }
 };
+WhileLoop.prototype.analyze = function (context) {
+  this.condition.analyze(context);
+  const bodyContext = context.createChildContextForLoop();
+  this.body.forEach((s) => s.analyze(bodyContext));
+};
+
+FuncDecStmt.prototype.analyze = function (context) {};
