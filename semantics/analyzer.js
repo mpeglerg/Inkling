@@ -2,28 +2,44 @@ const {
   NumericLiteral,
   BooleanLiteral,
   TextLiteral,
-  BinaryExpression
+  BinaryExpression,
+  IfStmt,
 } = require("../ast");
 const check = require("../semantics/check");
 const {
   NumType,
   BoolType,
   TextType,
-  VoidType
+  VoidType,
 } = require("../semantics/builtins");
 
-NumericLiteral.prototype.analyze = function(context) {
+NumericLiteral.prototype.analyze = function (context) {
   this.type = NumType;
 };
-BooleanLiteral.prototype.analyze = function(context) {
+BooleanLiteral.prototype.analyze = function (context) {
   this.type = BoolType;
 };
 
-TextLiteral.prototype.analyze = function(context) {
+TextLiteral.prototype.analyze = function (context) {
   this.type = BoolType;
 };
 
-BinaryExpression.prototype.analyze = function(context) {
+IfStmt.prototype.analyze = function (context) {
+  this.tests.forEach((test) => {
+    test.analyze(context);
+    check.isBoolean(test); // Add boolean checker to check file
+  });
+  this.consequents.forEach((block) => {
+    const blockContext = context.createChildContextForBlock();
+    block.forEach((statement) => statement.analyze(blockContext));
+  });
+  if (this.alt) {
+    const alternateBlock = context.createChildContextForBlock();
+    this.alt.forEach((s) => s.analyze(alternateBlock));
+  }
+};
+
+BinaryExpression.prototype.analyze = function (context) {
   this.left.analyze(context);
   this.right.analyze(context);
   if (["<=", ">=", "<", ">"].includes(this.op)) {
