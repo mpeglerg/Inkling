@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 class Program {
-  constructor(stmt) {
-    this.stmt = stmt;
+  constructor(stmts) {
+    this.stmts = stmts;
   }
 }
 
@@ -15,7 +15,7 @@ class Assignment {
   constructor(id, exp) {
     Object.assign(this, {
       id,
-      exp
+      exp,
     });
   }
 }
@@ -27,7 +27,7 @@ class VarDeclaration {
       id,
       constant,
       type,
-      exp
+      exp,
     });
   }
 }
@@ -49,7 +49,7 @@ class IfStmt {
     Object.assign(this, {
       tests,
       consequence,
-      alt
+      alt,
     });
   }
 }
@@ -59,7 +59,7 @@ class ForLoop {
     Object.assign(this, {
       id,
       exp,
-      body
+      body,
     });
   }
 }
@@ -70,7 +70,7 @@ class FuncDecStmt {
       id,
       params,
       type,
-      body
+      body,
     });
   }
 }
@@ -79,7 +79,7 @@ class WhileLoop {
   constructor(condition, body) {
     Object.assign(this, {
       condition,
-      body
+      body,
     });
   }
 }
@@ -88,7 +88,7 @@ class FieldVarExp {
   constructor(id, field) {
     Object.assign(this, {
       id,
-      field
+      field,
     });
   }
 }
@@ -103,7 +103,7 @@ class SubscriptedVarExp {
   constructor(id, key) {
     Object.assign(this, {
       id,
-      key
+      key,
     });
   }
 }
@@ -112,7 +112,7 @@ class Param {
   constructor(id, type) {
     Object.assign(this, {
       id,
-      type
+      type,
     });
   }
 }
@@ -121,7 +121,7 @@ class Call {
   constructor(id, args) {
     Object.assign(this, {
       id,
-      args
+      args,
     });
   }
 }
@@ -131,7 +131,7 @@ class BinaryExpression {
     Object.assign(this, {
       op,
       left,
-      right
+      right,
     });
   }
 }
@@ -140,7 +140,7 @@ class PowExp {
   constructor(left, right) {
     Object.assign(this, {
       left,
-      right
+      right,
     });
   }
 }
@@ -149,7 +149,7 @@ class PrefixExpression {
   constructor(op, operand) {
     Object.assign(this, {
       op,
-      operand
+      operand,
     });
   }
 }
@@ -158,7 +158,7 @@ class PostfixExpression {
   constructor(operand, op) {
     Object.assign(this, {
       op,
-      operand
+      operand,
     });
   }
 }
@@ -173,7 +173,7 @@ class KeyValuePair {
   constructor(key, value) {
     Object.assign(this, {
       key,
-      value
+      value,
     });
   }
 }
@@ -207,7 +207,7 @@ class DictType {
   constructor(keyType, valueType) {
     Object.assign(this, {
       keyType,
-      valueType
+      valueType,
     });
   }
 }
@@ -266,5 +266,5 @@ module.exports = {
   DictType,
   NumericLiteral,
   TextLiteral,
-  BooleanLiteral
+  BooleanLiteral,
 };

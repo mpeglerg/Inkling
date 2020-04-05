@@ -1,4 +1,5 @@
 const {
+  Program,
   NumericLiteral,
   BooleanLiteral,
   TextLiteral,
@@ -12,6 +13,12 @@ const {
   TextType,
   VoidType,
 } = require("../semantics/builtins");
+
+Program.prototype.analyze = function (context) {
+  this.stmts.forEach((stmt) => {
+    stmt.analyze(context);
+  });
+};
 
 NumericLiteral.prototype.analyze = function (context) {
   this.type = NumType;
