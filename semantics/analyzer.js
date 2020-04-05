@@ -8,6 +8,7 @@ const {
   WhileLoop,
   FuncDecStmt,
   FuncObject,
+  Call,
   Parameter,
   ReturnStatement,
 } = require("../ast");
@@ -105,4 +106,27 @@ Parameter.prototype.analyze = function (context) {
 ReturnStatement.prototype.analyze = function (context) {
   this.returnValue.analyze(context);
   context.assertInFunction("Return statement not in function");
+};
+
+Call.prototype.analyze = function (context) {
+  this.id.analyze(context);
+  this.args.forEach((arg) => arg.analyze(context));
+  this.type = this.id.ref.type;
+  context.assertIsFunction(this.id.ref);
+  if (this.args.length !== this.id.ref.params.length) {
+    throw new Error("Incorrect number of arguments");
+  }
+  this.args.forEach((a, i) => {
+    const paramType = this.id.ref.params[i].type;
+    if (check.isCollectionType(paramType)) {
+      if (
+        a.expression.type.constructor !== paramType.constructor &&
+        paramType !== "void"
+      ) {
+        throw new Error("Argument and parameter types do not match");
+      }
+    } else if (a.expression.type !== paramType && paramType !== "void") {
+      throw new Error("Argument and parameter types do not match");
+    }
+  });
 };
