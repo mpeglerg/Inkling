@@ -33,54 +33,51 @@ class Context {
       parent,
       currentFunction,
       inLoop,
-      locals: new Map(),
-    })
+      declarations: Object.create(null),
+      typeMap: Object.create(null),
+    });
   }
 
   createChildContextForFunctionBody(currentFunction) {
-    // When entering a new function, we're not in a loop anymore
-    return new Context({
-      parent: this,
-      currentFunction,
-      inLoop: false,
-    })
+    return new Context({ parent: this, currentFunction, inLoop: false });
   }
 
   createChildContextForLoop() {
-    // When entering a loop body, just set the inLoop field, retain others
     return new Context({
       parent: this,
       currentFunction: this.currentFunction,
       inLoop: true,
-    })
+    });
   }
 
   createChildContextForBlock() {
-    // For a block, we have to retain both the function and loop settings.
     return new Context({
       parent: this,
       currentFunction: this.currentFunction,
       inLoop: this.inLoop,
-    })
+    });
   }
 
-  // Adds a declaration to this context.
-  add(declaration) {
-    if (this.locals.has(declaration.id)) {
-      throw new Error(`${declaration.id} already declared in this scope`)
+  add(entity, id) {
+    if ((id || entity.id) in this.declarations) {
+      throw new Error(`${id} already declared in this scope`);
     }
-    this.locals.set(declaration.id, declaration)
+    this.declarations[id || entity.id] = entity;
   }
 
-  // Returns the entity bound to the given identifier, starting from this
-  // context and searching "outward" through enclosing contexts if necessary.
-  lookup(id) {
+  lookupValue(id) {
     for (let context = this; context !== null; context = context.parent) {
-      if (context.locals.has(id)) {
-        return context.locals.get(id)
+      if (id in context.declarations) {
+        return context.declarations[id];
       }
     }
-    throw new Error(`Identifier ${id} has not been declared`)
+    throw new Error(`Identifier ${id} has not been declared`);
+  }
+
+  assertInFunction(message) {
+    if (!this.currentFunction) {
+      throw new Error(message);
+    }
   }
 }
 
