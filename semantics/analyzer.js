@@ -99,5 +99,10 @@ FuncObject.prototype.analyze = function (context) {
   }
 };
 
-Parameter.prototype.analyze = function (context) {};
-ReturnStatement.prototype.analyze = function (context) {};
+Parameter.prototype.analyze = function (context) {
+  context.add(this);
+};
+ReturnStatement.prototype.analyze = function (context) {
+  this.returnValue.analyze(context);
+  context.assertInFunction("Return statement not in function");
+};
