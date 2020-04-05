@@ -31,9 +31,18 @@ class Context {
 
   add(entity, id) {
     if ((id || entity.id) in this.declarations) {
-      throw new Error(`Identifier already declared in this scope`);
+      throw new Error(`${id} already declared in this scope`);
     }
     this.declarations[id || entity.id] = entity;
+  }
+
+  lookupValue(id) {
+    for (let context = this; context !== null; context = context.parent) {
+      if (id in context.declarations) {
+        return context.declarations[id];
+      }
+    }
+    throw new Error(`Identifier ${id} has not been declared`);
   }
 
   assertInFunction(message) {
