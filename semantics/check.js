@@ -1,55 +1,57 @@
-const util = require("util");
+const util = require('util')
 const {
   ListType,
   SetType,
   DictType,
   FuncDecStmt,
-  IdentifierExpression
-} = require("../ast");
-const { NumType, TextType, BoolType, NilType } = require("./builtins");
+  IdentifierExpression,
+} = require('../ast')
+const {
+  NumType, TextType, BoolType, NilType,
+} = require('./builtins')
 
 function doCheck(condition, message) {
   if (!condition) {
-    throw new Error(message);
+    throw new Error(message)
   }
 }
 
 module.exports = {
   // Is this type an array type?
   isListType(type) {
-    doCheck(type.constructor === ListType, "Not an list type"); // modified
+    doCheck(type.constructor === ListType, 'Not an list type') // modified
   },
 
   isSetType(type) {
-    doCheck(type.constructor === SetType, "Not an list type"); // modified
+    doCheck(type.constructor === SetType, 'Not an list type') // modified
   },
 
   isDictType(type) {
-    doCheck(type.constructor === DictType, "Not a record type");
+    doCheck(type.constructor === DictType, 'Not a record type')
   },
 
   // Is the type of this expression an array type?
   isList(expression) {
-    doCheck(expression.type.constructor === ListType, "Not a list"); // modified
+    doCheck(expression.type.constructor === ListType, 'Not a list') // modified
   },
 
   isNum(expression) {
-    doCheck(expression.type === NumType, "Not a number"); // modified
+    doCheck(expression.type === NumType, 'Not a number') // modified
   },
 
   mustNotHaveAType(expression) {
-    doCheck(!expression.type, "Expression must not have a type");
+    doCheck(!expression.type, 'Expression must not have a type')
   },
 
   isIntegerOrString(expression) {
     doCheck(
       expression.type === NumType || expression.type === TextType,
-      "Not an integer or string"
-    );
+      'Not an integer or string',
+    )
   },
 
   isFunction(value) {
-    doCheck(value.constructor === FuncDecStmt, "Not a function"); // modified
+    doCheck(value.constructor === FuncDecStmt, 'Not a function') // modified
   },
 
   // Are two types exactly the same?
@@ -86,13 +88,13 @@ module.exports = {
   legalArguments(args, params) {
     doCheck(
       args.length === params.length,
-      `Expected ${params.length} args in call, got ${args.length}`
-    );
-    args.forEach((arg, i) => this.isAssignableTo(arg, params[i].type));
+      `Expected ${params.length} args in call, got ${args.length}`,
+    )
+    args.forEach((arg, i) => this.isAssignableTo(arg, params[i].type))
   },
 
   // If there is a cycle in types, they must go through a record
   noRecursiveTypeCyclesWithoutRecordTypes() {
     /* TODO - not looking forward to this one */
-  }
-};
+  },
+}
