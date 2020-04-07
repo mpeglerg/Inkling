@@ -8,29 +8,32 @@
 const parse = require('../../ast/parser')
 const analyze = require('../analyzer')
 
-// This is just enough to complete 100% analyzer coverage, but feels light to me.
 const program = String.raw`
-let
-  type Circle = {
-    x: int,
-    y: int,
-    color: string
+a is Num 5
+a is 7
+b is Text "hello this is some sample text"
+c is List<Text> ["this", "a", "list"]
+d is Dict<Num, Num> [5:6, 3:4]
+e is Set<Num> {1, 2, 3, 5, 6}
+e is {3, 5, 6}
+
+f is Bool True
+g is Num 3
+if (f) {
+  display(a)
+} else {
+  display(g + a)
+}
+
+function f (h is Num, i is Num) {
+  j = 0
+  while (j < 5) {
+    display pow(j^(pow(3^j))
   }
-  type list = array of string
-  var two := successor(1) /* Test forward use, yay */
-  var c: Circle := Circle {y = 2, x = 5<3&2<>1, color = "blue"}
-  var dogs: list := list [3] of "woof"
-  function successor(x: int): int = x + 1
-in
-  dogs[1] := "Sparky";
-  if "a" < "b" then ();
-  if c = c then print("") else print("z");
-  while 1 do break;
-  c.x := if 1 then 2 else 3;
-  for i := 1 to (9; 10) do
-    print(concat(chr(-2), "xyz"));
-  let var x := 1 in end
-end
+  a is a + h + i
+  gimme a
+}
+j is Num f(3, 2)
 `
 
 describe('The semantic analyzer', () => {
