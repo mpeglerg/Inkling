@@ -15,24 +15,24 @@ const {
 const check = require('../semantics/check')
 const { NumType, BoolType, TextType } = require('../semantics/builtins')
 
-Program.prototype.analyze = function (context) {
+Program.prototype.analyze = (context) => {
   this.stmts.forEach((stmt) => {
     stmt.analyze(context)
   })
 }
 
-NumericLiteral.prototype.analyze = function (context) {
+NumericLiteral.prototype.analyze = (context) => {
   this.type = NumType
 }
-BooleanLiteral.prototype.analyze = function (context) {
+BooleanLiteral.prototype.analyze = (context) => {
   this.type = BoolType
 }
 
-TextLiteral.prototype.analyze = function (context) {
+TextLiteral.prototype.analyze = (context) => {
   this.type = BoolType
 }
 
-IfStmt.prototype.analyze = function (context) {
+IfStmt.prototype.analyze = (context) => {
   this.tests.forEach((test) => {
     test.analyze(context)
     check.isBoolean(test) // Add boolean checker to check file
@@ -47,7 +47,7 @@ IfStmt.prototype.analyze = function (context) {
   }
 }
 
-BinaryExpression.prototype.analyze = function (context) {
+BinaryExpression.prototype.analyze = (context) => {
   this.left.analyze(context)
   this.right.analyze(context)
   if (['<=', '>=', '<', '>'].includes(this.op)) {
@@ -71,18 +71,18 @@ BinaryExpression.prototype.analyze = function (context) {
     this.type = NumType
   }
 }
-WhileLoop.prototype.analyze = function (context) {
+WhileLoop.prototype.analyze = (context) => {
   this.condition.analyze(context)
   const bodyContext = context.createChildContextForLoop()
   this.body.forEach((s) => s.analyze(bodyContext))
 }
 
-FuncDecStmt.prototype.analyze = function (context) {
+FuncDecStmt.prototype.analyze = (context) => {
   context.add(this.function)
   this.function.analyze(context.createChildContextForFunctionBody(this))
 }
 
-FuncObject.prototype.analyze = function (context) {
+FuncObject.prototype.analyze = (context) => {
   this.params = this.params.map((p) => new Parameter(p.type, p.id))
   this.params.forEach((p) => p.analyze(context))
   this.body.forEach((s) => s.analyze(context))
@@ -100,15 +100,15 @@ FuncObject.prototype.analyze = function (context) {
   }
 }
 
-Parameter.prototype.analyze = function (context) {
+Parameter.prototype.analyze = (context) => {
   context.add(this)
 }
-ReturnStatement.prototype.analyze = function (context) {
+ReturnStatement.prototype.analyze = (context) => {
   this.returnValue.analyze(context)
   context.assertInFunction('Return statement not in function')
 }
 
-Call.prototype.analyze = function (context) {
+Call.prototype.analyze = (context) => {
   this.id.analyze(context)
   this.args.forEach((arg) => arg.analyze(context))
   this.type = this.id.ref.type
