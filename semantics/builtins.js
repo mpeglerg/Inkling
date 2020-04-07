@@ -71,11 +71,13 @@ const setFunctions = [
 // TODO: keyType and valueType are made up, may be something we need to add for these functions
 const dictFunctions = [
   // TODO: add(key, value)
-  new FuncDecStmt('add', [new Param('key', this.keyType), new Param('value', this.valueType)], DictType),
+  new FuncDecStmt('add', [new Param('key', this.keyType), new Param('value', this.valueType)],
+    DictType),
   // TODO: remove(key)
   new FuncDecStmt('remove', [new Param('key', this.keyType)], DictType),
   // TODO: update(key, value)
-  new FuncDecStmt('update', [new Param('key', this.keyType), new Param('value', this.valueType)], DictType),
+  new FuncDecStmt('update', [new Param('key', this.keyType), new Param('value', this.valueType)],
+    DictType),
   // TODO: getValue(key)
   new FuncDecStmt('getValue', [new Param('key', this.keyType)], this.valueType),
   // TODO: keys()
@@ -85,7 +87,9 @@ const dictFunctions = [
   // TODO: items()
 ]
 
-const functions = [standardFunctions, stringFunctions, mathFunctions, listFunctions, setFunctions, dictFunctions]
+const functions = [
+  standardFunctions, stringFunctions, mathFunctions, listFunctions, setFunctions, dictFunctions,
+]
 
 functions.forEach((func) => {
   func.forEach((f) => {
