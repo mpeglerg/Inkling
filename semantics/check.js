@@ -5,6 +5,7 @@ const {
   DictType,
   FuncDecStmt,
   IdentifierExpression,
+  VarDeclaration,
 } = require('../ast')
 const {
   NumType, TextType, BoolType, NilType,

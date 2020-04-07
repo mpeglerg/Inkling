@@ -1,5 +1,7 @@
 const {
   Program,
+  Assignment,
+  VarDeclaration,
   NumericLiteral,
   BooleanLiteral,
   TextLiteral,
@@ -9,7 +11,9 @@ const {
   FuncDecStmt,
   FuncObject,
   Call,
-  Parameter,
+  Param,
+  DictExpression,
+  DictType,
   ReturnStatement,
 } = require('../ast')
 const check = require('../semantics/check')
@@ -19,6 +23,17 @@ Program.prototype.analyze = (context) => {
   this.stmts.forEach((stmt) => {
     stmt.analyze(context)
   })
+}
+
+// design decisions need to be made for this
+VarDeclaration.prototype.analyze = (context) => {
+
+}
+
+Assignment.prototype.analyze = (context) => {
+  context.lookupValue(this.id) // perhaps this should be this.id.analyze(context), unsure
+  check.expressionsHaveTheSameType(this.id, this.exp)
+  check.isNotReadOnly(this.id)
 }
 
 NumericLiteral.prototype.analyze = (context) => {
@@ -83,7 +98,7 @@ FuncDecStmt.prototype.analyze = (context) => {
 }
 
 FuncObject.prototype.analyze = (context) => {
-  this.params = this.params.map((p) => new Parameter(p.type, p.id))
+  this.params = this.params.map((p) => new Param(p.type, p.id))
   this.params.forEach((p) => p.analyze(context))
   this.body.forEach((s) => s.analyze(context))
 
@@ -100,12 +115,17 @@ FuncObject.prototype.analyze = (context) => {
   }
 }
 
-Parameter.prototype.analyze = (context) => {
+Param.prototype.analyze = (context) => {
   context.add(this)
 }
+
 ReturnStatement.prototype.analyze = (context) => {
   this.returnValue.analyze(context)
   context.assertInFunction('Return statement not in function')
+}
+
+DictExpression.prototype.analyze = (context) => {
+
 }
 
 Call.prototype.analyze = (context) => {
@@ -123,10 +143,10 @@ Call.prototype.analyze = (context) => {
         a.expression.type.constructor !== paramType.constructor
         && paramType !== 'void'
       ) {
-        throw new Error('Argument and parameter types do not match')
+        throw new Error('Argument and Param types do not match')
       }
     } else if (a.expression.type !== paramType && paramType !== 'void') {
-      throw new Error('Argument and parameter types do not match')
+      throw new Error('Argument and Param types do not match')
     }
   })
 }

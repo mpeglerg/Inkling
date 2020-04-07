@@ -13,7 +13,7 @@ a is Num 5
 a is 7
 b is Text "hello this is some sample text"
 c is List<Text> ["this", "a", "list"]
-d is Dict<Num, Num> [5 : 6, 3 : 4,]
+d is Dict<Num, Num> [5:6, 3:4]
 e is Set<Num> {1, 2, 3, 5, 6}
 e is {3, 5, 6}
 
