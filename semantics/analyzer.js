@@ -13,7 +13,9 @@ const {
   Call,
   Param,
   DictExpression,
+  SetType,
   DictType,
+  ListType,
   ReturnStatement,
   IdentifierExpression,
 } = require("../ast");
@@ -69,7 +71,7 @@ BinaryExpression.prototype.analyze = (context) => {
     check.isNum(this.right);
     this.type = BoolType;
   } else if (["!=", "=="].includes(this.op)) {
-    check.sameType(this.left.type, this.right.type);
+    check.expressionsHaveTheSameType(this.left.type, this.right.type);
     this.type = BoolType;
   } else if (["and", "or"].includes(this.op)) {
     check.isBoolean(this.left);
@@ -142,7 +144,7 @@ DictExpression.prototype.analyze = (context) => {
   }
 };
 
-ListExpression.prototype.analyze = () => {
+ListExpression.prototype.analyze = (context) => {
   this.members.forEach((m) => m.analyze(context));
   if (this.members.length) {
     this.type = new ListType(this.members[0].type);
@@ -155,6 +157,15 @@ ListExpression.prototype.analyze = () => {
   }
 };
 
+SetExpression.prototype.analyze = (context) => {
+  this.members.forEach((m) => m.analyze(context));
+  if (this.members.length) {
+    this.type = new SetType(this.members[0].type);
+    for (let i = 1; i < this.members.length; i += 1) {
+      check.sameType(this.members[i].type, this.type.memberType);
+    }
+  }
+};
 Call.prototype.analyze = (context) => {
   this.id.analyze(context);
   this.args.forEach((arg) => arg.analyze(context));
