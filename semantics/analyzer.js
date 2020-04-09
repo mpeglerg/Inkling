@@ -36,13 +36,16 @@ Assignment.prototype.analyze = (context) => {
   check.isNotReadOnly(this.id)
 }
 
+// eslint-disable-next-line no-unused-vars
 NumericLiteral.prototype.analyze = (context) => {
   this.type = NumType
 }
+// eslint-disable-next-line no-unused-vars
 BooleanLiteral.prototype.analyze = (context) => {
   this.type = BoolType
 }
 
+// eslint-disable-next-line no-unused-vars
 TextLiteral.prototype.analyze = (context) => {
   this.type = BoolType
 }

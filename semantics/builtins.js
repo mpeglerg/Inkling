@@ -13,11 +13,7 @@ const Text = new PrimitiveType('text')
 
 const standardFunctions = [
   new FuncDecStmt('display', [new Param('s', Text)], 'Void'),
-  new FuncDecStmt('length', [new Param('s', Text)], 'Void'),
-  // no idea if we can overload like this, if we can't it's gonna get messy
-  new FuncDecStmt('length', [new Param('s', ListType)], Num),
-  new FuncDecStmt('length', [new Param('s', SetType)], Num),
-  new FuncDecStmt('length', [new Param('s', DictType)], Num),
+  new FuncDecStmt('length', [], Num),
   new FuncDecStmt('exit', [new Param('code', Num)], Num),
 ]
 
