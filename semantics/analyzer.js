@@ -29,7 +29,10 @@ Program.prototype.analyze = (context) => {
 };
 
 // design decisions need to be made for this
-VarDeclaration.prototype.analyze = (context) => {};
+VarDeclaration.prototype.analyze = (context) => {
+  const a = new Assignment(this.id, this.exp);
+  a.analyze(context);
+};
 
 Assignment.prototype.analyze = (context) => {
   context.lookupValue(this.id); // perhaps this should be this.id.analyze(context), unsure
