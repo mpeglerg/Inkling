@@ -31,32 +31,42 @@ module.exports = {
     doCheck(type.constructor === DictType, 'Not a dict type')
   },
 
+  isBoolType(type) {
+    doCheck(type.constructor === BoolType, 'Not a bool type')
+  },
+
   // Is the type of this expression an array type?
   isList(expression) {
     doCheck(expression.type.constructor === ListType, 'Not a list') // modified
   },
 
   isNum(expression) {
-    doCheck(expression.type === NumType, 'Not a num') // modified
+    doCheck(expression.type.constructor === NumType, 'Not a num') // modified
+  },
+
+  isBool(expression) {
+    doCheck(expression.type.constructor === BoolType, 'Not a bool')
+  },
+
+  isText(expression) {
+    doCheck(expression.type.constructor === TextType, 'Not a text')
   },
 
   mustNotHaveAType(expression) {
     doCheck(!expression.type, 'Expression must not have a type')
   },
 
-  isNumOrText(expression) {
-    doCheck(
-      expression.type === NumType || expression.type === NumType,
-      'Not an integer or string',
-    )
-  },
-
   isFunction(value) {
     doCheck(value.constructor === FuncDecStmt, 'Not a function') // modified
   },
 
+  isNumOrText(expression) {
+    doCheck(expression.type.constructor === NumType || expression.type.constructor === TextType,
+      'Cannot apply \'+ \' to types that are not num or text')
+  },
+
   // Are two types exactly the same?
-  expressionsHaveSameType(e1, e2) {
+  expressionsHaveTheSameType(e1, e2) {
     doCheck(e1.type === e2.type, 'Types must match exactly')
   },
 
