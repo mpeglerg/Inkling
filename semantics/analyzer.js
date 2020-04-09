@@ -65,8 +65,8 @@ BinaryExpression.prototype.analyze = (context) => {
   this.left.analyze(context);
   this.right.analyze(context);
   if (["<=", ">=", "<", ">"].includes(this.op)) {
-    check.isNumber(this.left);
-    check.isNumber(this.right);
+    check.isNum(this.left);
+    check.isNum(this.right);
     this.type = BoolType;
   } else if (["!=", "=="].includes(this.op)) {
     check.sameType(this.left.type, this.right.type);
@@ -148,5 +148,6 @@ Call.prototype.analyze = (context) => {
   });
 };
 IdentifierExpression.prototype.analyze = (context) => {
-  console.log(context);
+  this.ref = context.lookupValue(this.id);
+  this.type = this.ref.type;
 };
