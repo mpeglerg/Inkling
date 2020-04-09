@@ -222,7 +222,7 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   boollit(v) {
     return new Literal(v.sourceString)
   },
-  nonelit(none){
+  nonelit(none) {
     return new None()
   },
   // eslint-disable-next-line no-underscore-dangle

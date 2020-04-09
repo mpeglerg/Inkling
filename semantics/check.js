@@ -8,7 +8,7 @@ const {
   VarDeclaration,
 } = require('../ast')
 const {
-  NumType, TextType, BoolType, NoneType
+  NumType, TextType, BoolType, NoneType,
 } = require('./builtins')
 
 function doCheck(condition, message) {
@@ -47,8 +47,8 @@ module.exports = {
   isNumOrText(expression) {
     doCheck(
       expression.type === NumType || expression.type === NumType,
-      'Not an integer or string'
-    );
+      'Not an integer or string',
+    )
   },
 
   isFunction(value) {
@@ -66,9 +66,9 @@ module.exports = {
     doCheck(
       expression.type === type || expression.type === NoneType,
       `Expression of type ${util.format(
-        expression.type
-      )} not compatible with type ${util.format(type)}`
-    );
+        expression.type,
+      )} not compatible with type ${util.format(type)}`,
+    )
   },
 
   isNotReadOnly(lvalue) {

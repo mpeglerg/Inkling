@@ -6,7 +6,9 @@
  *   const Context = require('./semantics/context');
  */
 
-const { standardFunctions, mathFunctions, stringFunctions, NumType, TextType, BoolType, NoneType, } = require('./builtins');
+const {
+  standardFunctions, mathFunctions, stringFunctions, NumType, TextType, BoolType, NoneType,
+} = require('./builtins')
 
 require('./analyzer')
 
@@ -81,7 +83,7 @@ class Context {
 
 Context.INITIAL = new Context();
 [NumType, TextType, BoolType, NoneType, ...standardFunctions, ...mathFunctions, ...stringFunctions].forEach((entity) => {
-  Context.INITIAL.add(entity);
-});
+  Context.INITIAL.add(entity)
+})
 
 module.exports = Context
