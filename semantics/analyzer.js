@@ -18,7 +18,7 @@ const {
   IdentifierExpression,
 } = require('../ast')
 const check = require('../semantics/check')
-const { NumType, BoolType, TextType } = require('../semantics/builtins')
+const { NumType, BoolType, TextType, NoneType } = require('../semantics/builtins')
 
 Program.prototype.analyze = (context) => {
   this.stmts.forEach((stmt) => {

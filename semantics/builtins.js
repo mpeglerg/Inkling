@@ -73,10 +73,10 @@ functions.forEach((func) => {
 });
 
 module.exports = {
-  Numeric,
-  Text,
-  Boolean,
-  Void,
+  NumType,
+  TextType,
+  BoolType,
+  NoneType,
   standardFunctions,
   stringFunctions,
   mathFunctions,
