@@ -8,7 +8,7 @@ const {
   VarDeclaration,
 } = require('../ast')
 const {
-  NumType, TextType, BoolType, NoneType
+  NumType, TextType, BoolType, NoneType,
 } = require('./builtins')
 
 function doCheck(condition, message) {
@@ -28,7 +28,7 @@ module.exports = {
   },
 
   isDictType(type) {
-    doCheck(type.constructor === DictType, 'Not a record type')
+    doCheck(type.constructor === DictType, 'Not a dict type')
   },
 
   // Is the type of this expression an array type?
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   isNum(expression) {
-    doCheck(expression.type === NumType, 'Not a number') // modified
+    doCheck(expression.type === NumType, 'Not a num') // modified
   },
 
   mustNotHaveAType(expression) {
@@ -47,8 +47,8 @@ module.exports = {
   isNumOrText(expression) {
     doCheck(
       expression.type === NumType || expression.type === NumType,
-      'Not an integer or string'
-    );
+      'Not an integer or string',
+    )
   },
 
   isFunction(value) {
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   // Are two types exactly the same?
-  expressionsHaveTheSameType(e1, e2) {
+  expressionsHaveSameType(e1, e2) {
     doCheck(e1.type === e2.type, 'Types must match exactly')
   },
 
@@ -66,9 +66,9 @@ module.exports = {
     doCheck(
       expression.type === type || expression.type === NoneType,
       `Expression of type ${util.format(
-        expression.type
-      )} not compatible with type ${util.format(type)}`
-    );
+        expression.type,
+      )} not compatible with type ${util.format(type)}`,
+    )
   },
 
   isNotReadOnly(lvalue) {

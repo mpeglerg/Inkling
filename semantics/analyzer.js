@@ -13,9 +13,7 @@ const {
   Call,
   Param,
   DictExpression,
-  SetType,
   DictType,
-  ListType,
   ReturnStatement,
   IdentifierExpression,
 } = require("../ast");
