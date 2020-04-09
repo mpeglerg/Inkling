@@ -20,7 +20,7 @@ const {
   SetType,
 } = require('../ast')
 const check = require('../semantics/check')
-const { NumType, BoolType, TextType } = require('../semantics/builtins')
+const { NumType, BoolType, TextType, NoneType } = require('../semantics/builtins')
 
 Program.prototype.analyze = (context) => {
   this.stmts.forEach((stmt) => {
@@ -29,7 +29,10 @@ Program.prototype.analyze = (context) => {
 }
 
 // design decisions need to be made for this
-VarDeclaration.prototype.analyze = (context) => {}
+VarDeclaration.prototype.analyze = (context) => {
+  const a = new Assignment(this.id, this.exp)
+  a.analyze(context)
+}
 
 Assignment.prototype.analyze = (context) => {
   context.lookupValue(this.id) // perhaps this should be this.id.analyze(context), unsure
