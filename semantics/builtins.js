@@ -7,41 +7,40 @@ const {
   DictType,
 } = require('../ast')
 
-const Num = new PrimitiveType('num')
-const Bool = new PrimitiveType('bool')
-const Text = new PrimitiveType('text')
+const NumType = new PrimitiveType('num')
+const TextType = new PrimitiveType('text')
+const BoolType = new PrimitiveType('bool')
+const NoneType = new PrimitiveType('none')
 
 const standardFunctions = [
-  new FuncDecStmt('display', [new Param('s', Text)], 'Void'),
-  new FuncDecStmt('length', [], Num),
-  new FuncDecStmt('exit', [new Param('code', Num)], Num),
+  new FuncDecStmt('display', [new Param('s', TextType)]),
+  new FuncDecStmt('length', [new Param('s', TextType)], NumType),
+  // no idea if we can overload like this, if we can't it's gonna get messy
+  new FuncDecStmt('length', [new Param('s', ListType)], NumType),
+  new FuncDecStmt('length', [new Param('s', SetType)], NumType),
+  new FuncDecStmt('length', [new Param('s', DictType)], NumType),
+  new FuncDecStmt('exit', [new Param('code', NumType)], NumType),
 ]
 
 const stringFunctions = [
   new FuncDecStmt(
     'slice',
     [
-      new Param('s', Text),
-      new Param('begin', Num),
-      new Param('end', Num),
+      new Param('s', TextType),
+      new Param('begin', NumType),
+      new Param('end', NumType),
     ],
-    Text,
+    TextType,
   ),
-  // new FuncDecStmt(
-  //   'concat', // feels very old, maybe just use '+' for string concat maybe use for arrays
-  //   [new Param('first', Text), new Param('second', Text)],
-  //   Text,
-  // ),
-  // new Func('not', [new Param('x', IntType)], IntType),
-  new FuncDecStmt('charAt', [new Param('s', Num)], Text),
+  new FuncDecStmt('charAt', [new Param('s', NumType)], TextType),
 ]
 
 const mathFunctions = [
-  new FuncDecStmt('abs', [new Param('n', Num)], Num),
-  new FuncDecStmt('sqrt', [new Param('n', Num)], Num),
+  new FuncDecStmt('abs', [new Param('n', NumType)], NumType),
+  new FuncDecStmt('sqrt', [new Param('n', NumType)], NumType),
   // pi here according to casper? hmmm
-  new FuncDecStmt('random', [new Param('start', Num), new Param('end', Num)], Num),
-  new FuncDecStmt('pow', [new Param('base', Num), new Param('power', Num)], Num),
+  new FuncDecStmt('random', [new Param('start', NumType), new Param('end', NumType)], NumType),
+  new FuncDecStmt('pow', [new Param('base', NumType), new Param('power', NumType)], NumType),
 ]
 
 const listFunctions = [
@@ -51,9 +50,9 @@ const listFunctions = [
   // TODO: prepend(value)
   new FuncDecStmt('prepend', [new Param('value', this.type)], ListType),
   // TODO: insert(index, value)
-  new FuncDecStmt('insert', [new Param('index', Num), new Param('value', this.type)], ListType),
+  new FuncDecStmt('insert', [new Param('index', NumType), new Param('value', this.type)], ListType),
   // TODO: remove(index)
-  new FuncDecStmt('remove', [new Param('index', Num)], ListType),
+  new FuncDecStmt('remove', [new Param('index', NumType)], ListType),
 ]
 
 // perhaps need/want more functions, this is just based on what casper was planning on implementing
@@ -61,7 +60,7 @@ const setFunctions = [
   // TODO: add(value)
   new FuncDecStmt('add', [new Param('value', this.type)], SetType),
   // TODO: remove(index)
-  new FuncDecStmt('remove', [new Param('index', Num)], SetType),
+  new FuncDecStmt('remove', [new Param('index', NumType)], SetType),
 ]
 
 // TODO: keyType and valueType are made up, may be something we need to add for these functions
@@ -95,9 +94,9 @@ functions.forEach((func) => {
 })
 
 module.exports = {
-  Num,
-  Text,
-  Bool,
+  NumType,
+  TextType,
+  BoolType,
   standardFunctions,
   stringFunctions,
   mathFunctions,
