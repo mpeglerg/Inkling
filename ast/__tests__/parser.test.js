@@ -36,40 +36,48 @@ const {
   ListType,
   SetType,
   DictType,
-  NumericLiteral,
-  TextLiteral,
-  BooleanLiteral,
+  Literal,
+  None,
 } = require('../index')
 
 const fixture = {
-  stringDeclarations: [
+  textDeclarations: [
     String.raw`y is Text "Hello World!"
     `,
     new Program([
-      new VarDeclaration('y', false, 'Text', new TextLiteral('Hello World!')),
+      new VarDeclaration('y', false, 'Text', new Literal('Hello World!')),
     ]),
   ],
   constNumDeclarations: [
     String.raw`x is always Num 5
     `,
-    new Program([new VarDeclaration('x', true, 'Num', new NumericLiteral(5))]),
+    new Program([new VarDeclaration('x', true, 'Num', new Literal(5))]),
   ],
   boolTrueDeclarations: [
     String.raw`x is Bool true
     `,
     new Program([
-      new VarDeclaration('x', false, 'Bool', new BooleanLiteral('true')),
+      new VarDeclaration('x', false, 'Bool', new Literal('true')),
     ]),
   ],
   boolFalseDeclarations: [
     String.raw`x is Bool false
     `,
     new Program([
-      new VarDeclaration('x', false, 'Bool', new BooleanLiteral('false')),
+      new VarDeclaration('x', false, 'Bool', new Literal('false')),
+    ]),
+  ],
+  noneDeclarations: [
+    String.raw`x is Num none
+    x is 5
+    `,
+    new Program([
+      new VarDeclaration('x', false, 'Num', new None()),
+      new Assignment(new IdentifierExpression('x'), new Literal(5)),
     ]),
   ],
   dictDeclarations: [
-    String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia":20}
+    String.raw`ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia": 20}
     `,
     new Program([
       new VarDeclaration(
@@ -77,8 +85,8 @@ const fixture = {
         false,
         new DictType('Text', 'Num'),
         new DictExpression([
-          new KeyValuePair(new TextLiteral('Sam'), new NumericLiteral(21)),
-          new KeyValuePair(new TextLiteral('Talia'), new NumericLiteral(20)),
+          new KeyValuePair(new Literal('Sam'), new Literal(21)),
+          new KeyValuePair(new Literal('Talia'), new Literal(20)),
         ]),
       ),
     ]),
@@ -91,7 +99,7 @@ const fixture = {
         'aSetOfNums',
         false,
         new SetType('Num'),
-        new SetExpression([new NumericLiteral(1), new NumericLiteral(2)]),
+        new SetExpression([new Literal(1), new Literal(2)]),
       ),
     ]),
   ],
@@ -105,9 +113,9 @@ const fixture = {
         false,
         new ListType('Text'),
         new ListExpression([
-          new TextLiteral('this'),
-          new TextLiteral('a'),
-          new TextLiteral('list'),
+          new Literal('this'),
+          new Literal('a'),
+          new Literal('list'),
         ]),
       ),
     ]),
@@ -123,15 +131,15 @@ const fixture = {
       new ForLoop(
         'i',
         new ListExpression([
-          new NumericLiteral(1),
-          new NumericLiteral(2),
-          new NumericLiteral(3),
+          new Literal(1),
+          new Literal(2),
+          new Literal(3),
         ]),
         new Block([
           new Print(
             new BinaryExpression(
               '+',
-              new NumericLiteral(3),
+              new Literal(3),
               new IdentifierExpression('i'),
             ),
           ),
@@ -142,7 +150,7 @@ const fixture = {
   printing: [
     String.raw`display 5
     `,
-    new Program([new Print(new NumericLiteral(5))]),
+    new Program([new Print(new Literal(5))]),
   ],
 
   functions: [
@@ -179,7 +187,7 @@ const fixture = {
         'helloWorld',
         [],
         'Void',
-        new Block([new Print(new TextLiteral('Hello world!'))]),
+        new Block([new Print(new Literal('Hello world!'))]),
       ),
     ]),
   ],
@@ -216,12 +224,12 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration('i', false, 'Num', new NumericLiteral(10)),
+      new VarDeclaration('i', false, 'Num', new Literal(10)),
       new WhileLoop(
         new BinaryExpression(
           '>',
           new IdentifierExpression('i'),
-          new NumericLiteral(0),
+          new Literal(0),
         ),
         new Block([new PrefixExpression('--', new IdentifierExpression('i'))]),
       ),
@@ -264,17 +272,17 @@ const fixture = {
           '-',
           new BinaryExpression(
             '+',
-            new NumericLiteral(3),
+            new Literal(3),
             new BinaryExpression(
               '/',
-              new NumericLiteral(10),
-              new NumericLiteral(5),
+              new Literal(10),
+              new Literal(5),
             ),
           ),
           new BinaryExpression(
             '%',
-            new NumericLiteral(3),
-            new NumericLiteral(2),
+            new Literal(3),
+            new Literal(2),
           ),
         ),
       ),
@@ -289,7 +297,7 @@ const fixture = {
         'result',
         false,
         'Num',
-        new PowExp(new NumericLiteral(2), new NumericLiteral(3)),
+        new PowExp(new Literal(2), new Literal(3)),
       ),
     ]),
   ],
@@ -304,11 +312,11 @@ const fixture = {
         'Num',
         new BinaryExpression(
           '*',
-          new NumericLiteral(3),
+          new Literal(3),
           new BinaryExpression(
             '+',
-            new NumericLiteral(3),
-            new NumericLiteral(2),
+            new Literal(3),
+            new Literal(2),
           ),
         ),
       ),
@@ -327,25 +335,25 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
+      new VarDeclaration('x', false, 'Num', new Literal(6)),
       new IfStmt(
         [
           new BinaryExpression(
             '<',
             new IdentifierExpression('x'),
-            new NumericLiteral(10),
+            new Literal(10),
           ),
           new BinaryExpression(
             '<',
             new IdentifierExpression('x'),
-            new NumericLiteral(20),
+            new Literal(20),
           ),
         ],
         [
           new Block([new Print(new IdentifierExpression('x'))]),
-          new Block([new Print(new NumericLiteral(1))]),
+          new Block([new Print(new Literal(1))]),
         ],
-        new Block([new Print(new PrefixExpression('-', new NumericLiteral(1)))]),
+        new Block([new Print(new PrefixExpression('-', new Literal(1)))]),
       ),
     ]),
   ],
@@ -360,23 +368,23 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
+      new VarDeclaration('x', false, 'Num', new Literal(6)),
       new IfStmt(
         [
           new BinaryExpression(
             '<',
             new IdentifierExpression('x'),
-            new NumericLiteral(10),
+            new Literal(10),
           ),
           new BinaryExpression(
             '<',
             new IdentifierExpression('x'),
-            new NumericLiteral(20),
+            new Literal(20),
           ),
         ],
         [
           new Block([new Print(new IdentifierExpression('x'))]),
-          new Block([new Print(new NumericLiteral(1))]),
+          new Block([new Print(new Literal(1))]),
         ],
         null,
       ),
@@ -393,17 +401,17 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration('x', false, 'Num', new NumericLiteral(6)),
+      new VarDeclaration('x', false, 'Num', new Literal(6)),
       new IfStmt(
         [
           new BinaryExpression(
             '<',
             new IdentifierExpression('x'),
-            new NumericLiteral(10),
+            new Literal(10),
           ),
         ],
         [new Block([new Print(new IdentifierExpression('x'))])],
-        new Block([new Print(new PrefixExpression('-', new NumericLiteral(1)))]),
+        new Block([new Print(new PrefixExpression('-', new Literal(1)))]),
       ),
     ]),
   ],
@@ -433,7 +441,7 @@ const fixture = {
       new PostfixExpression(
         new IdentifierExpression(
           new Call(new IdentifierExpression('collatz'), [
-            new NumericLiteral(420),
+            new Literal(420),
           ]),
         ),
         '++',
@@ -449,10 +457,10 @@ const fixture = {
         new BinaryExpression(
           '<',
           new IdentifierExpression('x'),
-          new NumericLiteral(0),
+          new Literal(0),
         ),
-        new PrefixExpression('-', new NumericLiteral(1)),
-        new NumericLiteral(1),
+        new PrefixExpression('-', new Literal(1)),
+        new Literal(1),
       ),
     ]),
   ],
@@ -477,7 +485,7 @@ const fixture = {
       new IdentifierExpression(
         new SubscriptedVarExp(
           new IdentifierExpression('inkTeam'),
-          new NumericLiteral(420),
+          new Literal(420),
         ),
       ),
     ]),
@@ -487,7 +495,7 @@ const fixture = {
     String.raw`sam is "kewl"
     `,
     new Program([
-      new Assignment(new IdentifierExpression('sam'), new TextLiteral('kewl')),
+      new Assignment(new IdentifierExpression('sam'), new Literal('kewl')),
     ]),
   ],
 }

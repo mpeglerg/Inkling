@@ -6,9 +6,7 @@
  *   const Context = require('./semantics/context');
  */
 
-const {
-  standardFunctions, mathFunctions, stringFunctions, Numeric, Text, Void,
-} = require('./builtins')
+const { standardFunctions, mathFunctions, stringFunctions, NumType, TextType, BoolType, NoneType, } = require('./builtins');
 
 require('./analyzer')
 
@@ -39,11 +37,7 @@ class Context {
   }
 
   createChildContextForFunctionBody(currentFunction) {
-    return new Context({
-      parent: this,
-      currentFunction,
-      inLoop: false,
-    })
+    return new Context({ parent: this, currentFunction, inLoop: false })
   }
 
   createChildContextForLoop() {
@@ -86,10 +80,8 @@ class Context {
 }
 
 Context.INITIAL = new Context();
-[Numeric, Text, Void, ...standardFunctions, ...mathFunctions, ...stringFunctions].forEach(
-  (entity) => {
-    Context.INITIAL.add(entity)
-  },
-)
+[NumType, TextType, BoolType, NoneType, ...standardFunctions, ...mathFunctions, ...stringFunctions].forEach((entity) => {
+  Context.INITIAL.add(entity);
+});
 
 module.exports = Context
