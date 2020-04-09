@@ -232,19 +232,20 @@ class NumericLiteral {
   }
 }
 
-class TextLiteral {
-  constructor(value) {
-    this.value = value
-  }
+// Is this necessary???
+class None {
+
 }
 
-class BooleanLiteral {
+// Literals
+class Literal {
   constructor(value) {
     this.value = value
   }
 }
 
 module.exports = {
+  PrimitiveType,
   Program,
   Block,
   Assignment,
@@ -272,8 +273,6 @@ module.exports = {
   ListType,
   SetType,
   DictType,
-  NumericLiteral,
-  TextLiteral,
-  BooleanLiteral,
-  PrimitiveType,
+  Literal,
+  None,
 }
