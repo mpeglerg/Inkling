@@ -17,6 +17,7 @@ const program = String.raw`
     x is Num 5
     x is 10
     y is always Num 10
+    x is Num none
     textWithNewline is Text "there is a new line in \n this text!"
     textWithTab is Text "there is a new line in \t this text!"
     textWithSingleQuote is Text "there is a single quote in \' this text!"

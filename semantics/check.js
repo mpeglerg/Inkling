@@ -8,7 +8,7 @@ const {
   VarDeclaration,
 } = require('../ast')
 const {
-  NumType, TextType, BoolType,
+  NumType, TextType, BoolType, NoneType
 } = require('./builtins')
 
 function doCheck(condition, message) {
@@ -20,11 +20,11 @@ function doCheck(condition, message) {
 module.exports = {
   // Is this type an array type?
   isListType(type) {
-    doCheck(type.constructor === ListType, 'Not an list type') // modified
+    doCheck(type.constructor === ListType, 'Not a list type') // modified
   },
 
   isSetType(type) {
-    doCheck(type.constructor === SetType, 'Not an list type') // modified
+    doCheck(type.constructor === SetType, 'Not a list type') // modified
   },
 
   isDictType(type) {
@@ -44,11 +44,11 @@ module.exports = {
     doCheck(!expression.type, 'Expression must not have a type')
   },
 
-  isIntegerOrString(expression) {
+  isNumOrText(expression) {
     doCheck(
-      expression.type === NumType || expression.type === TextType,
-      'Not an integer or string',
-    )
+      expression.type === NumType || expression.type === NumType,
+      'Not an integer or string'
+    );
   },
 
   isFunction(value) {
@@ -61,13 +61,14 @@ module.exports = {
   },
 
   // Can we assign expression to a variable/param/field of type type?
+  // How the fuck do we handle none here????????
   isAssignableTo(expression, type) {
     doCheck(
-      expression.type === type,
-      `Expression of type ${util.format(expression.type)} not compatible with type ${util.format(
-        type,
-      )}`,
-    )
+      expression.type === type || expression.type === NoneType,
+      `Expression of type ${util.format(
+        expression.type
+      )} not compatible with type ${util.format(type)}`
+    );
   },
 
   isNotReadOnly(lvalue) {

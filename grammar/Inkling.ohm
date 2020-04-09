@@ -49,6 +49,7 @@ Inkling {
                 |  boollit
                 |  txtlit
                 |  numlit
+                |  nonelit
                 |  VarExp
                 |  id
                 |  "[" ListOf<Exp, ","> "]"                                 -- list
@@ -57,7 +58,7 @@ Inkling {
     KeyValue    =  Exp ":" Exp
     keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
-                |  "Bool " | "List<" | "Text " | "Set<" | "Void" | "concat" | "subtext")
+                |  "Bool " | "List<" | "Text " | "Set<" | "Void" | "concat" | "subtext" | "none")
     Type        =  (Num | Dict | Bool | List | Text | Set)
     Num         =  "Num"
     List        =  "List<" Type ">"
@@ -69,6 +70,7 @@ Inkling {
     numlit      =  digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
     boollit     =  "true" | "false"
     txtlit      =  "\"" (~"\\" ~"\"" ~newline ~"\t" any | escape)* "\""
+    nonelit     =  "none"
     escape      =  "\\" ("\"" | "\'" | "n" | "t")?                          -- escape
                 |  "\\u{" hexDigit+ "}"                                     -- hexDigit
     mulop       =  "*" | "/" | "%"

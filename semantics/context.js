@@ -6,11 +6,9 @@
  *   const Context = require('./semantics/context');
  */
 
-const {
-  standardFunctions, Numeric, Text, Void,
-} = require('./builtins')
+const { standardFunctions, NumType, TextType, BoolType, NoneType, } = require('./builtins');
 
-require('./analyzer')
+require('./analyzer');
 
 // When doing semantic analysis we pass around context objects.
 //
@@ -82,8 +80,8 @@ class Context {
 }
 
 Context.INITIAL = new Context();
-[Numeric, Text, Void, ...standardFunctions].forEach((entity) => {
-  Context.INITIAL.add(entity)
-})
+[NumType, TextType, BoolType, NoneType, ...standardFunctions].forEach(entity => {
+  Context.INITIAL.add(entity);
+});
 
-module.exports = Context
+module.exports = Context;

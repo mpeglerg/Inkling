@@ -1,3 +1,11 @@
+
+const { FuncDecStmt, Param, PrimitiveType } = require("../ast");
+
+const NumType = new PrimitiveType("num");
+const TextType = new PrimitiveType("text");
+const BoolType = new PrimitiveType("bool");
+const NoneType = new PrimitiveType("none");
+
 const {
   FuncDecStmt,
   Param,
