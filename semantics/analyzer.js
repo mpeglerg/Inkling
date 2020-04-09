@@ -80,8 +80,8 @@ BinaryExpression.prototype.analyze = (context) => {
     this.type = BoolType;
   } else if (this.op === "+") {
     check.sameType(this.left.type, this.right.type);
-    check.isNumberOrString(this.left);
-    check.isNumberOrString(this.right);
+    check.isNumOrText(this.left);
+    check.isNumOrText(this.right);
     this.type = this.left.type === NumType ? NumType : BoolType;
   } else {
     check.expressionsHaveTheSameType(this.left.type, this.right.type);
