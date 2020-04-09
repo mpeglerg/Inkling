@@ -2,6 +2,7 @@ const {
   Program,
   Assignment,
   VarDeclaration,
+  Literal,
   BinaryExpression,
   IfStmt,
   WhileLoop,
@@ -17,7 +18,6 @@ const {
   ListType,
   ReturnStatement,
   IdentifierExpression,
-  Literal,
 } = require('../ast')
 const check = require('../semantics/check')
 const {
@@ -42,7 +42,8 @@ Assignment.prototype.analyze = (context) => {
   check.isNotReadOnly(this.id)
 }
 
-Literal.prototype.analyze = () => {
+// eslint-disable-next-line no-unused-vars
+Literal.prototype.analyze = (context) => {
   if (typeof this.value === 'number') {
     this.type = NumType
   } else if (typeof this.value === 'boolean') {
@@ -57,9 +58,9 @@ Literal.prototype.analyze = () => {
 IfStmt.prototype.analyze = (context) => {
   this.tests.forEach((test) => {
     test.analyze(context)
-    check.isBoolean(test) // Add boolean checker to check file
+    check.isBool(test) // Add boolean checker to check file
   })
-  this.consequents.forEach((block) => {
+  this.consequence.forEach((block) => {
     const blockContext = context.createChildContextForBlock()
     block.forEach((statement) => statement.analyze(blockContext))
   })
@@ -80,11 +81,11 @@ BinaryExpression.prototype.analyze = (context) => {
     check.expressionsHaveTheSameType(this.left.type, this.right.type)
     this.type = BoolType
   } else if (['and', 'or'].includes(this.op)) {
-    check.isBoolean(this.left)
-    check.isBoolean(this.right)
+    check.isBool(this.left)
+    check.isBool(this.right)
     this.type = BoolType
   } else if (this.op === '+') {
-    check.sameType(this.left.type, this.right.type)
+    check.expressionsHaveTheSameType(this.left.type, this.right.type)
     check.isNumOrText(this.left)
     check.isNumOrText(this.right)
     this.type = this.left.type === NumType ? NumType : BoolType
@@ -168,7 +169,7 @@ SetExpression.prototype.analyze = (context) => {
   if (this.members.length) {
     this.type = new SetType(this.members[0].type)
     for (let i = 1; i < this.members.length; i += 1) {
-      check.sameType(this.members[i].type, this.type.memberType)
+      check.expressionsHaveTheSameType(this.members[i].type, this.type.memberType)
     }
   }
 }
@@ -176,13 +177,13 @@ Call.prototype.analyze = (context) => {
   this.id.analyze(context)
   this.args.forEach((arg) => arg.analyze(context))
   this.type = this.id.ref.type
-  context.assertIsFunction(this.id.ref)
+  context.isFunction(this.id.ref)
   if (this.args.length !== this.id.ref.params.length) {
     throw new Error('Incorrect number of arguments')
   }
   this.args.forEach((a, i) => {
     const paramType = this.id.ref.params[i].type
-    if (check.isCollectionType(paramType)) {
+    if (check.isListType(paramType)) {
       if (
         a.expression.type.constructor !== paramType.constructor
         && paramType !== 'void'
