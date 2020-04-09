@@ -28,7 +28,7 @@ module.exports = {
   },
 
   isDictType(type) {
-    doCheck(type.constructor === DictType, 'Not a record type')
+    doCheck(type.constructor === DictType, 'Not a dict type')
   },
 
   // Is the type of this expression an array type?
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   isNum(expression) {
-    doCheck(expression.type === NumType, 'Not a number') // modified
+    doCheck(expression.type === NumType, 'Not a num') // modified
   },
 
   mustNotHaveAType(expression) {
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   // Are two types exactly the same?
-  expressionsHaveTheSameType(e1, e2) {
+  expressionsHaveSameType(e1, e2) {
     doCheck(e1.type === e2.type, 'Types must match exactly')
   },
 
