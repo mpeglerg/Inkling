@@ -20,9 +20,14 @@ const {
   IdentifierExpression,
 } = require('../ast')
 const check = require('../semantics/check')
+const Context = require('./context')
 const {
   NumType, BoolType, TextType, NoneType,
 } = require('../semantics/builtins')
+
+module.exports = (exp) => {
+  exp.analyze(Context.INITIAL)
+}
 
 Program.prototype.analyze = (context) => {
   this.stmts.forEach((stmt) => {
