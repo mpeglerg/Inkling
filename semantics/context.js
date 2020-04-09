@@ -7,7 +7,7 @@
  */
 
 const {
-  standardFunctions, Numeric, Text, Void,
+  standardFunctions, mathFunctions, stringFunctions, Numeric, Text, Void,
 } = require('./builtins')
 
 require('./analyzer')
@@ -39,7 +39,11 @@ class Context {
   }
 
   createChildContextForFunctionBody(currentFunction) {
-    return new Context({ parent: this, currentFunction, inLoop: false })
+    return new Context({
+      parent: this,
+      currentFunction,
+      inLoop: false,
+    })
   }
 
   createChildContextForLoop() {
@@ -82,8 +86,10 @@ class Context {
 }
 
 Context.INITIAL = new Context();
-[Numeric, Text, Void, ...standardFunctions].forEach((entity) => {
-  Context.INITIAL.add(entity)
-})
+[Numeric, Text, Void, ...standardFunctions, ...mathFunctions, ...stringFunctions].forEach(
+  (entity) => {
+    Context.INITIAL.add(entity)
+  },
+)
 
 module.exports = Context
