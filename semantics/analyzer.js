@@ -27,13 +27,11 @@ Program.prototype.analyze = (context) => {
 }
 
 // design decisions need to be made for this
-VarDeclaration.prototype.analyze = (context) => {
-
-}
+VarDeclaration.prototype.analyze = (context) => {}
 
 Assignment.prototype.analyze = (context) => {
   context.lookupValue(this.id) // perhaps this should be this.id.analyze(context), unsure
-  check.expressionsHaveSameType(this.id, this.exp)
+  check.expressionsHaveTheSameType(this.id, this.exp)
   check.isNotReadOnly(this.id)
 }
 
@@ -53,7 +51,7 @@ IfStmt.prototype.analyze = (context) => {
     test.analyze(context)
     check.isBoolean(test) // Add boolean checker to check file
   })
-  this.consequence.forEach((block) => {
+  this.consequents.forEach((block) => {
     const blockContext = context.createChildContextForBlock()
     block.forEach((statement) => statement.analyze(blockContext))
   })
@@ -67,23 +65,23 @@ BinaryExpression.prototype.analyze = (context) => {
   this.left.analyze(context)
   this.right.analyze(context)
   if (['<=', '>=', '<', '>'].includes(this.op)) {
-    check.isNumber(this.left)
-    check.isNumber(this.right)
+    check.isNum(this.left)
+    check.isNum(this.right)
     this.type = BoolType
   } else if (['!=', '=='].includes(this.op)) {
-    check.expressionsHaveSameType(this.left.type, this.right.type)
+    check.expressionsHaveTheSameType(this.left.type, this.right.type)
     this.type = BoolType
   } else if (['and', 'or'].includes(this.op)) {
     check.isBoolean(this.left)
     check.isBoolean(this.right)
     this.type = BoolType
   } else if (this.op === '+') {
-    check.expressionsHaveSameType(this.left.type, this.right.type)
-    check.isNumOrText(this.left)
-    check.isNumOrText(this.right)
+    check.sameType(this.left.type, this.right.type)
+    check.isNumberOrString(this.left)
+    check.isNumberOrString(this.right)
     this.type = this.left.type === NumType ? NumType : BoolType
   } else {
-    check.expressionsHaveSameType(this.left.type, this.right.type)
+    check.expressionsHaveTheSameType(this.left.type, this.right.type)
     this.type = NumType
   }
 }
@@ -126,9 +124,46 @@ ReturnStatement.prototype.analyze = (context) => {
 }
 
 DictExpression.prototype.analyze = (context) => {
-
+  this.exp.forEach((e) => {
+    e.key.analyze(context)
+    e.value.analyze(context)
+  })
+  if (this.exp.length) {
+    const keyType = this.exp[0].key.type
+    const valueType = this.exp[0].value.type
+    this.type = new DictType(keyType, valueType)
+    for (let i = 1; i < this.exp.length; i += 1) {
+      check.expressionsHaveTheSameType(this.exp[i].key.type, this.type.keyType)
+      check.expressionsHaveTheSameType(
+        this.exp[i].value.type,
+        this.type.valueType,
+      )
+    }
+  }
 }
 
+ListExpression.prototype.analyze = (context) => {
+  this.members.forEach((m) => m.analyze(context))
+  if (this.members.length) {
+    this.type = new ListType(this.members[0].type)
+    for (let i = 1; i < this.members.length; i += 1) {
+      check.expressionsHaveTheSameType(
+        this.members[i].type,
+        this.type.memberType,
+      )
+    }
+  }
+}
+
+SetExpression.prototype.analyze = (context) => {
+  this.members.forEach((m) => m.analyze(context))
+  if (this.members.length) {
+    this.type = new SetType(this.members[0].type)
+    for (let i = 1; i < this.members.length; i += 1) {
+      check.sameType(this.members[i].type, this.type.memberType)
+    }
+  }
+}
 Call.prototype.analyze = (context) => {
   this.id.analyze(context)
   this.args.forEach((arg) => arg.analyze(context))
@@ -139,10 +174,10 @@ Call.prototype.analyze = (context) => {
   }
   this.args.forEach((a, i) => {
     const paramType = this.id.ref.params[i].type
-    if (check.isListType(paramType)) {
+    if (check.isCollectionType(paramType)) {
       if (
-        a.expression.type.constructor !== paramType.constructor
-        && paramType !== 'void'
+        a.expression.type.constructor !== paramType.constructor &&
+        paramType !== 'void'
       ) {
         throw new Error('Argument and Param types do not match')
       }
@@ -152,5 +187,6 @@ Call.prototype.analyze = (context) => {
   })
 }
 IdentifierExpression.prototype.analyze = (context) => {
-  console.log(context)
+  this.ref = context.lookupValue(this.id)
+  this.type = this.ref.type
 }
