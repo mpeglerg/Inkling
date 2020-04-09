@@ -225,13 +225,6 @@ class PrimitiveType {
   }
 }
 
-// Literals
-class NumericLiteral {
-  constructor(value) {
-    this.value = value
-  }
-}
-
 // Is this necessary???
 class None {
 

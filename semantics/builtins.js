@@ -1,11 +1,3 @@
-
-const { FuncDecStmt, Param, PrimitiveType } = require("../ast");
-
-const NumType = new PrimitiveType("num");
-const TextType = new PrimitiveType("text");
-const BoolType = new PrimitiveType("bool");
-const NoneType = new PrimitiveType("none");
-
 const {
   FuncDecStmt,
   Param,
@@ -13,64 +5,65 @@ const {
   ListType,
   SetType,
   DictType,
-} = require("../ast");
+} = require('../ast')
 
-const Numeric = new PrimitiveType("num");
-const Boolean = new PrimitiveType("bool");
-const Text = new PrimitiveType("text");
+const NumType = new PrimitiveType('num')
+const TextType = new PrimitiveType('TextType')
+const BoolType = new PrimitiveType('bool')
+const NoneType = new PrimitiveType('none')
 
 const standardFunctions = [
-  new FuncDecStmt("display", [new Param("s", Text)]),
-  new FuncDecStmt("length", [new Param("s", Text)], Void),
+  new FuncDecStmt('display', [new Param('s', TextType)]),
+  new FuncDecStmt('length', [new Param('s', TextType)], NumType),
   // no idea if we can overload like this, if we can't it's gonna get messy
-  new FuncDecStmt("length", [new Param("s", ListType)], Numeric),
-  new FuncDecStmt("length", [new Param("s", SetType)], Numeric),
-  new FuncDecStmt("length", [new Param("s", DictType)], Numeric),
-  new FuncDecStmt("exit", [new Param("code", Numeric)], Numeric),
-];
+  new FuncDecStmt('length', [new Param('s', ListType)], NumType),
+  new FuncDecStmt('length', [new Param('s', SetType)], NumType),
+  new FuncDecStmt('length', [new Param('s', DictType)], NumType),
+  new FuncDecStmt('exit', [new Param('code', NumType)], NumType),
+]
 
 const stringFunctions = [
   new FuncDecStmt(
-    "slice",
+    'slice',
     [
-      new Param("s", Text),
-      new Param("begin", Numeric),
-      new Param("end", Numeric),
+      new Param('s', TextType),
+      new Param('begin', NumType),
+      new Param('end', NumType),
     ],
-    Text
+    TextType,
   ),
   // new FuncDecStmt(
   //   'concat', // feels very old, maybe just use '+' for string concat maybe use for arrays
-  //   [new Param('first', Text), new Param('second', Text)],
-  //   Text,
+  //   [new Param('first', TextType), new Param('second', TextType)],
+  //   TextType,
   // ),
   // new Func('not', [new Param('x', IntType)], IntType),
-  new FuncDecStmt("charAt", [new Param("s", Numeric)], Text),
-];
+  new FuncDecStmt('charAt', [new Param('s', NumType)], TextType),
+]
 
 const mathFunctions = [
-  new FuncDecStmt("abs", [new Param("n", Numeric)], Numeric),
-  new FuncDecStmt("sqrt", [new Param("n", Numeric)], Numeric),
+  new FuncDecStmt('abs', [new Param('n', NumType)], NumType),
+  new FuncDecStmt('sqrt', [new Param('n', NumType)], NumType),
   // pi here according to casper? hmmm
   new FuncDecStmt(
-    "random",
-    [new Param("start", Numeric), new Param("end", Numeric)],
-    Numeric
+    'random',
+    [new Param('start', NumType), new Param('end', NumType)],
+    NumType,
   ),
-  new FuncDecStmt("pow", [
-    new Param("base", Numeric),
-    new Param("power", Numeric),
+  new FuncDecStmt('pow', [
+    new Param('base', NumType),
+    new Param('power', NumType),
   ]),
-];
+]
 
-const functions = [standardFunctions, stringFunctions, mathFunctions];
+const functions = [standardFunctions, stringFunctions, mathFunctions]
 
 functions.forEach((func) => {
   func.forEach((f) => {
     // eslint-disable-next-line no-param-reassign
-    f.builtin = true;
-  });
-});
+    f.builtin = true
+  })
+})
 
 module.exports = {
   NumType,
@@ -80,4 +73,4 @@ module.exports = {
   standardFunctions,
   stringFunctions,
   mathFunctions,
-};
+}
