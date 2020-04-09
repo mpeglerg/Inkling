@@ -176,8 +176,8 @@ Call.prototype.analyze = (context) => {
     const paramType = this.id.ref.params[i].type
     if (check.isCollectionType(paramType)) {
       if (
-        a.expression.type.constructor !== paramType.constructor &&
-        paramType !== 'void'
+        a.expression.type.constructor !== paramType.constructor
+        && paramType !== 'void'
       ) {
         throw new Error('Argument and Param types do not match')
       }
