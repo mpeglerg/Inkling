@@ -1,13 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 class Program {
-  constructor(stmt) {
-    this.stmt = stmt;
+  constructor(stmts) {
+    this.stmts = stmts
   }
 }
 
 class Block {
   constructor(statements) {
-    this.statements = statements;
+    this.statements = statements
   }
 }
 
@@ -64,14 +64,21 @@ class ForLoop {
   }
 }
 
-class FuncDecStmt {
-  constructor(id, params, type, body) {
+class FuncObject {
+  constructor(type, id, params, body) {
     Object.assign(this, {
+      type,
       id,
       params,
-      type,
-      body
-    });
+      body,
+    })
+  }
+}
+
+class FuncDecStmt {
+  constructor(id, params, type, body) {
+    this.id = id
+    this.function = new FuncObject(type, id, params, body)
   }
 }
 
@@ -214,7 +221,14 @@ class DictType {
 
 class PrimitiveType {
   constructor(id) {
-    Object.assign(this, { id });
+    Object.assign(this, { id })
+  }
+}
+
+// Literals
+class NumericLiteral {
+  constructor(value) {
+    this.value = value
   }
 }
 
@@ -241,6 +255,7 @@ module.exports = {
   ForLoop,
   IfStmt,
   FuncDecStmt,
+  FuncObject,
   WhileLoop,
   FieldVarExp,
   SubscriptedVarExp,
@@ -260,4 +275,4 @@ module.exports = {
   DictType,
   Literal,
   None
-};
+}

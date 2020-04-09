@@ -213,7 +213,6 @@ const astGenerator = grammar.createSemantics().addOperation('ast', {
   },
 
   // Literals
-  // do we need a nonelit if so wtf is it??
   numlit(_1, _2, _3, _4, _5, _6) {
     return new Literal(+this.sourceString)
   },
