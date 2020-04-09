@@ -123,7 +123,37 @@ ReturnStatement.prototype.analyze = (context) => {
   context.assertInFunction("Return statement not in function");
 };
 
-DictExpression.prototype.analyze = (context) => {};
+DictExpression.prototype.analyze = (context) => {
+  this.exp.forEach((e) => {
+    e.key.analyze(context);
+    e.value.analyze(context);
+  });
+  if (this.exp.length) {
+    const keyType = this.exp[0].key.type;
+    const valueType = this.exp[0].value.type;
+    this.type = new DictType(keyType, valueType);
+    for (let i = 1; i < this.exp.length; i += 1) {
+      check.expressionsHaveTheSameType(this.exp[i].key.type, this.type.keyType);
+      check.expressionsHaveTheSameType(
+        this.exp[i].value.type,
+        this.type.valueType
+      );
+    }
+  }
+};
+
+ListExpression.prototype.analyze = () => {
+  this.members.forEach((m) => m.analyze(context));
+  if (this.members.length) {
+    this.type = new ListType(this.members[0].type);
+    for (let i = 1; i < this.members.length; i += 1) {
+      check.expressionsHaveTheSameType(
+        this.members[i].type,
+        this.type.memberType
+      );
+    }
+  }
+};
 
 Call.prototype.analyze = (context) => {
   this.id.analyze(context);
