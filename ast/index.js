@@ -64,13 +64,6 @@ class ForLoop {
   }
 }
 
-class FuncDecStmt {
-  constructor(id, params, type, body) {
-    this.id = id
-    this.function = new FuncObject(type, id, params, body)
-  }
-}
-
 class FuncObject {
   constructor(type, id, params, body) {
     Object.assign(this, {
@@ -79,6 +72,13 @@ class FuncObject {
       params,
       body,
     })
+  }
+}
+
+class FuncDecStmt {
+  constructor(id, params, type, body) {
+    this.id = id
+    this.function = new FuncObject(type, id, params, body)
   }
 }
 
