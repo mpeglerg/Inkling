@@ -38,16 +38,17 @@ Assignment.prototype.analyze = (context) => {
   check.isNotReadOnly(this.id);
 };
 
-NumericLiteral.prototype.analyze = (context) => {
-  this.type = NumType;
-};
-BooleanLiteral.prototype.analyze = (context) => {
-  this.type = BoolType;
-};
-
-TextLiteral.prototype.analyze = (context) => {
-  this.type = BoolType;
-};
+Literal.prototype.analyze = (context) => {
+  if (typeof this.value === 'number') {
+    this.type = NumType;
+  } else if (typeof this.value === 'boolean'){
+    this.type = BoolType;
+  } else if (typeof this.value === 'String'){
+    this.type = TextType;
+  } else {
+    this.type = NoneType;
+  }
+}
 
 IfStmt.prototype.analyze = (context) => {
   this.tests.forEach((test) => {
