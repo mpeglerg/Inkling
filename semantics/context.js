@@ -39,7 +39,11 @@ class Context {
   }
 
   createChildContextForFunctionBody(currentFunction) {
-    return new Context({ parent: this, currentFunction, inLoop: false })
+    return new Context({
+      parent: this,
+      currentFunction,
+      inLoop: false,
+    })
   }
 
   createChildContextForLoop() {
@@ -82,7 +86,14 @@ class Context {
 }
 
 Context.INITIAL = new Context();
-[NumType, TextType, BoolType, NoneType, ...standardFunctions, ...mathFunctions, ...stringFunctions].forEach((entity) => {
+[
+  NumType,
+  TextType,
+  BoolType,
+  NoneType,
+  ...standardFunctions,
+  ...mathFunctions,
+  ...stringFunctions].forEach((entity) => {
   Context.INITIAL.add(entity)
 })
 
