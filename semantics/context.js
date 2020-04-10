@@ -7,7 +7,7 @@
  */
 
 const {
-  standardFunctions, mathFunctions, stringFunctions, NumType, TextType, BoolType, NoneType,
+  standardFunctions, mathFunctions, textFunctions, NumType, TextType, BoolType, NoneType,
 } = require('./builtins')
 
 require('./analyzer')
@@ -63,10 +63,10 @@ class Context {
   }
 
   add(entity, id) {
-    if ((id || entity.id) in this.declarations) {
+    if ((id) in this.declarations) {
       throw new Error(`${id} already declared in this scope`)
     }
-    this.declarations[id || entity.id] = entity
+    this.declarations[id] = entity
   }
 
   lookupValue(id) {
@@ -86,15 +86,10 @@ class Context {
 }
 
 Context.INITIAL = new Context();
-[
-  NumType,
-  TextType,
-  BoolType,
-  NoneType,
-  ...standardFunctions,
-  ...mathFunctions,
-  ...stringFunctions].forEach((entity) => {
-  Context.INITIAL.add(entity)
-})
+
+[NumType, TextType, BoolType, NoneType, ...standardFunctions, ...mathFunctions, ...textFunctions]
+  .forEach((entity) => {
+    Context.INITIAL.add(entity, entity.id)
+  })
 
 module.exports = Context

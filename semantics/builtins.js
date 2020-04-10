@@ -14,15 +14,10 @@ const NoneType = new PrimitiveType('none')
 
 const standardFunctions = [
   new FuncDecStmt('display', [new Param('s', TextType)]),
-  new FuncDecStmt('length', [new Param('s', TextType)], NumType),
-  // no idea if we can overload like this, if we can't it's gonna get messy
-  new FuncDecStmt('length', [new Param('s', ListType)], NumType),
-  new FuncDecStmt('length', [new Param('s', SetType)], NumType),
-  new FuncDecStmt('length', [new Param('s', DictType)], NumType),
   new FuncDecStmt('exit', [new Param('code', NumType)], NumType),
 ]
 
-const stringFunctions = [
+const textFunctions = [
   new FuncDecStmt(
     'slice',
     [
@@ -32,8 +27,10 @@ const stringFunctions = [
     ],
     TextType,
   ),
+  new FuncDecStmt('length', [new Param('s', TextType)], NumType),
   new FuncDecStmt('charAt', [new Param('s', NumType)], TextType),
 ]
+
 
 const mathFunctions = [
   new FuncDecStmt('abs', [new Param('n', NumType)], NumType),
@@ -53,6 +50,7 @@ const listFunctions = [
   new FuncDecStmt('insert', [new Param('index', NumType), new Param('value', this.type)], ListType),
   // TODO: remove(index)
   new FuncDecStmt('remove', [new Param('index', NumType)], ListType),
+  new FuncDecStmt('length', [new Param('s', ListType)], NumType),
 ]
 
 // perhaps need/want more functions, this is just based on what casper was planning on implementing
@@ -61,6 +59,7 @@ const setFunctions = [
   new FuncDecStmt('add', [new Param('value', this.type)], SetType),
   // TODO: remove(index)
   new FuncDecStmt('remove', [new Param('index', NumType)], SetType),
+  new FuncDecStmt('length', [new Param('s', SetType)], NumType),
 ]
 
 // TODO: keyType and valueType are made up, may be something we need to add for these functions
@@ -83,7 +82,7 @@ const dictFunctions = [
 ]
 
 const functions = [
-  standardFunctions, stringFunctions, mathFunctions, listFunctions, setFunctions, dictFunctions,
+  standardFunctions, textFunctions, mathFunctions, listFunctions, setFunctions, dictFunctions,
 ]
 
 functions.forEach((func) => {
@@ -99,7 +98,7 @@ module.exports = {
   BoolType,
   NoneType,
   standardFunctions,
-  stringFunctions,
+  textFunctions,
   mathFunctions,
   listFunctions,
   setFunctions,
