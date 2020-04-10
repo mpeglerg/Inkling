@@ -35,6 +35,7 @@ const stringFunctions = [
   new FuncDecStmt('charAt', [new Param('s', NumType)], TextType),
 ]
 
+
 const mathFunctions = [
   new FuncDecStmt('abs', [new Param('n', NumType)], NumType),
   new FuncDecStmt('sqrt', [new Param('n', NumType)], NumType),
@@ -97,6 +98,7 @@ module.exports = {
   NumType,
   TextType,
   BoolType,
+  NoneType,
   standardFunctions,
   stringFunctions,
   mathFunctions,
