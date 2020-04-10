@@ -17,7 +17,7 @@ d is Dict<Num, Num> [5:6, 3:4]
 e is Set<Num> {1, 2, 3, 5, 6}
 e is {3, 5, 6}
 
-f is Bool True
+f is Bool true
 g is Num 3
 if (f) {
   display(a)
@@ -25,10 +25,10 @@ if (f) {
   display(g + a)
 }
 
-function f (h is Num, i is Num) {
-  j = 0
+function f (h is Num, i is Num) is Num {
+  j is Num 0
   while (j < 5) {
-    display pow(j^(pow(3^j))
+    display pow(j, (pow(3, j)))
   }
   a is a + h + i
   gimme a
