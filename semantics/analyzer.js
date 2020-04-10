@@ -17,11 +17,20 @@ const {
   ListExpression,
   ListType,
   SetExpression,
+  SetType,
 } = require('../ast')
+
 const check = require('../semantics/check')
+
 const {
   NumType, BoolType, TextType, NoneType,
 } = require('../semantics/builtins')
+
+const Context = require('./context')
+
+module.exports = (root) => {
+  root.analyze(Context.INITIAL)
+}
 
 Program.prototype.analyze = (context) => {
   this.stmts.forEach((stmt) => {
@@ -100,8 +109,9 @@ WhileLoop.prototype.analyze = (context) => {
 }
 
 FuncDecStmt.prototype.analyze = (context) => {
-  context.add(this.function)
-  this.function.analyze(context.createChildContextForFunctionBody(this))
+  context.add(this.function.id, this)
+  const bodyContext = context.createChildContextForFunctionBody(this)
+  this.body.forEach((s) => s.analyze(bodyContext))
 }
 
 FuncObject.prototype.analyze = (context) => {
@@ -123,7 +133,7 @@ FuncObject.prototype.analyze = (context) => {
 }
 
 Param.prototype.analyze = (context) => {
-  context.add(this)
+  context.add(this.id, this)
 }
 
 ReturnStatement.prototype.analyze = (context) => {
@@ -172,6 +182,7 @@ SetExpression.prototype.analyze = (context) => {
     }
   }
 }
+
 Call.prototype.analyze = (context) => {
   this.id.analyze(context)
   this.args.forEach((arg) => arg.analyze(context))
