@@ -56,9 +56,8 @@ VarDeclaration.prototype.analyze = function (context) {
 
 Assignment.prototype.analyze = function (context) {
   console.log("Assigment ID: ", this.id, "Exp: ", this.exp);
-
   // this.id.analyze(context);
-  // this.exp.analyze(context);
+  this.exp.analyze(context);
   //check.isAssignableTo(this.id, this.exp.type);
   //check.isNotReadOnly(this.exp);
 };
