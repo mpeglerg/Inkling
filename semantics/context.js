@@ -16,6 +16,12 @@ const {
   NoneType,
 } = require('./builtins')
 
+const {
+  DictType,
+  SetType,
+  ListType,
+} = require('../ast')
+
 require('./analyzer')
 
 // When doing semantic analysis we pass around context objects.
@@ -75,8 +81,8 @@ class Context {
     this.declarations[id] = entity
   }
 
-  lookupValue(id) {
-    console.log('id: ', id)
+  lookUpIdentifier(id) {
+    console.log('checking in context id: ', id)
 
     for (let context = this; context !== null; context = context.parent) {
       if (id in context.declarations) {
@@ -110,7 +116,7 @@ Context.INITIAL = new Context();
   ...mathFunctions,
   ...textFunctions,
 ].forEach((entity) => {
-  Context.INITIAL.add(entity, entity.id)
+  Context.INITIAL.add(entity.id, entity)
 })
 
 module.exports = Context
