@@ -1,13 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 class Program {
   constructor(stmts) {
-    this.stmts = stmts
+    this.stmts = stmts;
   }
 }
 
 class Block {
   constructor(statements) {
-    this.statements = statements
+    this.statements = statements;
   }
 }
 
@@ -16,7 +16,7 @@ class Assignment {
     Object.assign(this, {
       id,
       exp,
-    })
+    });
   }
 }
 
@@ -28,19 +28,19 @@ class VarDeclaration {
       constant,
       type,
       exp,
-    })
+    });
   }
 }
 
 class Print {
   constructor(exp) {
-    Object.assign(this, { exp })
+    Object.assign(this, { exp });
   }
 }
 
 class ReturnStatement {
   constructor(returnValue) {
-    this.returnValue = returnValue
+    this.returnValue = returnValue;
   }
 }
 
@@ -50,7 +50,7 @@ class IfStmt {
       tests,
       consequence,
       alt,
-    })
+    });
   }
 }
 
@@ -60,7 +60,7 @@ class ForLoop {
       id,
       exp,
       body,
-    })
+    });
   }
 }
 
@@ -71,14 +71,14 @@ class FuncObject {
       id,
       params,
       body,
-    })
+    });
   }
 }
 
 class FuncDecStmt {
   constructor(id, params, type, body) {
-    this.id = id
-    this.function = new FuncObject(type, id, params, body)
+    this.id = id;
+    this.function = new FuncObject(type, id, params, body);
   }
 }
 
@@ -87,7 +87,7 @@ class WhileLoop {
     Object.assign(this, {
       condition,
       body,
-    })
+    });
   }
 }
 
@@ -96,13 +96,13 @@ class FieldVarExp {
     Object.assign(this, {
       id,
       field,
-    })
+    });
   }
 }
 
 class IdentifierExpression {
   constructor(id) {
-    this.id = id
+    this.id = id;
   }
 }
 
@@ -111,7 +111,7 @@ class SubscriptedVarExp {
     Object.assign(this, {
       id,
       key,
-    })
+    });
   }
 }
 
@@ -120,7 +120,7 @@ class Param {
     Object.assign(this, {
       id,
       type,
-    })
+    });
   }
 }
 
@@ -129,7 +129,7 @@ class Call {
     Object.assign(this, {
       id,
       args,
-    })
+    });
   }
 }
 
@@ -139,7 +139,7 @@ class BinaryExpression {
       op,
       left,
       right,
-    })
+    });
   }
 }
 
@@ -148,7 +148,7 @@ class PowExp {
     Object.assign(this, {
       left,
       right,
-    })
+    });
   }
 }
 
@@ -157,7 +157,7 @@ class PrefixExpression {
     Object.assign(this, {
       op,
       operand,
-    })
+    });
   }
 }
 
@@ -166,13 +166,13 @@ class PostfixExpression {
     Object.assign(this, {
       op,
       operand,
-    })
+    });
   }
 }
 
 class ListExpression {
   constructor(members) {
-    this.members = members
+    this.members = members;
   }
 }
 
@@ -181,32 +181,32 @@ class KeyValuePair {
     Object.assign(this, {
       key,
       value,
-    })
+    });
   }
 }
 
 class DictExpression {
   constructor(exp) {
-    Object.assign(this, { exp })
+    Object.assign(this, { exp });
   }
 }
 
 class SetExpression {
   constructor(members) {
-    this.members = members
+    this.members = members;
   }
 }
 
 // Types
 class ListType {
   constructor(memberType) {
-    Object.assign(this, { memberType })
+    Object.assign(this, { memberType });
   }
 }
 
 class SetType {
   constructor(memberType) {
-    Object.assign(this, { memberType })
+    Object.assign(this, { memberType });
   }
 }
 
@@ -215,25 +215,23 @@ class DictType {
     Object.assign(this, {
       keyType,
       valueType,
-    })
+    });
   }
 }
 
 class PrimitiveType {
   constructor(id) {
-    Object.assign(this, { id })
+    Object.assign(this, { id });
   }
 }
 
 // Is this necessary???
-class None {
-
-}
+class None {}
 
 // Literals
 class Literal {
   constructor(value) {
-    this.value = value
+    this.value = value;
   }
 }
 
@@ -268,4 +266,4 @@ module.exports = {
   DictType,
   Literal,
   None,
-}
+};

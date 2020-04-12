@@ -21,7 +21,7 @@ const {
   PostfixExpression,
   PrefixExpression,
   ForLoop,
-} = require("../ast");
+} = require("../ast/index");
 
 const check = require("../semantics/check");
 
@@ -34,30 +34,31 @@ const {
 
 const Context = require("./context");
 
-module.exports = (root) => {
+module.exports = function (root) {
   root.analyze(Context.INITIAL);
 };
 
-Program.prototype.analyze = (context) => {
+Program.prototype.analyze = function (context) {
+  console.log("These are statements : ", this);
   this.stmts.forEach((stmt) => {
     stmt.analyze(context);
   });
 };
 
 // design decisions need to be made for this
-VarDeclaration.prototype.analyze = (context) => {
+VarDeclaration.prototype.analyze = function (context) {
   const a = new Assignment(this.id, this.exp);
   a.analyze(context);
 };
 
-Assignment.prototype.analyze = (context) => {
+Assignment.prototype.analyze = function (context) {
   context.lookupValue(this.id); // perhaps this should be this.id.analyze(context), unsure
   check.expressionsHaveTheSameType(this.id, this.exp);
   check.isNotReadOnly(this.id);
 };
 
 // eslint-disable-next-line no-unused-vars
-Literal.prototype.analyze = (context) => {
+Literal.prototype.analyze = function (context) {
   if (typeof this.value === "number") {
     this.type = NumType;
   } else if (typeof this.value === "boolean") {
@@ -69,7 +70,7 @@ Literal.prototype.analyze = (context) => {
   }
 };
 
-IfStmt.prototype.analyze = (context) => {
+IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
     test.analyze(context);
     check.isBool(test); // Add boolean checker to check file
@@ -84,7 +85,7 @@ IfStmt.prototype.analyze = (context) => {
   }
 };
 
-BinaryExpression.prototype.analyze = (context) => {
+BinaryExpression.prototype.analyze = function (context) {
   this.left.analyze(context);
   this.right.analyze(context);
   if (["<=", ">=", "<", ">"].includes(this.op)) {
@@ -109,7 +110,7 @@ BinaryExpression.prototype.analyze = (context) => {
   }
 };
 
-PrefixExpression.prototype.analyze = (context) => {
+PrefixExpression.prototype.analyze = function (context) {
   if ("!" == this.op) {
     check.isBool(this.operand);
     this.type = BoolType;
@@ -119,30 +120,30 @@ PrefixExpression.prototype.analyze = (context) => {
   }
 };
 
-PostfixExpression.prototype.analyze = (context) => {
+PostfixExpression.prototype.analyze = function (context) {
   check.isNum(this.operand);
   this.type = NumType;
 };
 
-WhileLoop.prototype.analyze = (context) => {
+WhileLoop.prototype.analyze = function (context) {
   this.condition.analyze(context);
   const bodyContext = context.createChildContextForLoop();
   this.body.forEach((s) => s.analyze(bodyContext));
 };
 
-ForLoop.prototype.analyze = (context) => {
+ForLoop.prototype.analyze = function (context) {
   // TODO
   this.exp.analyze(context);
   // check list, obj, or set
 };
 
-FuncDecStmt.prototype.analyze = (context) => {
+FuncDecStmt.prototype.analyze = function (context) {
   context.add(this.function.id, this);
   const bodyContext = context.createChildContextForFunctionBody(this);
   this.body.forEach((s) => s.analyze(bodyContext));
 };
 
-FuncObject.prototype.analyze = (context) => {
+FuncObject.prototype.analyze = function (context) {
   this.params = this.params.map((p) => new Param(p.type, p.id));
   this.params.forEach((p) => p.analyze(context));
   this.body.forEach((s) => s.analyze(context));
@@ -160,16 +161,16 @@ FuncObject.prototype.analyze = (context) => {
   }
 };
 
-Param.prototype.analyze = (context) => {
+Param.prototype.analyze = function (context) {
   context.add(this.id, this);
 };
 
-ReturnStatement.prototype.analyze = (context) => {
+ReturnStatement.prototype.analyze = function (context) {
   this.returnValue.analyze(context);
   context.assertInFunction("Return statement not in function");
 };
 
-DictExpression.prototype.analyze = (context) => {
+DictExpression.prototype.analyze = function (context) {
   this.exp.forEach((e) => {
     e.key.analyze(context);
     e.value.analyze(context);
@@ -188,7 +189,7 @@ DictExpression.prototype.analyze = (context) => {
   }
 };
 
-ListExpression.prototype.analyze = (context) => {
+ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context));
   if (this.members.length) {
     this.type = new ListType(this.members[0].type);
@@ -201,7 +202,7 @@ ListExpression.prototype.analyze = (context) => {
   }
 };
 
-SetExpression.prototype.analyze = (context) => {
+SetExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context));
   if (this.members.length) {
     this.type = new SetType(this.members[0].type);
@@ -214,7 +215,7 @@ SetExpression.prototype.analyze = (context) => {
   }
 };
 
-Call.prototype.analyze = (context) => {
+Call.prototype.analyze = function (context) {
   this.id.analyze(context);
   this.args.forEach((arg) => arg.analyze(context));
   this.type = this.id.ref.type;
@@ -236,7 +237,8 @@ Call.prototype.analyze = (context) => {
     }
   });
 };
-IdentifierExpression.prototype.analyze = (context) => {
+
+IdentifierExpression.prototype.analyze = function (context) {
   this.ref = context.lookupValue(this.id);
   this.type = this.ref.type;
 };
