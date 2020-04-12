@@ -20,6 +20,7 @@ const {
   IdentifierExpression,
   PostfixExpression,
   PrefixExpression,
+  ForLoop,
 } = require("../ast");
 
 const check = require("../semantics/check");
@@ -127,6 +128,12 @@ WhileLoop.prototype.analyze = (context) => {
   this.condition.analyze(context);
   const bodyContext = context.createChildContextForLoop();
   this.body.forEach((s) => s.analyze(bodyContext));
+};
+
+ForLoop.prototype.analyze = (context) => {
+  // TODO
+  this.exp.analyze(context);
+  // check list, obj, or set
 };
 
 FuncDecStmt.prototype.analyze = (context) => {
