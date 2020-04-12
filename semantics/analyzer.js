@@ -47,17 +47,22 @@ Program.prototype.analyze = function (context) {
 
 // design decisions need to be made for this
 VarDeclaration.prototype.analyze = function (context) {
+  this.exp.analyze(context);
+  this.type = context.lookupValue(this.type);
+  check.isAssignableTo(this.exp, this.type);
   const a = new Assignment(this.id, this.exp);
   a.analyze(context);
 };
 
 Assignment.prototype.analyze = function (context) {
-  context.lookupValue(this.id); // perhaps this should be this.id.analyze(context), unsure
-  check.expressionsHaveTheSameType(this.id, this.exp);
-  check.isNotReadOnly(this.id);
+  console.log("Assigment ID: ", this.id, "Exp: ", this.exp);
+
+  // this.id.analyze(context);
+  // this.exp.analyze(context);
+  //check.isAssignableTo(this.id, this.exp.type);
+  //check.isNotReadOnly(this.exp);
 };
 
-// eslint-disable-next-line no-unused-vars
 Literal.prototype.analyze = function (context) {
   if (typeof this.value === "number") {
     this.type = NumType;
