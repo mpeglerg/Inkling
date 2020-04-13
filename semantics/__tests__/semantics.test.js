@@ -10,7 +10,6 @@ const analyze = require("../analyzer");
 
 const program = String.raw`
 b is Num 5
-
 `;
 
 describe("The semantic analyzer", () => {

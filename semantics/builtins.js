@@ -2,14 +2,14 @@ const {
   FuncDecStmt,
   Param,
   PrimitiveType,
+  NumType,
+  BoolType,
+  TextType,
   ListType,
   SetType,
   DictType,
 } = require("../ast");
 
-const NumType = new PrimitiveType("Num");
-const TextType = new PrimitiveType("Text");
-const BoolType = new PrimitiveType("bool");
 const NoneType = new PrimitiveType("none");
 
 const standardFunctions = [

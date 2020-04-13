@@ -14,6 +14,7 @@ const {
   DictExpression,
   SetExpression,
   ListExpression,
+  PrimitiveType,
   DictType,
   SetType,
   ListType,
@@ -61,10 +62,10 @@ VarDeclaration.prototype.analyze = function (context) {
 };
 
 Assignment.prototype.analyze = function (context) {
-  console.log("Assigment ID: ", this.id, "Exp: ", this.exp);
-  // context.lookupValue(this.id);
-  // check.isAssignableTo(this.id, this.exp.type);
-  // check.isNotReadOnly(this.id);
+  this.id.analyze(context);
+  this.exp.analyze(context);
+  check.isAssignableTo(this.exp, this.id.type);
+  check.isNotReadOnly(this.id);
 };
 
 Literal.prototype.analyze = function (context) {
@@ -77,6 +78,21 @@ Literal.prototype.analyze = function (context) {
   } else {
     this.type = NoneType;
   }
+};
+
+PrimitiveType.prototype.analyze = function (_) {};
+
+ListType.prototype.analyze = function (context) {
+  this.memberType.analyze(context);
+};
+
+SetType.prototype.analyze = function (context) {
+  this.memberType.analyze(context);
+};
+
+DictType.prototype.analyze = function (context) {
+  this.keyType.analyze(context);
+  this.valueType.analyze(context);
 };
 
 IfStmt.prototype.analyze = function (context) {

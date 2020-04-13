@@ -30,6 +30,9 @@ const {
   KeyValuePair,
   DictExpression,
   SetExpression,
+  NumType,
+  BoolType,
+  TextType,
   ListType,
   SetType,
   DictType,
@@ -199,6 +202,15 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
   },
 
   // Types
+  Num(_) {
+    return NumType;
+  },
+  Bool(_) {
+    return BoolType;
+  },
+  Text(_) {
+    return TextType;
+  },
   List(_1, type, _2) {
     return new ListType(type.ast());
   },
