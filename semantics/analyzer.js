@@ -57,8 +57,9 @@ VarDeclaration.prototype.analyze = function (context) {
   this.exp.analyze(context)
   this.type = context.lookupValue(this.type)
   check.isAssignableTo(this.exp, this.type)
-  // const a = new Assignment(this.id, this.exp)
+  const a = new Assignment(this.id, this.exp)
   console.log('adding id: ' + this.id)
+  a.analyze(context)
   context.add(this.id, this)
 }
 
