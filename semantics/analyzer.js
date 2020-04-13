@@ -53,20 +53,20 @@ Block.prototype.analyze = function (context) {
 
 // design decisions need to be made for this
 VarDeclaration.prototype.analyze = function (context) {
-  context.variableMustNotBeAlreadyDeclared(this.id);
+  //context.variableMustNotBeAlreadyDeclared(this.id);
   this.exp.analyze(context);
   this.type = context.lookupValue(this.type);
   check.isAssignableTo(this.exp, this.type);
   // const a = new Assignment(this.id, this.exp)
   console.log("adding id: " + this.id);
-  context.add(this.id, this);
+  //context.add(this.id, this);
 };
 
 Assignment.prototype.analyze = function (context) {
   console.log("Assigment ID: ", this.id, "Exp: ", this.exp);
-  context.lookupValue(this.id);
-  check.isAssignableTo(this.id, this.exp.type);
-  check.isNotReadOnly(this.id);
+  // context.lookupValue(this.id);
+  // check.isAssignableTo(this.id, this.exp.type);
+  // check.isNotReadOnly(this.id);
 };
 
 Literal.prototype.analyze = function (context) {

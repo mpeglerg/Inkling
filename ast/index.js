@@ -11,15 +11,6 @@ class Block {
   }
 }
 
-class Assignment {
-  constructor(id, exp) {
-    Object.assign(this, {
-      id,
-      exp,
-    });
-  }
-}
-
 class VarDeclaration {
   constructor(id, constant, type, exp) {
     // constant accounts for 'always' functionality
@@ -27,6 +18,15 @@ class VarDeclaration {
       id,
       constant,
       type,
+      exp,
+    });
+  }
+}
+
+class Assignment {
+  constructor(id, exp) {
+    Object.assign(this, {
+      id,
       exp,
     });
   }
