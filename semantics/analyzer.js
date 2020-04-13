@@ -55,15 +55,16 @@ Block.prototype.analyze = function (context) {
 VarDeclaration.prototype.analyze = function (context) {
   context.variableMustNotBeAlreadyDeclared(this.id)
   this.exp.analyze(context)
+  // should do this: type <=  new PrimitiveType('Num')
   this.type = context.lookUpIdentifier(this.type)
   check.isAssignableTo(this.exp, this.type)
-  const a = new Assignment(this.id, this.exp)
   context.add(this.id, this)
 }
 
 Assignment.prototype.analyze = function (context) {
   console.log('Assigment ID: ', this.id, 'Exp: ', this.exp)
-  context.lookUpIdentifier(this.id.id)
+  context.lookUpIdentifier(this.id.id) // id.id feels wrong but I guess we need id
+  // of IdentifierExpression
   check.isAssignableTo(this.id, this.exp.type)
   check.isNotReadOnly(this.id)
 }
@@ -234,8 +235,8 @@ Call.prototype.analyze = function (context) {
     const paramType = this.id.ref.params[i].type
     if (check.isListType(paramType)) {
       if (
-        a.expression.type.constructor !== paramType.constructor &&
-        paramType !== 'void'
+        a.expression.type.constructor !== paramType.constructor
+        && paramType !== 'void'
       ) {
         throw new Error('Argument and Param types do not match')
       }

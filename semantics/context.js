@@ -16,12 +16,6 @@ const {
   NoneType,
 } = require('./builtins')
 
-const {
-  DictType,
-  SetType,
-  ListType,
-} = require('../ast')
-
 require('./analyzer')
 
 // When doing semantic analysis we pass around context objects.
@@ -94,7 +88,7 @@ class Context {
 
   variableMustNotBeAlreadyDeclared(id) {
     if (this.declarations[id]) {
-      throw new Error(`Variable ${id} already declared`)
+      throw new Error(`Variable ${id} has already been declared`)
     }
   }
 

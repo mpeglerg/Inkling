@@ -6,7 +6,9 @@ const {
   FuncDecStmt,
   VarDeclaration,
 } = require('../ast')
-const { NumType, TextType, BoolType, NoneType } = require('./builtins')
+const {
+  NumType, TextType, BoolType, NoneType,
+} = require('./builtins')
 
 function doCheck(condition, message) {
   if (!condition) {
@@ -59,8 +61,8 @@ module.exports = {
 
   isNumOrText(expression) {
     doCheck(
-      expression.type.constructor === NumType ||
-      expression.type.constructor === TextType,
+      expression.type.constructor === NumType
+      || expression.type.constructor === TextType,
       'Cannot apply \'+ \' to types that are not num or text',
     )
   },
