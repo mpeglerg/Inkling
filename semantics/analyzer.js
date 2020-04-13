@@ -186,20 +186,19 @@ ForLoop.prototype.analyze = function (context) {
 };
 
 FuncDecStmt.prototype.analyze = function (context) {
-  console.log("in funcDec: ", this);
-
   context.add(this.function.id, this);
   const bodyContext = context.createChildContextForFunctionBody(this);
-  this.body.forEach((s) => s.analyze(bodyContext));
+  console.log("in funcDec: ", this);
+  this.function.analyze(bodyContext);
 };
 
 FuncObject.prototype.analyze = function (context) {
-  console.log("in funcObj: ", this);
-  this.params = this.params.map((p) => new Param(p.type, p.id));
+  this.params = this.params.map((p) => new Param(p.id, p.type));
   this.params.forEach((p) => p.analyze(context));
   this.body.forEach((s) => s.analyze(context));
+  console.log("in funcObj: ", this.body);
 
-  const returnStatement = this.body.filter(
+  const returnStatement = this.body.statements.filter(
     (b) => b.constructor === ReturnStatement
   );
   if (returnStatement.length === 0 && this.type !== "void") {

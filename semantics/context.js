@@ -69,7 +69,10 @@ class Context {
   }
 
   add(id, entity) {
+    //console.log("id ", id, " entity ", entity);
+    //console.log("All declarations", this.declarations);
     if (id in this.declarations) {
+      console.log("this is the id: ", id);
       throw new Error(`${id} already declared in this scope`);
     }
     this.declarations[id] = entity;
@@ -86,29 +89,29 @@ class Context {
     throw new Error(`Identifier ${id} has not been declared`);
   }
 
-  variableMustNotBeAlreadyDeclared(id) {
-    if (this.declarations[id]) {
-      throw new Error(`Variable ${id} already declared`);
-    }
-  }
-  hasBeenDeclared(id) {
-    if (this.declarations[id]) {
-      return true;
-    } else if (this.parent !== null) {
-      return this.parent.hasBeenDeclared(id);
-    }
-    return false;
-  }
+  // variableMustNotBeAlreadyDeclared(id) {
+  //   if (this.declarations[id]) {
+  //     throw new Error(`Variable ${id} already declared`);
+  //   }
+  // }
+  // hasBeenDeclared(id) {
+  //   if (this.declarations[id]) {
+  //     return true;
+  //   } else if (this.parent !== null) {
+  //     return this.parent.hasBeenDeclared(id);
+  //   }
+  //   return false;
+  // }
 
-  checkIfVariableIsAlreadyDeclared(id) {
-    if (this.declarations[id]) {
-      throw new Error(`Variable ${id} already declared`);
-    }
-    if (this.parent !== null) {
-      return this.parent.checkIfVariableIsAlreadyDeclared(id);
-    }
-    return 0;
-  }
+  // checkIfVariableIsAlreadyDeclared(id) {
+  //   if (this.declarations[id]) {
+  //     throw new Error(`Variable ${id} already declared`);
+  //   }
+  //   if (this.parent !== null) {
+  //     return this.parent.checkIfVariableIsAlreadyDeclared(id);
+  //   }
+  //   return 0;
+  // }
 
   assertInFunction(message) {
     if (!this.currentFunction) {

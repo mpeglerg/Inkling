@@ -9,12 +9,10 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-f is Bool true
-if (5 < 9 and 5 > 0 or f) {
-  display "hello"
-} else {
-  display "good bye"
+function fun1 (h is Num, i is Num) is Void {
+  1 + 1
 }
+
 `;
 
 describe("The semantic analyzer", () => {

@@ -76,9 +76,9 @@ class FuncObject {
 }
 
 class FuncDecStmt {
-  constructor(id, params, type, body) {
+  constructor(id, params, returnType, body) {
     this.id = id;
-    this.function = new FuncObject(type, id, params, body);
+    this.function = new FuncObject(returnType, id, params, body);
   }
 }
 
