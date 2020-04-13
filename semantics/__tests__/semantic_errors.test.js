@@ -17,6 +17,18 @@ const errors = [
     "Dict with inconsistent types",
     'ageDictionary is Dict<Text, Text> {"Sam": 21, "Talia": 20}\n',
   ],
+  [
+    "multiple conditional in ternary",
+    '1 < 2 and 3 > 5 ? "hello" : "goodbye"\n',
+  ],
+  [
+    "Void function should not have a return statment",
+    'function fun1 (h is Num, i is Num) is Void {\ndisplay "hello"\ngimme 4\n}\n',
+  ],
+  [
+    "Void function should not have a return statment",
+    "function fun1 (h is Num, i is Num) is Text {\n1 + 1\n}\n",
+  ],
   //   ['non integer in subtract', '"dog" - 5'],
   //   ['types do not match in equality test', '2 == "dog"'],
   //   ['types do not match in inequality test', '2 <> "dog"'],

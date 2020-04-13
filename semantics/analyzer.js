@@ -44,7 +44,7 @@ module.exports = function (root) {
 };
 
 Program.prototype.analyze = function (context) {
-  console.log("These are statements : ", context.declarations.display);
+  //console.log("These are statements : ", context.declarations.display);
   this.stmts.forEach((stmt) => {
     console.log("stmt ", stmt);
     stmt.analyze(context);
@@ -57,6 +57,7 @@ Print.prototype.analyze = function (context) {
 };
 
 Block.prototype.analyze = function (context) {
+  //console.log("In block: ", this.statements);
   const localContext = context.createChildContextForBlock();
   this.statements.forEach((s) => s.analyze(localContext));
 };
@@ -83,7 +84,6 @@ Literal.prototype.analyze = function (context) {
     this.type = NumType;
   } else if (typeof this.value === "boolean") {
     console.log("in literal: ", this.value);
-
     this.type = BoolType;
   } else if (typeof this.value === "string") {
     this.type = TextType;
@@ -206,19 +206,25 @@ FuncDecStmt.prototype.analyze = function (context) {
 FuncObject.prototype.analyze = function (context) {
   this.params = this.params.map((p) => new Param(p.id, p.type));
   this.params.forEach((p) => p.analyze(context));
-  this.body.forEach((s) => s.analyze(context));
-  console.log("in funcObj: ", this.body);
+  this.body.analyze(context);
+  console.log("in funcObj: ", this.body.statements);
 
   const returnStatement = this.body.statements.filter(
     (b) => b.constructor === ReturnStatement
   );
-  if (returnStatement.length === 0 && this.type !== "void") {
+  console.log(
+    "return statment: ",
+    this.type !== "Void",
+    " return :",
+    returnStatement.length === 0
+  );
+  if (returnStatement.length === 0 && this.type !== "Void") {
     throw new Error("No return statement found");
-  } else if (returnStatement.length > 0) {
-    if (this.type === "void") {
+  } else if (returnStatement) {
+    if (this.type === "Void") {
       throw new Error("Void functions do not have return statements");
     }
-    check.isAssignableTo(returnStatement[0].returnValue.type, this.type);
+    check.isAssignableTo(returnStatement[0].returnValue, this.type);
   }
 };
 
