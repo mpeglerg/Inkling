@@ -73,6 +73,8 @@ Literal.prototype.analyze = function (context) {
   if (typeof this.value === "number") {
     this.type = NumType;
   } else if (typeof this.value === "boolean") {
+    console.log("in literal: ", this.value);
+
     this.type = BoolType;
   } else if (typeof this.value === "string") {
     this.type = TextType;

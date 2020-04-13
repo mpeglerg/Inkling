@@ -232,7 +232,7 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
     return new Literal(chars.sourceString);
   },
   boollit(v) {
-    return new Literal(v.sourceString);
+    return new Literal(v.sourceString == "true");
   },
   nonelit(_) {
     return new None();
