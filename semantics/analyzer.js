@@ -1,10 +1,12 @@
 const {
   Program,
+  Print,
   Block,
   Assignment,
   VarDeclaration,
   Literal,
   BinaryExpression,
+  PowExp,
   IfStmt,
   WhileLoop,
   FuncDecStmt,
@@ -41,10 +43,16 @@ module.exports = function (root) {
 };
 
 Program.prototype.analyze = function (context) {
-  console.log("These are statements : ", this);
+  console.log("These are statements : ", context.declarations.display);
   this.stmts.forEach((stmt) => {
+    console.log("stmt ", stmt);
     stmt.analyze(context);
   });
+};
+
+Print.prototype.analyze = function (context) {
+  console.log("in print");
+  this.exp.analyze(context);
 };
 
 Block.prototype.analyze = function (context) {
@@ -96,15 +104,18 @@ SetType.prototype.analyze = function (context) {
 IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
     test.analyze(context);
-    check.isBool(test); // Add boolean checker to check file
+
+    check.isBool(test.type); // Add boolean checker to check file
   });
   this.consequence.forEach((block) => {
     const blockContext = context.createChildContextForBlock();
-    block.forEach((statement) => statement.analyze(blockContext));
+    block.analyze(blockContext);
   });
+  console.log("this.alt", this.alt);
+
   if (this.alt) {
     const alternateBlock = context.createChildContextForBlock();
-    this.alt.forEach((s) => s.analyze(alternateBlock));
+    this.alt.analyze(alternateBlock);
   }
 };
 
@@ -112,25 +123,33 @@ BinaryExpression.prototype.analyze = function (context) {
   this.left.analyze(context);
   this.right.analyze(context);
   if (["<=", ">=", "<", ">"].includes(this.op)) {
-    check.isNum(this.left);
-    check.isNum(this.right);
+    check.isNum(this.left.type);
+    check.isNum(this.right.type);
     this.type = BoolType;
   } else if (["!=", "=="].includes(this.op)) {
     check.expressionsHaveTheSameType(this.left.type, this.right.type);
     this.type = BoolType;
   } else if (["and", "or"].includes(this.op)) {
-    check.isBool(this.left);
-    check.isBool(this.right);
+    check.isBool(this.left.type);
+    check.isBool(this.right.type);
     this.type = BoolType;
   } else if (this.op === "+") {
     check.expressionsHaveTheSameType(this.left.type, this.right.type);
-    check.isNumOrText(this.left);
-    check.isNumOrText(this.right);
+    check.isNumOrText(this.left.type);
+    check.isNumOrText(this.right.type);
     this.type = this.left.type === NumType ? NumType : BoolType;
   } else {
     check.expressionsHaveTheSameType(this.left.type, this.right.type);
     this.type = NumType;
   }
+};
+
+PowExp.prototype.analyze = function (context) {
+  this.left.analyze(context);
+  this.right.analyze(context);
+  check.isNum(this.left.type);
+  check.isNum(this.right.type);
+  console.log("pow : ", this);
 };
 
 PrefixExpression.prototype.analyze = function (context) {
@@ -143,15 +162,21 @@ PrefixExpression.prototype.analyze = function (context) {
   }
 };
 
+IdentifierExpression.prototype.analyze = function (context) {
+  this.ref = context.lookupValue(this.id);
+  this.type = this.ref.type;
+};
+
 PostfixExpression.prototype.analyze = function (context) {
-  check.isNum(this.operand);
-  this.type = NumType;
+  this.operand.analyze(context);
+  console.log("operand: ", this);
+  check.isNum(this.operand.type);
 };
 
 WhileLoop.prototype.analyze = function (context) {
   this.condition.analyze(context);
   const bodyContext = context.createChildContextForLoop();
-  this.body.forEach((s) => s.analyze(bodyContext));
+  this.body.analyze(context);
 };
 
 ForLoop.prototype.analyze = function (context) {
@@ -161,12 +186,15 @@ ForLoop.prototype.analyze = function (context) {
 };
 
 FuncDecStmt.prototype.analyze = function (context) {
+  console.log("in funcDec: ", this);
+
   context.add(this.function.id, this);
   const bodyContext = context.createChildContextForFunctionBody(this);
   this.body.forEach((s) => s.analyze(bodyContext));
 };
 
 FuncObject.prototype.analyze = function (context) {
+  console.log("in funcObj: ", this);
   this.params = this.params.map((p) => new Param(p.type, p.id));
   this.params.forEach((p) => p.analyze(context));
   this.body.forEach((s) => s.analyze(context));
@@ -266,9 +294,4 @@ Call.prototype.analyze = function (context) {
       throw new Error("Argument and Param types do not match");
     }
   });
-};
-
-IdentifierExpression.prototype.analyze = function (context) {
-  this.ref = context.lookupValue(this.id);
-  this.type = this.ref.type;
 };

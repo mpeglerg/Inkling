@@ -9,7 +9,12 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-  f is Bool true
+f is Bool true
+if (5 < 9 and 5 > 0 or f) {
+  display "hello"
+} else {
+  display "good bye"
+}
 `;
 
 describe("The semantic analyzer", () => {
@@ -22,25 +27,46 @@ describe("The semantic analyzer", () => {
     done();
   });
 });
+
 //TESTED AND PASSED
 // b is Num 5
 // a is always Text  "Hello"
 // c is Set<Text> {"this", "a", "b"}
-//c is List<Text> ["this", "a", "b"]
+// e is List<Text> ["this", "a", "b"]
 // b is 7
-// b is Text "hello this is some sample text"
-// e is Set<Num> {1, 2, 3, 5, 6}
-// d is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
+// g is Text "hello this is some sample text"
+// h is Set<Num> {1, 2, 3, 5, 6}
+// i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
 // ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia": 20}
+// z is Bool true
+// j is Num 0
+//   j++
+// display "Hello"
+// display 0 < 1
+// display 1 > 0
+// display 7 >= 3
+// display 7 <= 3
+// display 0 == 1
+// display 0 != 1
+// display true and false
+// display true or false
+// display 7 + 3
+// display 7 - 3
+// display 7 * 3
+// display 7 / 3
+// display 7 % 3
+// display 2^2
+// while (j < 5) {
+//   display j + 1
+// }
+// f is Bool true
+// if (5 < 9 and 5 > 0 or f) {
+//   display "hello"
+// } else {
+//   display "good bye"
+// }
 
 // TO TEST
-// f is Bool true
-// g is Num 3
-// if (f) {
-//   display(a)
-// } else {
-//   display(g + a)
-// }
 // function f (h is Num, i is Num) is Num {
 //   j is Num 0
 //   while (j < 5) {

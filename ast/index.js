@@ -229,7 +229,7 @@ const NumType = new PrimitiveType("Num");
 const TextType = new PrimitiveType("Text");
 const BoolType = new PrimitiveType("Bool");
 
-// Is this necessary???
+// Not sure if needed
 class None {}
 
 // Literals

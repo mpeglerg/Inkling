@@ -39,15 +39,16 @@ module.exports = {
   },
 
   isNum(expression) {
-    doCheck(expression.type.constructor === NumType, "Not a num"); // modified
+    console.log("Expression type constructor in isNum:", expression);
+    doCheck(expression === NumType, "Not a num"); // modified
   },
 
   isBool(expression) {
-    doCheck(expression.type.constructor === BoolType, "Not a bool");
+    doCheck(expression === BoolType, "Not a bool");
   },
 
   isText(expression) {
-    doCheck(expression.type.constructor === TextType, "Not a text");
+    doCheck(expression === TextType, "Not a text");
   },
 
   mustNotHaveAType(expression) {
@@ -59,16 +60,16 @@ module.exports = {
   },
 
   isNumOrText(expression) {
+    console.log("is num or text: ", expression);
     doCheck(
-      expression.type.constructor === NumType ||
-        expression.type.constructor === TextType,
+      expression === NumType || expression.type === TextType,
       "Cannot apply '+ ' to types that are not num or text"
     );
   },
 
   // Are two types exactly the same?
   expressionsHaveTheSameType(e1, e2) {
-    console.log("expression have same type: ", e1);
+    console.log("expression have same type: ", e1, e2);
     doCheck(deepEqual(e1.id, e2.id), "Types must match exactly");
   },
 
