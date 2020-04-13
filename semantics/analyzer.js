@@ -55,7 +55,7 @@ Block.prototype.analyze = function (context) {
 VarDeclaration.prototype.analyze = function (context) {
   context.variableMustNotBeAlreadyDeclared(this.id)
   this.exp.analyze(context)
-  // should do this: type <=  new PrimitiveType('Num')
+  // should do this: type <=  new PrimitiveType('<type>')
   this.type = context.lookUpIdentifier(this.type)
   check.isAssignableTo(this.exp, this.type)
   context.add(this.id, this)
@@ -72,7 +72,8 @@ Assignment.prototype.analyze = function (context) {
 Literal.prototype.analyze = function (context) {
   if (typeof this.value === 'number') {
     this.type = NumType
-  } else if (typeof this.value === 'boolean') {
+  } else if (typeof this.value === 'boolean' || this.value === 'true' || this.value === 'false') {
+    // ^^ this is not a good way to check i think but it works for now
     this.type = BoolType
   } else if (typeof this.value === 'string') {
     this.type = TextType

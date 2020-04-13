@@ -11,6 +11,8 @@ const analyze = require('../analyzer')
 const program = String.raw`
 a is Num 5
 a is 7
+b is Text "hello world"
+c is always Bool true
 `
 
 describe('The semantic analyzer', () => {
