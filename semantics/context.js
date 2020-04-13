@@ -129,7 +129,7 @@ Context.INITIAL = new Context();
   ...mathFunctions,
   ...textFunctions,
 ].forEach((entity) => {
-  Context.INITIAL.add(entity, entity.id);
+  Context.INITIAL.add(entity.id, entity);
 });
 
 module.exports = Context;

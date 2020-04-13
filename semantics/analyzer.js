@@ -53,13 +53,11 @@ Block.prototype.analyze = function (context) {
 
 // design decisions need to be made for this
 VarDeclaration.prototype.analyze = function (context) {
-  //context.variableMustNotBeAlreadyDeclared(this.id);
   this.exp.analyze(context);
-  this.type = context.lookupValue(this.type);
+  this.type.analyze(context);
   check.isAssignableTo(this.exp, this.type);
-  // const a = new Assignment(this.id, this.exp)
   console.log("adding id: " + this.id);
-  //context.add(this.id, this);
+  context.add(this.id, this);
 };
 
 Assignment.prototype.analyze = function (context) {
