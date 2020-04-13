@@ -25,6 +25,7 @@ const {
   PostfixExpression,
   PrefixExpression,
   ForLoop,
+  Ternary,
 } = require("../ast/index");
 
 const check = require("../semantics/check");
@@ -104,7 +105,6 @@ SetType.prototype.analyze = function (context) {
 IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
     test.analyze(context);
-
     check.isBool(test.type); // Add boolean checker to check file
   });
   this.consequence.forEach((block) => {
@@ -117,6 +117,17 @@ IfStmt.prototype.analyze = function (context) {
     const alternateBlock = context.createChildContextForBlock();
     this.alt.analyze(alternateBlock);
   }
+};
+
+Ternary.prototype.analyze = function (context) {
+  this.test.analyze(context);
+  check.isBool(this.test.type);
+
+  const blockContext = context.createChildContextForBlock();
+  this.consequence.analyze(blockContext);
+
+  const alternateBlock = context.createChildContextForBlock();
+  this.alt.analyze(alternateBlock);
 };
 
 BinaryExpression.prototype.analyze = function (context) {

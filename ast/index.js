@@ -54,6 +54,16 @@ class IfStmt {
   }
 }
 
+class Ternary {
+  constructor(test, consequence, alt) {
+    Object.assign(this, {
+      test,
+      consequence,
+      alt,
+    });
+  }
+}
+
 class ForLoop {
   constructor(id, exp, body) {
     Object.assign(this, {
@@ -273,4 +283,5 @@ module.exports = {
   DictType,
   Literal,
   None,
+  Ternary,
 };

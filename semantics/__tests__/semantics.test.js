@@ -9,9 +9,7 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-function fun1 (h is Num, i is Num) is Void {
-  1 + 1
-}
+  1 < 2 ? "Hello" : "good bye"
 
 `;
 
@@ -74,3 +72,7 @@ describe("The semantic analyzer", () => {
 //   gimme a
 // }
 // j is Num f(3, 2)
+
+// function fun1 (h is Num, i is Num) is Void {
+
+// }

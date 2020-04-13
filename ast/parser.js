@@ -38,6 +38,7 @@ const {
   DictType,
   Literal,
   None,
+  Ternary,
 } = require("../ast");
 
 const grammar = ohm.grammar(fs.readFileSync("./grammar/Inkling.ohm"));
@@ -153,7 +154,7 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
 
   // Expressions
   Exp_ternary(testExp, _1, returnOnTrue, _2, returnOnFalse) {
-    return new IfStmt(testExp.ast(), returnOnTrue.ast(), returnOnFalse.ast());
+    return new Ternary(testExp.ast(), returnOnTrue.ast(), returnOnFalse.ast());
   },
   Exp0_or(left, op, right) {
     return new BinaryExpression(op.ast(), left.ast(), right.ast());
