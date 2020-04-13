@@ -69,7 +69,6 @@ class Context {
   }
 
   add(id, entity) {
-    console.log("id: ", id, " entity ", entity);
     if (id in this.declarations) {
       throw new Error(`${id} already declared in this scope`);
     }

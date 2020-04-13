@@ -62,13 +62,14 @@ VarDeclaration.prototype.analyze = function (context) {
 };
 
 Assignment.prototype.analyze = function (context) {
-  this.id.analyze(context);
-  this.exp.analyze(context);
-  check.isAssignableTo(this.exp, this.id.type);
-  check.isNotReadOnly(this.id);
+  this.target.analyze(context);
+  this.source.analyze(context);
+  check.isAssignableTo(this.source, this.target.type);
+  check.isNotReadOnly(this.target);
 };
 
 Literal.prototype.analyze = function (context) {
+  console.log("in literal: ", this.value);
   if (typeof this.value === "number") {
     this.type = NumType;
   } else if (typeof this.value === "boolean") {
@@ -216,8 +217,10 @@ DictExpression.prototype.analyze = function (context) {
 
 ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context));
+  console.log(" this.members : ", this);
   if (this.members.length) {
     this.type = new ListType(this.members[0].type);
+    console.log("this type: ", this.type);
     for (let i = 1; i < this.members.length; i += 1) {
       check.expressionsHaveTheSameType(
         this.members[i].type,

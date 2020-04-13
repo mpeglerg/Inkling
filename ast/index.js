@@ -24,10 +24,10 @@ class VarDeclaration {
 }
 
 class Assignment {
-  constructor(id, exp) {
+  constructor(target, source) {
     Object.assign(this, {
-      id,
-      exp,
+      target,
+      source,
     });
   }
 }

@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/mpeglerg/Inkling#readme",
   "dependencies": {
+    "deep-equal": "^2.0.2",
     "jest": "^25.1.0",
     "ohm": "^0.10.4",
     "ohm-js": "^0.14.0",

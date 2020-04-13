@@ -1,4 +1,5 @@
 const util = require("util");
+const deepEqual = require("deep-equal");
 const {
   ListType,
   SetType,
@@ -67,14 +68,16 @@ module.exports = {
 
   // Are two types exactly the same?
   expressionsHaveTheSameType(e1, e2) {
-    doCheck(e1.type === e2.type, "Types must match exactly");
+    console.log("expression have same type: ", e1);
+    doCheck(deepEqual(e1.id, e2.id), "Types must match exactly");
   },
 
   // Can we assign expression to a variable/param/field of type type?
   isAssignableTo(expression, type) {
-    console.log("Expression: ", expression, "Type: ", type);
+    console.log("Expression type: ", expression.type, "Type: ", type);
+
     doCheck(
-      expression.type === type || expression.type === NoneType,
+      deepEqual(expression.type, type),
       `Expression of type ${util.format(
         expression.type
       )} not compatible with type ${util.format(type)}`
