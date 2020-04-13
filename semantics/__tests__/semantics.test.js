@@ -13,6 +13,8 @@ a is Num 5
 a is 7
 b is Text "hello world"
 c is always Bool true
+d is List<Text> {"hello", "test", b}
+
 `
 
 describe('The semantic analyzer', () => {
@@ -26,11 +28,14 @@ describe('The semantic analyzer', () => {
   })
 })
 
+// e is Set<Num> {1, 2, 3, 5, 6}
+// e is {3, 5, 6}
+//
+// f is Bool True
 // if (f) {
 //   display(a)
 // } else {
 //   display(g + a)
-// }
 // function f (h is Num, i is Num) is Num {
 //   j is Num 0
 //   while (j < 5) {

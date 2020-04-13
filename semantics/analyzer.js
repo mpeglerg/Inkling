@@ -51,7 +51,6 @@ Block.prototype.analyze = function (context) {
   this.statements.forEach((s) => s.analyze(localContext))
 }
 
-// design decisions need to be made for this
 VarDeclaration.prototype.analyze = function (context) {
   context.variableMustNotBeAlreadyDeclared(this.id)
   this.exp.analyze(context)
@@ -69,7 +68,7 @@ Assignment.prototype.analyze = function (context) {
   check.isNotReadOnly(this.id)
 }
 
-Literal.prototype.analyze = function (context) {
+Literal.prototype.analyze = function () {
   if (typeof this.value === 'number') {
     this.type = NumType
   } else if (typeof this.value === 'boolean' || this.value === 'true' || this.value === 'false') {
@@ -122,7 +121,7 @@ BinaryExpression.prototype.analyze = function (context) {
   }
 }
 
-PrefixExpression.prototype.analyze = function (context) {
+PrefixExpression.prototype.analyze = function () {
   if (this.op === '!') {
     check.isBool(this.operand)
     this.type = BoolType
@@ -132,7 +131,7 @@ PrefixExpression.prototype.analyze = function (context) {
   }
 }
 
-PostfixExpression.prototype.analyze = function (context) {
+PostfixExpression.prototype.analyze = function () {
   check.isNum(this.operand)
   this.type = NumType
 }
