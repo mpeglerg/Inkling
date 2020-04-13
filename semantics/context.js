@@ -91,6 +91,24 @@ class Context {
       throw new Error(`Variable ${id} already declared`)
     }
   }
+  hasBeenDeclared(id) {
+    if (this.declarations[id]) {
+      return true;
+    } else if (this.parent !== null) {
+      return this.parent.hasBeenDeclared(id);
+    }
+    return false;
+  }
+
+  checkIfVariableIsAlreadyDeclared(id) {
+    if (this.declarations[id]) {
+      throw new Error(`Variable ${id} already declared`);
+    }
+    if (this.parent !== null) {
+      return this.parent.checkIfVariableIsAlreadyDeclared(id);
+    }
+    return 0;
+  }
 
   assertInFunction(message) {
     if (!this.currentFunction) {

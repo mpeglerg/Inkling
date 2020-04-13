@@ -9,7 +9,7 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-a is Num 5
+a is always Text 5
 
 `;
 
