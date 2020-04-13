@@ -225,6 +225,10 @@ class PrimitiveType {
   }
 }
 
+const NumType = new PrimitiveType('Num');
+const TextType = new PrimitiveType('Text');
+const BoolType = new PrimitiveType('Bool');
+
 // Is this necessary???
 class None {}
 
@@ -261,6 +265,9 @@ module.exports = {
   PowExp,
   PrefixExpression,
   PostfixExpression,
+  NumType,
+  BoolType,
+  TextType,
   ListType,
   SetType,
   DictType,

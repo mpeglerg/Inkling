@@ -3,8 +3,8 @@
 /* NOTE: As of right now, we have yet to implement new lines within expressions.
         We will get this functionality implemented by the next deadline. */
 
-const fs = require("fs");
-const ohm = require("ohm-js");
+const fs = require('fs');
+const ohm = require('ohm-js');
 
 const {
   Program,
@@ -30,21 +30,24 @@ const {
   KeyValuePair,
   DictExpression,
   SetExpression,
+  NumType,
+  BoolType,
+  TextType,
   ListType,
   SetType,
   DictType,
   Literal,
   None,
-} = require("../ast");
+} = require('../ast');
 
-const grammar = ohm.grammar(fs.readFileSync("./grammar/Inkling.ohm"));
+const grammar = ohm.grammar(fs.readFileSync('./grammar/Inkling.ohm'));
 
 function arrayToNullable(a) {
   return a.length === 0 ? null : a[0];
 }
 
 // eslint-disable-next-line no-unused-vars
-const astGenerator = grammar.createSemantics().addOperation("ast", {
+const astGenerator = grammar.createSemantics().addOperation('ast', {
   Program(stmt) {
     return new Program(stmt.ast());
   },
@@ -72,20 +75,7 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
   // SimpleStmt_break(_) {
   //   return new BreakStatement()
   // },
-  IfStmt_if(
-    _1,
-    _2,
-    firstTest,
-    _3,
-    firstBlock,
-    _4,
-    _5,
-    elifTests,
-    _7,
-    moreBlock,
-    _8,
-    lastBlock
-  ) {
+  IfStmt_if(_1, _2, firstTest, _3, firstBlock, _4, _5, elifTests, _7, moreBlock, _8, lastBlock) {
     return new IfStmt(
       [firstTest.ast(), ...elifTests.ast()],
       [firstBlock.ast(), ...moreBlock.ast()],
@@ -99,20 +89,10 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
     return new WhileLoop(exp.ast(), body.ast());
   },
   FuncDec_function(_funcKeyword, id, _open, params, _close, returnType, body) {
-    return new FuncDecStmt(
-      id.ast(),
-      params.ast(),
-      returnType.ast(),
-      body.ast()
-    );
+    return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast());
   },
   FuncDec_arrowfunction(id, _1, _2, _3, params, _4, returnType, _5, body) {
-    return new FuncDecStmt(
-      id.ast(),
-      params.ast(),
-      returnType.ast(),
-      body.ast()
-    );
+    return new FuncDecStmt(id.ast(), params.ast(), returnType.ast(), body.ast());
   },
   Params(params) {
     return params.ast();
@@ -199,6 +179,15 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
   },
 
   // Types
+  Num(_) {
+    return NumType;
+  },
+  Bool(_) {
+    return BoolType;
+  },
+  Text(_) {
+    return TextType;
+  },
   List(_1, type, _2) {
     return new ListType(type.ast());
   },
@@ -231,7 +220,7 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
   },
 });
 
-module.exports = (text) => {
+module.exports = text => {
   const match = grammar.match(text);
   if (!match.succeeded()) {
     throw match.message;
