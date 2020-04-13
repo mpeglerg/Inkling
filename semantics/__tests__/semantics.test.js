@@ -9,7 +9,8 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-c is List<Text> ["this", "2", "b"]
+  d is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
+  ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia": 20}
 `;
 
 describe("The semantic analyzer", () => {
@@ -28,13 +29,12 @@ describe("The semantic analyzer", () => {
 // c is Set<Text> {"this", "a", "b"}
 //c is List<Text> ["this", "a", "b"]
 // b is 7
+// b is Text "hello this is some sample text"
+// e is Set<Num> {1, 2, 3, 5, 6}
 
 // TO TEST
-
-// b is Text "hello this is some sample text"
-// c is List<Text> ["this", "a", b]
-// d is Dict<Num, Num> [5:6, 3:4]
-// e is Set<Num> {1, 2, 3, 5, 6}
+//
+//
 // e is {3, 5, 6}
 
 // f is Bool true

@@ -91,11 +91,6 @@ SetType.prototype.analyze = function (context) {
   this.memberType.analyze(context);
 };
 
-DictType.prototype.analyze = function (context) {
-  this.keyType.analyze(context);
-  this.valueType.analyze(context);
-};
-
 IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
     test.analyze(context);
@@ -194,6 +189,11 @@ Param.prototype.analyze = function (context) {
 ReturnStatement.prototype.analyze = function (context) {
   this.returnValue.analyze(context);
   context.assertInFunction("Return statement not in function");
+};
+
+DictType.prototype.analyze = function (context) {
+  this.keyType.analyze(context);
+  this.valueType.analyze(context);
 };
 
 DictExpression.prototype.analyze = function (context) {

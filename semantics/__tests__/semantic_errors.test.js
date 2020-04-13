@@ -11,7 +11,12 @@ const Context = require("../context");
 const errors = [
   ["use of undeclared variable", "x is 1\n"],
   ["assignment to constant", "x is always Num 5\nx is 1\n"],
-  ["list with inconsistent types", 'c is List<Text> ["this", 2, "b"]\n'],
+  ["List with inconsistent types", 'c is List<Text> ["this", 2, "b"]\n'],
+  ["Set with inconsistent types", 'c is Set<Text> {"this", 2, "b"}\n'],
+  [
+    "Dict with inconsistent types",
+    'ageDictionary is Dict<Text, Text> {"Sam": 21, "Talia": 20}\n',
+  ],
   //   ['non integer in subtract', '"dog" - 5'],
   //   ['types do not match in equality test', '2 == "dog"'],
   //   ['types do not match in inequality test', '2 <> "dog"'],
