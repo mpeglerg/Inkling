@@ -55,17 +55,16 @@ Block.prototype.analyze = function (context) {
 VarDeclaration.prototype.analyze = function (context) {
   context.variableMustNotBeAlreadyDeclared(this.id)
   this.exp.analyze(context)
-  this.type = context.lookupValue(this.type)
+  // should do this: type <=  new PrimitiveType('Num')
+  this.type = context.lookUpIdentifier(this.type)
   check.isAssignableTo(this.exp, this.type)
-  const a = new Assignment(this.id, this.exp)
-  console.log('adding id: ' + this.id)
-  a.analyze(context)
   context.add(this.id, this)
 }
 
 Assignment.prototype.analyze = function (context) {
   console.log('Assigment ID: ', this.id, 'Exp: ', this.exp)
-  context.lookupValue(this.id)
+  context.lookUpIdentifier(this.id.id) // id.id feels wrong but I guess we need id
+  // of IdentifierExpression
   check.isAssignableTo(this.id, this.exp.type)
   check.isNotReadOnly(this.id)
 }
@@ -85,7 +84,7 @@ Literal.prototype.analyze = function (context) {
 IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
     test.analyze(context)
-    check.isBool(test) // Add boolean checker to check file
+    check.isBool(test)
   })
   this.consequence.forEach((block) => {
     const blockContext = context.createChildContextForBlock()
@@ -123,7 +122,7 @@ BinaryExpression.prototype.analyze = function (context) {
 }
 
 PrefixExpression.prototype.analyze = function (context) {
-  if ('!' == this.op) {
+  if (this.op === '!') {
     check.isBool(this.operand)
     this.type = BoolType
   } else {
@@ -150,7 +149,7 @@ ForLoop.prototype.analyze = function (context) {
 }
 
 FuncDecStmt.prototype.analyze = function (context) {
-  context.add(this.function.id, this)
+  context.add(this.id, this)
   const bodyContext = context.createChildContextForFunctionBody(this)
   this.body.forEach((s) => s.analyze(bodyContext))
 }
@@ -205,12 +204,9 @@ ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context))
   if (this.members.length) {
     this.type = new ListType(this.members[0].type)
-    for (let i = 1; i < this.members.length; i += 1) {
-      check.expressionsHaveTheSameType(
-        this.members[i].type,
-        this.type.memberType,
-      )
-    }
+    this.members.forEach(
+      (m) => check.expressionsHaveTheSameType(m.type, this.type.memberType),
+    )
   }
 }
 
@@ -239,8 +235,8 @@ Call.prototype.analyze = function (context) {
     const paramType = this.id.ref.params[i].type
     if (check.isListType(paramType)) {
       if (
-        a.expression.type.constructor !== paramType.constructor &&
-        paramType !== 'void'
+        a.expression.type.constructor !== paramType.constructor
+        && paramType !== 'void'
       ) {
         throw new Error('Argument and Param types do not match')
       }
@@ -251,6 +247,6 @@ Call.prototype.analyze = function (context) {
 }
 
 IdentifierExpression.prototype.analyze = function (context) {
-  this.ref = context.lookupValue(this.id)
+  this.ref = context.lookUpIdentifier(this.id)
   this.type = this.ref.type
 }

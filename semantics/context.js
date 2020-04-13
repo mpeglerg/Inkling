@@ -75,8 +75,8 @@ class Context {
     this.declarations[id] = entity
   }
 
-  lookupValue(id) {
-    console.log('id: ', id)
+  lookUpIdentifier(id) {
+    console.log('checking in context id: ', id)
 
     for (let context = this; context !== null; context = context.parent) {
       if (id in context.declarations) {
@@ -88,7 +88,7 @@ class Context {
 
   variableMustNotBeAlreadyDeclared(id) {
     if (this.declarations[id]) {
-      throw new Error(`Variable ${id} already declared`)
+      throw new Error(`Variable ${id} has already been declared`)
     }
   }
 
