@@ -26,6 +26,7 @@ const {
   PrefixExpression,
   ForLoop,
   Ternary,
+  None,
 } = require("../ast/index");
 
 const check = require("../semantics/check");
@@ -317,3 +318,7 @@ Call.prototype.analyze = function (context) {
     }
   });
 };
+
+None.prototype.analyze = function (context) {
+  this.type = NoneType;
+}

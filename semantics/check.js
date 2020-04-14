@@ -78,7 +78,7 @@ module.exports = {
     console.log("Expression type: ", expression.type, "Type: ", type);
 
     doCheck(
-      deepEqual(expression.type, type),
+      deepEqual(expression.type, type) || deepEqual(expression.type, NoneType) ,
       `Expression of type ${util.format(
         expression.type
       )} not compatible with type ${util.format(type)}`

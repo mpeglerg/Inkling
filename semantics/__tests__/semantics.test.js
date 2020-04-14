@@ -9,11 +9,7 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw` 
-x is 6
-  for a in [1,2,3] {
-    display a
-  }
-
+k is Bool none
 `;
 
 describe("The semantic analyzer", () => {
@@ -39,7 +35,7 @@ describe("The semantic analyzer", () => {
 // ageDictionary is Dict<Text, Num> {"Sam": 21, "Talia": 20}
 // z is Bool true
 // j is Num 0
-//   j++
+// j++
 // display "Hello"
 // display 0 < 1
 // display 1 > 0
@@ -64,14 +60,14 @@ describe("The semantic analyzer", () => {
 // } else {
 //   display "good bye"
 // }
-//  1 < 2 ? "Hello" : "good bye"
+// 1 < 2 ? "Hello" : "good bye"
 // function Greeting (h is Text, i is Text) is Text{
 //   1 < 2 ? "Hello" : "good bye"
 //   display "Hello"
 //   gimme "hey"
 // }
 // function fun1 (h is Num, i is Num) is Void {
-// display 4
+//   display 4
 // }
 // function checker (j is Num, i is Num) is Num {
 //   b is Num 0
@@ -80,12 +76,12 @@ describe("The semantic analyzer", () => {
 //   }
 //   gimme b
 // }
-// function checker (j is Num, i is Num) is Text {
+// function test (j is Num, i is Num) is Text {
 //   1 < 2 ? "Hello" : "good bye"
 //   while (j < 5) {
-//         display j + i
-//       }
-//    gimme "hello"
+//     display j + i
+//   }
+//   gimme "hello"
 // }
 
 // TO TEST
