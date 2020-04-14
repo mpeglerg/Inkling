@@ -9,10 +9,9 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw` 
- function checker (j is Num, i is Num) is Void {
+function checker (j is Num, i is Num) is Void {
   while (j < 5) {
-    j + i
-      display "hello"
+    display j + i
   }
 }
 `;

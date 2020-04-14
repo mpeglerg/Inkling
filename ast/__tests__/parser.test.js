@@ -39,6 +39,7 @@ const {
   DictType,
   Literal,
   None,
+  Ternary,
 } = require("../index");
 
 const fixture = {
@@ -69,7 +70,7 @@ const fixture = {
         "x",
         false,
         new PrimitiveType("Bool"),
-        new Literal("true")
+        new Literal(true)
       ),
     ]),
   ],
@@ -81,7 +82,7 @@ const fixture = {
         "x",
         false,
         new PrimitiveType("Bool"),
-        new Literal("false")
+        new Literal(false)
       ),
     ]),
   ],
@@ -462,7 +463,7 @@ const fixture = {
     String.raw`x < 0 ? -1 : 1
     `,
     new Program([
-      new IfStmt(
+      new Ternary(
         new BinaryExpression(
           "<",
           new IdentifierExpression("x"),
