@@ -25,10 +25,6 @@ const errors = [
     "Void function should not have a return statment",
     'function fun1 (h is Num, i is Num) is Void {\ndisplay "hello"\ngimme 4\n}\n',
   ],
-  [
-    "Void function should not have a return statment",
-    "function fun1 (h is Num, i is Num) is Text {\n1 + 1\n}\n",
-  ],
   ["non integer in subtract", '"dog" - 5\n'],
   ["types do not match in equality test", '2 == "dog"\n'],
   ["types do not match in inequality test", '2 < "dog"\n'],
@@ -43,16 +39,25 @@ const errors = [
   ],
   ["redeclaration of variable", "x isNum 3\nx isNum 4\n"],
   ["type mismatch in assignment", 'x isNum 3\nx is "hello"\n'],
-  //   ['writing to (readonly) for loop index', 'for i := 0 to 10 do i := 3'],
+  ["writing to (readonly) for loop index", "x is always Num 5\n x is 3\n"],
   ["too many function arguments", "abs(1, 2, 3)\n"],
   ["too few function arguments", "pow(5)\n"],
   ["wrong type of function argument", 'abs("hi")\n'],
-  ["redeclared field", 'd is Dict<Text, Num> {"r": 0, "r": 3}\n'],
+  // ["redeclared field", 'd is Dict<Text, Num> {"r": 0, "r": 3}\n'], // just overwrite the field, can change if have time
   ["no such field", 'p is Dict<Text, Num> {"Sam": 21}\n p["hi"]\n'],
   //   ['member of nonrecord', 'let var x := 3 in x.y end'],
   ["subscript of nonarray", "x is Num 5\nx[0]\n"],
   ["call of nonfunction", "x is Num 5 \n x(5) \n"],
   ["non integer subscript", 'arr is List<Text> [1,2,3]\n arr["lol"]\n'],
+  [
+    "no return statement in function",
+    "function f (x is Num) is Num {display x + 2\n}\n",
+  ],
+  [
+    "function returns the wrong type",
+    "function f (x is Num) is Text {gimme x + 2\n}\n",
+  ],
+  ["return statement outside of a function", "x is Num 5\n"],
   //   // Might need more here, depending on your test coverage report
 ];
 
