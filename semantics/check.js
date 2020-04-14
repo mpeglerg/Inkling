@@ -40,15 +40,15 @@ module.exports = {
 
   isNum(expression) {
     console.log("Expression type constructor in isNum:", expression);
-    doCheck(expression === NumType, "Not a num"); // modified
+    doCheck(expression.type === NumType, "Not a num"); // modified
   },
 
   isBool(expression) {
-    doCheck(expression === BoolType, "Not a bool");
+    doCheck(expression.type === BoolType, "Not a bool");
   },
 
   isText(expression) {
-    doCheck(expression === TextType, "Not a text");
+    doCheck(expression.type === TextType, "Not a text");
   },
 
   mustNotHaveAType(expression) {

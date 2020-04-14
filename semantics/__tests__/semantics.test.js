@@ -10,8 +10,9 @@ const analyze = require("../analyzer");
 
 const program = String.raw` 
 k is Bool true
+j is Num 5
 display !k
-display -j
+display -5
 `;
 
 describe("The semantic analyzer", () => {
