@@ -13,6 +13,7 @@ const errors = [
   ["assignment to constant", "b is always Num 5\nx is 1\n"],
   ["List with inconsistent types", 'c is List<Text> ["this", 2, "b"]\n'],
   ["Set with inconsistent types", 'd is Set<Text> {"this", 2, "b"}\n'],
+  ["Assign new set with wrong types", 'd is Set<Text> {"this", "hello", "b"}\n d is {5, 3, 2}\n'],
   [
     "Dict with inconsistent types",
     'ageDictionary is Dict<Text, Text> {"Sam": 21, "Talia": 20}\n',
@@ -58,6 +59,8 @@ const errors = [
     "function fun5 (x is Num) is Text {gimme x + 2\n}\n",
   ],
   ["return statement outside of a function", "n is Num 5\n gimme n\n"],
+  ["can't use ! prefix on non-boolean types", "o is Num 5\n display !o\n"],
+  ["can't use have a negative boolean", "q is Bool true\n display -q\n"]
   //   // Might need more here, depending on your test coverage report
 ];
 

@@ -81,8 +81,9 @@ Literal.prototype.analyze = function (context) {
     this.type = BoolType;
   } else if (typeof this.value === "string") {
     this.type = TextType;
-  } else {
-    this.type = NoneType;
+    // } else {
+    //   this.type = NoneType;
+    // } // moved this to None.analyze
   }
 };
 
@@ -159,6 +160,7 @@ PowExp.prototype.analyze = function (context) {
 
 PrefixExpression.prototype.analyze = function (context) {
   if ("!" == this.op) {
+    console.log('checking operand: ' + this.operand)
     check.isBool(this.operand);
     this.type = BoolType;
   } else {
@@ -321,4 +323,4 @@ Call.prototype.analyze = function (context) {
 
 None.prototype.analyze = function (context) {
   this.type = NoneType;
-}
+};
