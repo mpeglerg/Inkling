@@ -14,9 +14,9 @@ const {
   TextType,
   BoolType,
   NoneType,
-} = require('./builtins')
+} = require("./builtins");
 
-require('./analyzer')
+require("./analyzer");
 
 // When doing semantic analysis we pass around context objects.
 //
@@ -41,7 +41,7 @@ class Context {
       inLoop,
       declarations: Object.create(null),
       typeMap: Object.create(null),
-    })
+    });
   }
 
   createChildContextForFunctionBody(currentFunction) {
@@ -49,7 +49,7 @@ class Context {
       parent: this,
       currentFunction,
       inLoop: false,
-    })
+    });
   }
 
   createChildContextForLoop() {
@@ -57,7 +57,7 @@ class Context {
       parent: this,
       currentFunction: this.currentFunction,
       inLoop: true,
-    })
+    });
   }
 
   createChildContextForBlock() {
@@ -65,36 +65,57 @@ class Context {
       parent: this,
       currentFunction: this.currentFunction,
       inLoop: this.inLoop,
-    })
+    });
   }
 
   add(id, entity) {
+    //console.log("id ", id, " entity ", entity);
+    //console.log("All declarations", this.declarations);
     if (id in this.declarations) {
-      throw new Error(`${id} already declared in this scope`)
+      console.log("this is the id: ", id);
+      throw new Error(`${id} already declared in this scope`);
     }
-    this.declarations[id] = entity
+    this.declarations[id] = entity;
   }
 
-  lookUpIdentifier(id) {
-    console.log('checking in context id: ', id)
+  lookupValue(id) {
+    console.log("id: ", id);
 
     for (let context = this; context !== null; context = context.parent) {
       if (id in context.declarations) {
-        return context.declarations[id]
+        return context.declarations[id];
       }
     }
-    throw new Error(`Identifier ${id} has not been declared`)
+    throw new Error(`Identifier ${id} has not been declared`);
   }
 
-  variableMustNotBeAlreadyDeclared(id) {
-    if (this.declarations[id]) {
-      throw new Error(`Variable ${id} has already been declared`)
-    }
-  }
+  // variableMustNotBeAlreadyDeclared(id) {
+  //   if (this.declarations[id]) {
+  //     throw new Error(`Variable ${id} already declared`);
+  //   }
+  // }
+  // hasBeenDeclared(id) {
+  //   if (this.declarations[id]) {
+  //     return true;
+  //   } else if (this.parent !== null) {
+  //     return this.parent.hasBeenDeclared(id);
+  //   }
+  //   return false;
+  // }
+
+  // checkIfVariableIsAlreadyDeclared(id) {
+  //   if (this.declarations[id]) {
+  //     throw new Error(`Variable ${id} already declared`);
+  //   }
+  //   if (this.parent !== null) {
+  //     return this.parent.checkIfVariableIsAlreadyDeclared(id);
+  //   }
+  //   return 0;
+  // }
 
   assertInFunction(message) {
     if (!this.currentFunction) {
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 }
@@ -110,7 +131,7 @@ Context.INITIAL = new Context();
   ...mathFunctions,
   ...textFunctions,
 ].forEach((entity) => {
-  Context.INITIAL.add(entity.id, entity)
-})
+  Context.INITIAL.add(entity.id, entity);
+});
 
-module.exports = Context
+module.exports = Context;

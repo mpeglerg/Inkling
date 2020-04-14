@@ -1,22 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 class Program {
   constructor(stmts) {
-    this.stmts = stmts
+    this.stmts = stmts;
   }
 }
 
 class Block {
   constructor(statements) {
-    this.statements = statements
-  }
-}
-
-class Assignment {
-  constructor(id, exp) {
-    Object.assign(this, {
-      id,
-      exp,
-    })
+    this.statements = statements;
   }
 }
 
@@ -28,19 +19,28 @@ class VarDeclaration {
       constant,
       type,
       exp,
-    })
+    });
+  }
+}
+
+class Assignment {
+  constructor(target, source) {
+    Object.assign(this, {
+      target,
+      source,
+    });
   }
 }
 
 class Print {
   constructor(exp) {
-    Object.assign(this, { exp })
+    Object.assign(this, { exp });
   }
 }
 
 class ReturnStatement {
   constructor(returnValue) {
-    this.returnValue = returnValue
+    this.returnValue = returnValue;
   }
 }
 
@@ -50,7 +50,17 @@ class IfStmt {
       tests,
       consequence,
       alt,
-    })
+    });
+  }
+}
+
+class Ternary {
+  constructor(test, consequence, alt) {
+    Object.assign(this, {
+      test,
+      consequence,
+      alt,
+    });
   }
 }
 
@@ -60,7 +70,7 @@ class ForLoop {
       id,
       exp,
       body,
-    })
+    });
   }
 }
 
@@ -71,14 +81,14 @@ class FuncObject {
       id,
       params,
       body,
-    })
+    });
   }
 }
 
 class FuncDecStmt {
-  constructor(id, params, type, body) {
-    this.id = id
-    this.function = new FuncObject(type, id, params, body)
+  constructor(id, params, returnType, body) {
+    this.id = id;
+    this.function = new FuncObject(returnType, id, params, body);
   }
 }
 
@@ -87,7 +97,7 @@ class WhileLoop {
     Object.assign(this, {
       condition,
       body,
-    })
+    });
   }
 }
 
@@ -96,13 +106,13 @@ class FieldVarExp {
     Object.assign(this, {
       id,
       field,
-    })
+    });
   }
 }
 
 class IdentifierExpression {
   constructor(id) {
-    this.id = id
+    this.id = id;
   }
 }
 
@@ -111,7 +121,7 @@ class SubscriptedVarExp {
     Object.assign(this, {
       id,
       key,
-    })
+    });
   }
 }
 
@@ -120,7 +130,7 @@ class Param {
     Object.assign(this, {
       id,
       type,
-    })
+    });
   }
 }
 
@@ -129,7 +139,7 @@ class Call {
     Object.assign(this, {
       id,
       args,
-    })
+    });
   }
 }
 
@@ -139,7 +149,7 @@ class BinaryExpression {
       op,
       left,
       right,
-    })
+    });
   }
 }
 
@@ -148,7 +158,7 @@ class PowExp {
     Object.assign(this, {
       left,
       right,
-    })
+    });
   }
 }
 
@@ -157,7 +167,7 @@ class PrefixExpression {
     Object.assign(this, {
       op,
       operand,
-    })
+    });
   }
 }
 
@@ -166,13 +176,13 @@ class PostfixExpression {
     Object.assign(this, {
       op,
       operand,
-    })
+    });
   }
 }
 
 class ListExpression {
   constructor(members) {
-    this.members = members
+    this.members = members;
   }
 }
 
@@ -181,32 +191,32 @@ class KeyValuePair {
     Object.assign(this, {
       key,
       value,
-    })
+    });
   }
 }
 
 class DictExpression {
   constructor(exp) {
-    Object.assign(this, { exp })
+    Object.assign(this, { exp });
   }
 }
 
 class SetExpression {
   constructor(members) {
-    this.members = members
+    this.members = members;
   }
 }
 
 // Types
 class ListType {
   constructor(memberType) {
-    Object.assign(this, { memberType })
+    Object.assign(this, { memberType });
   }
 }
 
 class SetType {
   constructor(memberType) {
-    Object.assign(this, { memberType })
+    Object.assign(this, { memberType });
   }
 }
 
@@ -215,23 +225,27 @@ class DictType {
     Object.assign(this, {
       keyType,
       valueType,
-    })
+    });
   }
 }
 
 class PrimitiveType {
   constructor(id) {
-    Object.assign(this, { id })
+    Object.assign(this, { id });
   }
 }
 
-// Is this necessary???
+const NumType = new PrimitiveType("Num");
+const TextType = new PrimitiveType("Text");
+const BoolType = new PrimitiveType("Bool");
+
+// Not sure if needed
 class None {}
 
 // Literals
 class Literal {
   constructor(value) {
-    this.value = value
+    this.value = value;
   }
 }
 
@@ -261,9 +275,13 @@ module.exports = {
   PowExp,
   PrefixExpression,
   PostfixExpression,
+  NumType,
+  BoolType,
+  TextType,
   ListType,
   SetType,
   DictType,
   Literal,
   None,
-}
+  Ternary,
+};
