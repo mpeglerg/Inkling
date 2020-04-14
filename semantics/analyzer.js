@@ -159,9 +159,9 @@ PowExp.prototype.analyze = function (context) {
 };
 
 PrefixExpression.prototype.analyze = function (context) {
-  this.operand.analyze(context)
+  this.operand.analyze(context);
   if ("!" == this.op) {
-    console.log('checking operand: ' + this.operand)
+    console.log("checking operand: " + this.operand);
     check.isBool(this.operand.type);
     this.type = BoolType;
   } else {
@@ -196,13 +196,15 @@ Assignment.prototype.analyze = function (context) {
 };
 
 ForLoop.prototype.analyze = function (context) {
-  this.exp.analyze(context);
-
+  this.collection.analyze(context);
+  console.log("for loop : ", this.collection);
+  check.isListType(this.collection.type);
+  const type = this.collection.type.memberType.id;
   const bodyContext = context.createChildContextForLoop();
-  //this.id = new Assignment(this.id, NumType);
-  console.log("this is for loop: ", this.id);
-  bodyContext.add(this.id);
-  // check list, obj, or set
+  this.id = new Assignment(this.id, type);
+  bodyContext.add(this.id, this);
+  console.log("this is for loop: ", bodyContext);
+  this.body.analyze(bodyContext);
 };
 
 FuncDecStmt.prototype.analyze = function (context) {

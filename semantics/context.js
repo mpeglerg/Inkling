@@ -53,6 +53,7 @@ class Context {
   }
 
   createChildContextForLoop() {
+    console.log("in the contxt for loop", this);
     return new Context({
       parent: this,
       currentFunction: this.currentFunction,

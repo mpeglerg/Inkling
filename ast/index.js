@@ -65,10 +65,10 @@ class Ternary {
 }
 
 class ForLoop {
-  constructor(id, exp, body) {
+  constructor(id, collection, body) {
     Object.assign(this, {
       id,
-      exp,
+      collection,
       body,
     });
   }

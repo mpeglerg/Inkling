@@ -9,12 +9,10 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-  j is Num 0 
-  while (j < 5) {
-    display j
-    inWhileVar is Text "hello"
-  }
-  display inWhileVar
+for a in [1,2,3] {
+
+    display a
+  } 
 `;
 
 describe("The semantic analyzer", () => {
