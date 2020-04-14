@@ -162,10 +162,10 @@ PrefixExpression.prototype.analyze = function (context) {
   this.operand.analyze(context)
   if ("!" == this.op) {
     console.log('checking operand: ' + this.operand)
-    check.isBool(this.operand);
+    check.isBool(this.operand.type);
     this.type = BoolType;
   } else {
-    check.isNum(this.operand);
+    check.isNum(this.operand.type);
     this.type = NumType;
   }
 };
