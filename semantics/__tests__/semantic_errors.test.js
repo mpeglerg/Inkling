@@ -48,11 +48,11 @@ const errors = [
   ["too few function arguments", "pow(5)\n"],
   ["wrong type of function argument", 'abs("hi")\n'],
   ["redeclared field", 'd is Dict<Text, Num> {"r": 0, "r": 3}\n'],
-  ["no such field", 'p is Dict<Text, Numt> {"Sam": 21}\n p["hi"]\n'],
+  ["no such field", 'p is Dict<Text, Num> {"Sam": 21}\n p["hi"]\n'],
   //   ['member of nonrecord', 'let var x := 3 in x.y end'],
   ["subscript of nonarray", "x is Num 5\nx[0]\n"],
   ["call of nonfunction", "x is Num 5 \n x(5) \n"],
-  ["non integer subscript", 'arr is List<text>\n arr["lol"]\n'],
+  ["non integer subscript", 'arr is List<Text> [1,2,3]\n arr["lol"]\n'],
   //   // Might need more here, depending on your test coverage report
 ];
 
