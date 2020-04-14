@@ -58,7 +58,7 @@ Inkling {
     KeyValue    =  Exp ":" Exp
     keyword     =  ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "always " | "display"
                 |  "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<"
-                |  "Bool" | "List<" | "Text " | "Set<" | "Void" | "concat" | "subtext" | "none")
+                |  "Bool " | "List<" | "Text " | "Set<" | "Void" | "concat" | "subtext" | "none")
     Type        =  (Num | Dict | Bool | List | Text | Set)
     Num         =  "Num"
     List        =  "List<" Type ">"

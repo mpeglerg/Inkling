@@ -191,8 +191,8 @@ WhileLoop.prototype.analyze = function (context) {
 };
 
 ForLoop.prototype.analyze = function (context) {
-  // TODO
-  this.exp.analyze(context);
+  this.exp.forEach((e) => e.analyze(context));
+  console.log("this is for loop: ", this.exp);
   // check list, obj, or set
 };
 
@@ -213,17 +213,18 @@ FuncObject.prototype.analyze = function (context) {
     (b) => b.constructor === ReturnStatement
   );
   console.log(
-    "return statment: ",
+    "return type: ",
     this.type !== "Void",
-    " return :",
-    returnStatement.length === 0
+    " return  statement:",
+    returnStatement.length
   );
   if (returnStatement.length === 0 && this.type !== "Void") {
     throw new Error("No return statement found");
-  } else if (returnStatement) {
+  } else if (returnStatement.length > 0) {
     if (this.type === "Void") {
       throw new Error("Void functions do not have return statements");
     }
+    console.log("in the else if", returnStatement > 0);
     check.isAssignableTo(returnStatement[0].returnValue, this.type);
   }
 };
