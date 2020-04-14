@@ -71,13 +71,6 @@ VarDeclaration.prototype.analyze = function (context) {
   context.add(this.id, this);
 };
 
-Assignment.prototype.analyze = function (context) {
-  this.target.analyze(context);
-  this.source.analyze(context);
-  check.isAssignableTo(this.source, this.target.type);
-  check.isNotReadOnly(this.target);
-};
-
 Literal.prototype.analyze = function (context) {
   console.log("in literal: ", this.value);
   if (typeof this.value === "number") {
@@ -190,9 +183,21 @@ WhileLoop.prototype.analyze = function (context) {
   this.body.analyze(context);
 };
 
+Assignment.prototype.analyze = function (context) {
+  console.log("In Assigment: ", this);
+  this.target.analyze(context);
+  this.source.analyze(context);
+  check.isAssignableTo(this.source, this.target.type);
+  check.isNotReadOnly(this.target);
+};
+
 ForLoop.prototype.analyze = function (context) {
-  this.exp.forEach((e) => e.analyze(context));
-  console.log("this is for loop: ", this.exp);
+  this.exp.analyze(context);
+
+  const bodyContext = context.createChildContextForLoop();
+  //this.id = new Assignment(this.id, NumType);
+  console.log("this is for loop: ", this.id);
+  bodyContext.add(this.id);
   // check list, obj, or set
 };
 

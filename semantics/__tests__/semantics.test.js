@@ -9,7 +9,10 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw` 
-  a is Num 5
+x is 6
+  for a in [1,2,3] {
+    display a
+  }
 
 `;
 
