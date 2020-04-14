@@ -13,7 +13,10 @@ const errors = [
   ["assignment to constant", "b is always Num 5\nx is 1\n"],
   ["List with inconsistent types", 'c is List<Text> ["this", 2, "b"]\n'],
   ["Set with inconsistent types", 'd is Set<Text> {"this", 2, "b"}\n'],
-  ["Assign new set with wrong types", 'd is Set<Text> {"this", "hello", "b"}\n d is {5, 3, 2}\n'],
+  [
+    "Assign new set with wrong types",
+    'd is Set<Text> {"this", "hello", "b"}\n d is {5, 3, 2}\n',
+  ],
   [
     "Dict with inconsistent types",
     'ageDictionary is Dict<Text, Text> {"Sam": 21, "Talia": 20}\n',
@@ -60,7 +63,15 @@ const errors = [
   ],
   ["return statement outside of a function", "n is Num 5\n gimme n\n"],
   ["can't use ! prefix on non-boolean types", "o is Num 5\n display !o\n"],
-  ["can't use have a negative boolean", "q is Bool true\n display -q\n"]
+  ["can't use have a negative boolean", "q is Bool true\n display -q\n"],
+  [
+    "variable init in function used outside of block",
+    "function fun1 (h is Num) is Void {\ndisplay 4\ninFunctionVar is Num 3\n}\ndisplay inFunctionVar\n",
+  ],
+  [
+    "variable init in function used outside of block",
+    '  j is Num 0\nwhile (j < 5) {\ndisplay j\ninWhileVar is Text "hello"\n}\ndisplay inWhileVar\n',
+  ],
   //   // Might need more here, depending on your test coverage report
 ];
 
