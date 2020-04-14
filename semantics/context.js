@@ -114,10 +114,7 @@ class Context {
   // }
 
   assertInFunction(message) {
-    console.log("assert In function ", this.currentFunction);
     if (!this.currentFunction) {
-      console.log("assert In function ", this.currentFunction);
-
       throw new Error(message);
     }
   }

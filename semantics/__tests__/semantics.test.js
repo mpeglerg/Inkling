@@ -9,8 +9,8 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw` 
-a is Num 5
-gimme a
+  a is Num 5
+
 `;
 
 describe("The semantic analyzer", () => {
