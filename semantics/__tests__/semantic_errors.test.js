@@ -57,7 +57,7 @@ const errors = [
     "function returns the wrong type",
     "function f (x is Num) is Text {gimme x + 2\n}\n",
   ],
-  ["return statement outside of a function", "x is Num 5\n"],
+  ["return statement outside of a function", "a is Num 5\n"],
   //   // Might need more here, depending on your test coverage report
 ];
 
