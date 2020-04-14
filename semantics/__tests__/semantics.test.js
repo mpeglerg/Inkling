@@ -9,7 +9,9 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw` 
-k is Bool none
+k is Bool true
+display !k
+display -j
 `;
 
 describe("The semantic analyzer", () => {
