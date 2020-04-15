@@ -209,21 +209,19 @@ Assignment.prototype.analyze = function (context) {
 };
 
 ForLoop.prototype.analyze = function (context) {
+  console.log(this)
   let type;
   this.collection.analyze(context);
   check.isIterable(this.collection.type);
-  if (
-    this.collection.type.constructor === ListType ||
-    this.collection.type.constructor === SetType
-  ) {
-    type = this.collection.type.memberType.id;
+  if (this.collection.type.constructor === ListType || this.collection.type.constructor === SetType) {
+    type = this.collection.type.memberType;
   } else if (this.collection.type.constructor === DictType) {
-    type = this.collection.type.keyType.id;
+    type = this.collection.type.keyType;
   } else {
-    type = this.collection.type.id;
+    type = this.collection.type;
   }
   const bodyContext = context.createChildContextForLoop();
-  const id = new Assignment(this.id, type);
+  const id = new VarDeclaration(this.id, false, type);
   bodyContext.add(this.id, id);
   this.body.analyze(bodyContext);
 };
