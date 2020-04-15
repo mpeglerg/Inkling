@@ -83,20 +83,15 @@ for a in {1:1} {
 for a in {1,2,3} {
   display a
 }
-function fun (j is Bool, i is Bool) is Bool {
-  gimme j
-}
-fun(true,true)
-l is Text none
-function fun (j is Bool, i is Bool) is Bool {
-  gimme j
-}
-fun(true,true)
-k is Set<Num> {1,2,3}
-k[0] is 4
 
-k1 is Dict<Num, Num> {1:10,2:2,3:3}
-k1[1]
+function fun (j is Bool, i is Bool) is Bool {
+  gimme j
+}
+fun(true,true)
+k1 is Set<Num> {1,2,3}
+k1[0] is 4
+
+
 `;
 
 describe("The semantic analyzer", () => {

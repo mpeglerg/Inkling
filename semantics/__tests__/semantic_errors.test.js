@@ -47,7 +47,7 @@ const errors = [
   ["too many function arguments", "abs(1, 2, 3)\n"],
   ["too few function arguments", "pow(5)\n"],
   ["wrong type of function argument", 'abs("hi")\n'],
-  ["redeclared field", 'd is Dict<Text, Num> {"r": 0, "r": 3}\n'], // just overwrite the field, can change if have time
+  //["redeclared field", 'd is Dict<Text, Num> {"r": 0, "r": 3}\n'], // just overwrite the field, can change if have time
   ["no such field", 'j is Dict<Text, Num> {"Sam": 21}\n j["hi"]\n'],
   ["subscript of nonarray", "k is Num 5\n k[0]\n"],
   ["call of nonfunction", "l is Num 5 \n l(5) \n"],

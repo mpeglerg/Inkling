@@ -19,7 +19,7 @@ function doCheck(condition, message) {
 
 module.exports = {
   isIterable(type) {
-    console.log("this is the type ", type);
+    //console.log("this is the type ", type);
     doCheck(
       type.constructor === ListType ||
         type.constructor === SetType ||
@@ -38,7 +38,7 @@ module.exports = {
   // },
 
   isNum(expression) {
-    console.log("Expression type constructor in isNum:", expression);
+    // console.log("Expression type constructor in isNum:", expression);
     doCheck(expression === NumType, "Not a num"); // modified
   },
 
@@ -59,7 +59,7 @@ module.exports = {
   },
 
   isNumOrText(expression) {
-    console.log("is num or text: ", expression);
+    // console.log("is num or text: ", expression);
     doCheck(
       expression === NumType || expression.type === TextType,
       "Cannot apply '+ ' to types that are not num or text"
@@ -68,13 +68,13 @@ module.exports = {
 
   // Are two types exactly the same?
   expressionsHaveTheSameType(e1, e2) {
-    console.log("expression have same type: ", e1, e2);
+    // console.log("expression have same type: ", e1, e2);
     doCheck(deepEqual(e1.id, e2.id), "Types must match exactly");
   },
 
   // Can we assign expression to a variable/param/field of type type?
   isAssignableTo(expression, type) {
-    console.log("Expression type: ", expression.type, "Type: ", type);
+    //  console.log("Expression type: ", expression.type, "Type: ", type);
 
     doCheck(
       deepEqual(expression.type, type),
@@ -99,7 +99,7 @@ module.exports = {
     doCheck(context.inLoop, `${keyword} can only be used in a loop`);
   },
   sameType(arg, param) {
-    console.log("in same type ", arg, param);
+    // console.log("in same type ", arg, param);
     if (param.id === "Num") {
       doCheck(typeof arg.value === "number", `Type mismatch`);
     }
@@ -113,7 +113,7 @@ module.exports = {
 
   // Same number of args and params; all types compatible
   legalArguments(args, params) {
-    console.log("this ", args, params);
+    // console.log("this ", args, params);
     doCheck(
       args.length === params.length,
       `Expected ${params.length} args in call, got ${args.length}`
