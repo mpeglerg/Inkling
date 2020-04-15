@@ -78,7 +78,7 @@ module.exports = {
   },
 
   isFunction(value) {
-    doCheck(XZLvalue.constructor === FuncDecStmt, "Not a function"); // modified
+    doCheck(value.constructor === FuncDecStmt, "Not a function"); // modified
   },
 
   isNumOrText(expression) {
@@ -100,13 +100,13 @@ module.exports = {
     console.log("Expression type: ", expression.type, "Type: ", type);
 
     doCheck(
-      deepEqual(expression.type, type) || deepEqual(expression.type, NoneType),
+      deepEqual(expression.type, type),
       `Expression of type ${util.format(
         expression.type
       )} not compatible with type ${util.format(type)}`
     );
   },
-
+  // || deepEqual(expression.type, NoneType)
   isNotReadOnly(lvalue) {
     doCheck(
       !(lvalue.constructor === IdentifierExpression && lvalue.ref.constant),
@@ -121,13 +121,38 @@ module.exports = {
   inLoop(context, keyword) {
     doCheck(context.inLoop, `${keyword} can only be used in a loop`);
   },
+  sameType(arg, param) {
+    console.log("in same type ", arg, param);
+    if (param.id === "Num") {
+      doCheck(typeof arg.value === "number", `Type mismatch`);
+    }
+    if (param.id === "Text") {
+      doCheck(typeof arg.value === "string", `Type mismatch`);
+    }
+    if (param.id === "Bool") {
+      doCheck(typeof arg.value === "boolean", `Type mismatch`);
+    }
+  },
 
   // Same number of args and params; all types compatible
   legalArguments(args, params) {
+    console.log("this ", args, params);
     doCheck(
       args.length === params.length,
       `Expected ${params.length} args in call, got ${args.length}`
     );
-    args.forEach((arg, i) => this.isAssignableTo(arg, params[i].type));
+    args.forEach((arg, i) => this.sameType(arg, params[i].type));
+  },
+
+  containsKey(id, key) {
+    console.log("contains key id: ", id.type.constructor);
+    if (id.type.constructor === ListType) {
+      this.isNum(id.type);
+      doCheck(id.members.length > key, "Index out of bounds");
+    }
+    if (id.type === DictType) {
+      console.log("contains key");
+      doCheck(key in id.exp, "Invalid key");
+    }
   },
 };

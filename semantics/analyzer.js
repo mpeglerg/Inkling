@@ -196,11 +196,16 @@ WhileLoop.prototype.analyze = function (context) {
 };
 
 Assignment.prototype.analyze = function (context) {
-  console.log("In Assigment: ", this);
   this.target.analyze(context);
   this.source.analyze(context);
-  check.isAssignableTo(this.source, this.target.type);
-  check.isNotReadOnly(this.target);
+  console.log("In Assigment: ", this);
+  if (!this.target.id) {
+    check.isAssignableTo(this.source, this.target.type);
+    check.isNotReadOnly(this.target);
+  } else {
+    check.isAssignableTo(this.source, this.target.id.type);
+    console.log("in else Assignment");
+  }
 };
 
 ForLoop.prototype.analyze = function (context) {
@@ -221,6 +226,7 @@ ForLoop.prototype.analyze = function (context) {
 };
 
 FuncDecStmt.prototype.analyze = function (context) {
+  console.log("This is the function in fucn statement", this);
   context.add(this.function.id, this);
   const bodyContext = context.createChildContextForFunctionBody(this);
   console.log("in funcDec: ", this);
@@ -316,9 +322,11 @@ SetExpression.prototype.analyze = function (context) {
 Call.prototype.analyze = function (context) {
   console.log("this is the this.id in call", this);
   this.callee = context.lookupValue(this.id.id);
-  console.log("this is the calle: ", this.callee);
-  // this.id.analyze(context);
-  // this.args.analyze(context);
+  check.isFunction(this.callee);
+  this.args.forEach((arg) => arg.analyze(context));
+  console.log("this is the calle: ", this.callee.function.params, this);
+  check.legalArguments(this.args, this.callee.function.params);
+  this.type = this.callee.function.type;
 };
 
 None.prototype.analyze = function (context) {
@@ -326,17 +334,21 @@ None.prototype.analyze = function (context) {
 };
 
 SubscriptedVarExp.prototype.analyze = function (context) {
-  this.id.analyze(context);
-  this.key.analyze(context);
-  if (check.isListOrDict(this.id)) {
-    if (this.id.type === ListType) {
-      if (check.isNum(this.key)) {
-        this.type = this.id[key].type;
-      }
-    } else {
-      this.type = this.id[key].type;
-    }
-  }
+  console.log("in subscrit: ", this);
+  this.callee = context.lookupValue(this.id.id);
+  console.log("callee: ", this.callee);
+  check.containsKey(this.callee, this.key.value);
+  this.type = this.callee.type.memberType;
+
+  // if (check.isListOrDict(this.id)) {
+  //   if (this.id.type === ListType) {
+  //     if (check.isNum(this.key)) {
+  //       this.type = this.id[key].type;
+  //     }
+  //   } else {
+  //     this.type = this.id[key].type;
+  //   }
+  // }
 };
 
 // Might need this in check

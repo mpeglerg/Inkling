@@ -9,11 +9,11 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-function fun (j is Num, i is Num) is Num {
-    gimme j
-  }
-  fun(1,2)
+k is List<Num> {1,2,3}
+k[0]
 `;
+// k is Dict<Num, Num> {1:10,2:2,3:3}
+// k[1]
 
 describe("The semantic analyzer", () => {
   test("accepts the mega program with all syntactic forms", (done) => {
@@ -101,8 +101,13 @@ describe("The semantic analyzer", () => {
 // for a in {1,2,3} {
 //   display a
 // }
+// function fun (j is Bool, i is Bool) is Bool {
+//   gimme j
+// }
+// fun(true,true)
+// k is Set<Num> {1,2,3}
+// k[0] is 4
 
-// TO TEST
 // function f (h is Num, i is Num) is Num {
 //   j is Num 0
 //   while (j < 5) {
