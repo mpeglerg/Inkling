@@ -27,6 +27,7 @@ const {
   ForLoop,
   Ternary,
   None,
+  SubscriptedVarExp,
 } = require("../ast/index");
 
 const check = require("../semantics/check");
@@ -47,18 +48,18 @@ module.exports = function (root) {
 Program.prototype.analyze = function (context) {
   //console.log("These are statements : ", context.declarations.display);
   this.stmts.forEach((stmt) => {
-    console.log("stmt ", stmt);
+    //console.log("stmt ", stmt);
     stmt.analyze(context);
   });
 };
 
 Print.prototype.analyze = function (context) {
-  console.log("in print");
+  console.log("in print", this.exp);
   this.exp.analyze(context);
 };
 
 Block.prototype.analyze = function (context) {
-  //console.log("In block: ", this.statements);
+  console.log("In block: ", this.statements);
   const localContext = context.createChildContextForBlock();
   this.statements.forEach((s) => s.analyze(localContext));
 };
@@ -171,8 +172,15 @@ PrefixExpression.prototype.analyze = function (context) {
 };
 
 IdentifierExpression.prototype.analyze = function (context) {
-  this.ref = context.lookupValue(this.id);
-  this.type = this.ref.type;
+  console.log("identifierExp this.id.id: ", this.id);
+  if (!this.id.id) {
+    this.ref = context.lookupValue(this.id);
+    this.type = this.ref.type;
+    console.log("call");
+  } else {
+    console.log("identifierExp in else:", this);
+    this.id.analyze(context);
+  }
 };
 
 PostfixExpression.prototype.analyze = function (context) {
@@ -184,7 +192,7 @@ PostfixExpression.prototype.analyze = function (context) {
 WhileLoop.prototype.analyze = function (context) {
   this.condition.analyze(context);
   const bodyContext = context.createChildContextForLoop();
-  this.body.analyze(context);
+  this.body.analyze(bodyContext);
 };
 
 Assignment.prototype.analyze = function (context) {
@@ -196,14 +204,19 @@ Assignment.prototype.analyze = function (context) {
 };
 
 ForLoop.prototype.analyze = function (context) {
+  let type;
   this.collection.analyze(context);
-  console.log("for loop : ", this.collection);
-  check.isListType(this.collection.type);
-  const type = this.collection.type.memberType.id;
+  check.isIterable(this.collection.type);
+  if (this.collection.type === ListType || this.collection.type === SetType) {
+    type = this.collection.type.memberType.id;
+  } else if (this.collection.type.constructor === DictType) {
+    type = this.collection.type.keyType.id;
+  } else {
+    type = this.collection.type.id;
+  }
   const bodyContext = context.createChildContextForLoop();
-  this.id = new Assignment(this.id, type);
-  bodyContext.add(this.id, this);
-  console.log("this is for loop: ", bodyContext);
+  const id = new Assignment(this.id, type);
+  bodyContext.add(this.id, id);
   this.body.analyze(bodyContext);
 };
 
@@ -223,19 +236,18 @@ FuncObject.prototype.analyze = function (context) {
   const returnStatement = this.body.statements.filter(
     (b) => b.constructor === ReturnStatement
   );
-  console.log(
-    "return type: ",
-    this.type !== "Void",
-    " return  statement:",
-    returnStatement.length
-  );
+  // console.log(
+  //   "return type: ",
+  //   this.type !== "Void",
+  //   " return  statement:",
+  //   returnStatement.length
+  // );
   if (returnStatement.length === 0 && this.type !== "Void") {
     throw new Error("No return statement found");
   } else if (returnStatement.length > 0) {
     if (this.type === "Void") {
       throw new Error("Void functions do not have return statements");
     }
-    console.log("in the else if", returnStatement > 0);
     check.isAssignableTo(returnStatement[0].returnValue, this.type);
   }
 };
@@ -302,28 +314,32 @@ SetExpression.prototype.analyze = function (context) {
 };
 
 Call.prototype.analyze = function (context) {
-  this.id.analyze(context);
-  this.args.forEach((arg) => arg.analyze(context));
-  this.type = this.id.ref.type;
-  context.isFunction(this.id.ref);
-  if (this.args.length !== this.id.ref.params.length) {
-    throw new Error("Incorrect number of arguments");
-  }
-  this.args.forEach((a, i) => {
-    const paramType = this.id.ref.params[i].type;
-    if (check.isListType(paramType)) {
-      if (
-        a.expression.type.constructor !== paramType.constructor &&
-        paramType !== "void"
-      ) {
-        throw new Error("Argument and Param types do not match");
-      }
-    } else if (a.expression.type !== paramType && paramType !== "void") {
-      throw new Error("Argument and Param types do not match");
-    }
-  });
+  console.log("this is the this.id in call", this);
+  this.callee = context.lookupValue(this.id.id);
+  console.log("this is the calle: ", this.callee);
+  // this.id.analyze(context);
+  // this.args.analyze(context);
 };
 
 None.prototype.analyze = function (context) {
   this.type = NoneType;
 };
+
+SubscriptedVarExp.prototype.analyze = function (context) {
+  this.id.analyze(context);
+  this.key.analyze(context);
+  if (check.isListOrDict(this.id)) {
+    if (this.id.type === ListType) {
+      if (check.isNum(this.key)) {
+        this.type = this.id[key].type;
+      }
+    } else {
+      this.type = this.id[key].type;
+    }
+  }
+};
+
+// Might need this in check
+// isListOrDict(expression) {
+//   doCheck(expression.type.constructor === ListType || expression.type.constructor === DictType, "Not a list or dict"); // modified
+// },

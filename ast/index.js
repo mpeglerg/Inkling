@@ -136,6 +136,7 @@ class Param {
 
 class Call {
   constructor(id, args) {
+    console.log("in call class");
     Object.assign(this, {
       id,
       args,

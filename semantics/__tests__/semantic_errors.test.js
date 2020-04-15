@@ -49,9 +49,8 @@ const errors = [
   ["wrong type of function argument", 'abs("hi")\n'],
   // ["redeclared field", 'd is Dict<Text, Num> {"r": 0, "r": 3}\n'], // just overwrite the field, can change if have time
   ["no such field", 'j is Dict<Text, Num> {"Sam": 21}\n p["hi"]\n'],
-  //   ['member of nonrecord', 'let var x := 3 in x.y end'],
-  ["subscript of nonarray", "k is Num 5\nx[0]\n"],
-  ["call of nonfunction", "l is Num 5 \n x(5) \n"],
+  ["subscript of nonarray", "k is Num 5\n k[0]\n"],
+  ["call of nonfunction", "l is Num 5 \n l(5) \n"],
   ["non integer subscript", 'm is List<Text> [1,2,3]\n m["lol"]\n'],
   [
     "no return statement in function",

@@ -9,17 +9,17 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
-for a in [1,2,3] {
-
-    display a
-  } 
+function fun (j is Num, i is Num) is Num {
+    gimme j
+  }
+  fun(1,2)
 `;
 
 describe("The semantic analyzer", () => {
   test("accepts the mega program with all syntactic forms", (done) => {
     const astRoot = parse(program);
     expect(astRoot).toBeTruthy();
-    console.log("analyze : ", analyze);
+    //console.log("analyze : ", analyze);
     analyze(astRoot);
     expect(astRoot).toBeTruthy();
     done();
@@ -89,6 +89,18 @@ describe("The semantic analyzer", () => {
 // k is Bool true
 // display !k
 // display -j
+// for a in "hello" {
+//   display a
+// }
+// for a in  [1,2,3] {
+//   display a
+// }
+// for a in {1:1} {
+//   display a
+// }
+// for a in {1,2,3} {
+//   display a
+// }
 
 // TO TEST
 // function f (h is Num, i is Num) is Num {

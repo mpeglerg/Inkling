@@ -2,12 +2,14 @@ const util = require("util");
 const deepEqual = require("deep-equal");
 const {
   ListType,
+  NumType,
+  BoolType,
+  TextType,
   SetType,
   DictType,
   FuncDecStmt,
   IdentifierExpression,
 } = require("../ast");
-const { NumType, TextType, BoolType, NoneType } = require("./builtins");
 
 function doCheck(condition, message) {
   if (!condition) {
@@ -18,11 +20,23 @@ function doCheck(condition, message) {
 module.exports = {
   // Is this type an array type?
   isListType(type) {
-    doCheck(type.constructor === ListType, "Not a list type"); // modified
+    doCheck(
+      type.constructor === ListType,
+      "Not a list type, dict, set or text"
+    ); // modified
   },
-
+  isIterable(type) {
+    console.log("this is the type ", type);
+    doCheck(
+      type.constructor === ListType ||
+        type.constructor === SetType ||
+        type.constructor === DictType ||
+        type === TextType,
+      "Not a list, set, dic or text"
+    );
+  },
   isSetType(type) {
-    doCheck(type.constructor === SetType, "Not a list type"); // modified
+    doCheck(type.constructor === SetType, "Not a set type"); // modified
   },
 
   isDictType(type) {
@@ -34,8 +48,16 @@ module.exports = {
   },
 
   // Is the type of this expression an array type?
-  isList(expression) {
-    doCheck(expression.type.constructor === ListType, "Not a list"); // modified
+  // isList(expression) {
+  //   doCheck(expression.type.constructor === ListType, "Not a list"); // modified
+  // },
+
+  isListOrDict(expression) {
+    doCheck(
+      expression.type.constructor === ListType ||
+        expression.type.constructor === DictType,
+      "Not a list or dict"
+    ); // modified
   },
 
   isNum(expression) {
@@ -78,7 +100,7 @@ module.exports = {
     console.log("Expression type: ", expression.type, "Type: ", type);
 
     doCheck(
-      deepEqual(expression.type, type) || deepEqual(expression.type, NoneType) ,
+      deepEqual(expression.type, type) || deepEqual(expression.type, NoneType),
       `Expression of type ${util.format(
         expression.type
       )} not compatible with type ${util.format(type)}`
