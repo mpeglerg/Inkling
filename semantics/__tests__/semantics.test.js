@@ -83,7 +83,7 @@ for a in {1:1} {
 for a in {1,2,3} {
   display a
 }
-
+u is Num none
 function fun (j is Bool, i is Bool) is Bool {
   gimme j
 }
