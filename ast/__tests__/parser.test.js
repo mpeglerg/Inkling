@@ -8,7 +8,7 @@
  *
  * Based on toal's iki parser.test.js
  */
-const parse = require("../parser");
+const parse = require('../parser')
 const {
   Program,
   Block,
@@ -40,7 +40,7 @@ const {
   Literal,
   None,
   Ternary,
-} = require("../index");
+} = require('../index')
 
 const fixture = {
   textDeclarations: [
@@ -48,10 +48,10 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "y",
+        'y',
         false,
-        new PrimitiveType("Text"),
-        new Literal("Hello World!")
+        new PrimitiveType('Text'),
+        new Literal('Hello World!'),
       ),
     ]),
   ],
@@ -59,7 +59,7 @@ const fixture = {
     String.raw`x is always Num 5
     `,
     new Program([
-      new VarDeclaration("x", true, new PrimitiveType("Num"), new Literal(5)),
+      new VarDeclaration('x', true, new PrimitiveType('Num'), new Literal(5)),
     ]),
   ],
   boolTrueDeclarations: [
@@ -67,10 +67,10 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "x",
+        'x',
         false,
-        new PrimitiveType("Bool"),
-        new Literal(true)
+        new PrimitiveType('Bool'),
+        new Literal(true),
       ),
     ]),
   ],
@@ -79,10 +79,10 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "x",
+        'x',
         false,
-        new PrimitiveType("Bool"),
-        new Literal(false)
+        new PrimitiveType('Bool'),
+        new Literal(false),
       ),
     ]),
   ],
@@ -91,8 +91,8 @@ const fixture = {
     x is 5
     `,
     new Program([
-      new VarDeclaration("x", false, new PrimitiveType("Num"), new None()),
-      new Assignment(new IdentifierExpression("x"), new Literal(5)),
+      new VarDeclaration('x', false, new PrimitiveType('Num'), new None()),
+      new Assignment(new IdentifierExpression('x'), new Literal(5)),
     ]),
   ],
   dictDeclarations: [
@@ -100,13 +100,13 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "ageDictionary",
+        'ageDictionary',
         false,
-        new DictType(new PrimitiveType("Text"), new PrimitiveType("Num")),
+        new DictType(new PrimitiveType('Text'), new PrimitiveType('Num')),
         new DictExpression([
-          new KeyValuePair(new Literal("Sam"), new Literal(21)),
-          new KeyValuePair(new Literal("Talia"), new Literal(20)),
-        ])
+          new KeyValuePair(new Literal('Sam'), new Literal(21)),
+          new KeyValuePair(new Literal('Talia'), new Literal(20)),
+        ]),
       ),
     ]),
   ],
@@ -115,10 +115,10 @@ const fixture = {
    `,
     new Program([
       new VarDeclaration(
-        "aSetOfNums",
+        'aSetOfNums',
         false,
-        new SetType(new PrimitiveType("Num")),
-        new SetExpression([new Literal(1), new Literal(2)])
+        new SetType(new PrimitiveType('Num')),
+        new SetExpression([new Literal(1), new Literal(2)]),
       ),
     ]),
   ],
@@ -128,14 +128,14 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "ourList",
+        'ourList',
         false,
-        new ListType(new PrimitiveType("Text")),
+        new ListType(new PrimitiveType('Text')),
         new ListExpression([
-          new Literal("this"),
-          new Literal("a"),
-          new Literal("list"),
-        ])
+          new Literal('this'),
+          new Literal('a'),
+          new Literal('list'),
+        ]),
       ),
     ]),
   ],
@@ -148,17 +148,17 @@ const fixture = {
     `,
     new Program([
       new ForLoop(
-        "i",
+        'i',
         new ListExpression([new Literal(1), new Literal(2), new Literal(3)]),
         new Block([
           new Print(
             new BinaryExpression(
-              "+",
+              '+',
               new Literal(3),
-              new IdentifierExpression("i")
-            )
+              new IdentifierExpression('i'),
+            ),
           ),
-        ])
+        ]),
       ),
     ]),
   ],
@@ -176,21 +176,21 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "f",
+        'f',
         [
-          new Param("x", new PrimitiveType("Num")),
-          new Param("y", new PrimitiveType("Num")),
+          new Param('x', new PrimitiveType('Num')),
+          new Param('y', new PrimitiveType('Num')),
         ],
-        new PrimitiveType("Num"),
+        new PrimitiveType('Num'),
         new Block([
           new ReturnStatement(
             new BinaryExpression(
-              "+",
-              new IdentifierExpression("x"),
-              new IdentifierExpression("y")
-            )
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
           ),
-        ])
+        ]),
       ),
     ]),
   ],
@@ -202,10 +202,10 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "helloWorld",
+        'helloWorld',
         [],
-        "Void",
-        new Block([new Print(new Literal("Hello world!"))])
+        'Void',
+        new Block([new Print(new Literal('Hello world!'))]),
       ),
     ]),
   ],
@@ -218,21 +218,21 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "f",
+        'f',
         [
-          new Param("x", new PrimitiveType("Num")),
-          new Param("y", new PrimitiveType("Num")),
+          new Param('x', new PrimitiveType('Num')),
+          new Param('y', new PrimitiveType('Num')),
         ],
-        new PrimitiveType("Num"),
+        new PrimitiveType('Num'),
         new Block([
           new ReturnStatement(
             new BinaryExpression(
-              "+",
-              new IdentifierExpression("x"),
-              new IdentifierExpression("y")
-            )
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
           ),
-        ])
+        ]),
       ),
     ]),
   ],
@@ -245,14 +245,14 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("i", false, new PrimitiveType("Num"), new Literal(10)),
+      new VarDeclaration('i', false, new PrimitiveType('Num'), new Literal(10)),
       new WhileLoop(
         new BinaryExpression(
-          ">",
-          new IdentifierExpression("i"),
-          new Literal(0)
+          '>',
+          new IdentifierExpression('i'),
+          new Literal(0),
         ),
-        new Block([new PrefixExpression("--", new IdentifierExpression("i"))])
+        new Block([new PrefixExpression('--', new IdentifierExpression('i'))]),
       ),
     ]),
   ],
@@ -265,21 +265,21 @@ const fixture = {
     `,
     new Program([
       new FuncDecStmt(
-        "f",
+        'f',
         [
-          new Param("x", new PrimitiveType("Num")),
-          new Param("y", new PrimitiveType("Num")),
+          new Param('x', new PrimitiveType('Num')),
+          new Param('y', new PrimitiveType('Num')),
         ],
-        new PrimitiveType("Num"),
+        new PrimitiveType('Num'),
         new Block([
           new ReturnStatement(
             new BinaryExpression(
-              "+",
-              new IdentifierExpression("x"),
-              new IdentifierExpression("y")
-            )
+              '+',
+              new IdentifierExpression('x'),
+              new IdentifierExpression('y'),
+            ),
           ),
-        ])
+        ]),
       ),
     ]),
   ],
@@ -289,18 +289,18 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "result",
+        'result',
         false,
-        new PrimitiveType("Num"),
+        new PrimitiveType('Num'),
         new BinaryExpression(
-          "-",
+          '-',
           new BinaryExpression(
-            "+",
+            '+',
             new Literal(3),
-            new BinaryExpression("/", new Literal(10), new Literal(5))
+            new BinaryExpression('/', new Literal(10), new Literal(5)),
           ),
-          new BinaryExpression("%", new Literal(3), new Literal(2))
-        )
+          new BinaryExpression('%', new Literal(3), new Literal(2)),
+        ),
       ),
     ]),
   ],
@@ -310,10 +310,10 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "result",
+        'result',
         false,
-        new PrimitiveType("Num"),
-        new PowExp(new Literal(2), new Literal(3))
+        new PrimitiveType('Num'),
+        new PowExp(new Literal(2), new Literal(3)),
       ),
     ]),
   ],
@@ -323,14 +323,14 @@ const fixture = {
     `,
     new Program([
       new VarDeclaration(
-        "result",
+        'result',
         false,
-        new PrimitiveType("Num"),
+        new PrimitiveType('Num'),
         new BinaryExpression(
-          "*",
+          '*',
           new Literal(3),
-          new BinaryExpression("+", new Literal(3), new Literal(2))
-        )
+          new BinaryExpression('+', new Literal(3), new Literal(2)),
+        ),
       ),
     ]),
   ],
@@ -347,25 +347,25 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("x", false, new PrimitiveType("Num"), new Literal(6)),
+      new VarDeclaration('x', false, new PrimitiveType('Num'), new Literal(6)),
       new IfStmt(
         [
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new Literal(10)
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(10),
           ),
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new Literal(20)
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(20),
           ),
         ],
         [
-          new Block([new Print(new IdentifierExpression("x"))]),
+          new Block([new Print(new IdentifierExpression('x'))]),
           new Block([new Print(new Literal(1))]),
         ],
-        new Block([new Print(new PrefixExpression("-", new Literal(1)))])
+        new Block([new Print(new PrefixExpression('-', new Literal(1)))]),
       ),
     ]),
   ],
@@ -380,25 +380,25 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("x", false, new PrimitiveType("Num"), new Literal(6)),
+      new VarDeclaration('x', false, new PrimitiveType('Num'), new Literal(6)),
       new IfStmt(
         [
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new Literal(10)
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(10),
           ),
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new Literal(20)
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(20),
           ),
         ],
         [
-          new Block([new Print(new IdentifierExpression("x"))]),
+          new Block([new Print(new IdentifierExpression('x'))]),
           new Block([new Print(new Literal(1))]),
         ],
-        null
+        null,
       ),
     ]),
   ],
@@ -413,17 +413,17 @@ const fixture = {
     }
     `,
     new Program([
-      new VarDeclaration("x", false, new PrimitiveType("Num"), new Literal(6)),
+      new VarDeclaration('x', false, new PrimitiveType('Num'), new Literal(6)),
       new IfStmt(
         [
           new BinaryExpression(
-            "<",
-            new IdentifierExpression("x"),
-            new Literal(10)
+            '<',
+            new IdentifierExpression('x'),
+            new Literal(10),
           ),
         ],
-        [new Block([new Print(new IdentifierExpression("x"))])],
-        new Block([new Print(new PrefixExpression("-", new Literal(1)))])
+        [new Block([new Print(new IdentifierExpression('x'))])],
+        new Block([new Print(new PrefixExpression('-', new Literal(1)))]),
       ),
     ]),
   ],
@@ -434,14 +434,14 @@ const fixture = {
     new Program([
       new Print(
         new BinaryExpression(
-          "and",
-          new IdentifierExpression("x"),
+          'and',
+          new IdentifierExpression('x'),
           new BinaryExpression(
-            "or",
-            new PrefixExpression("!", new IdentifierExpression("y")),
-            new IdentifierExpression("x")
-          )
-        )
+            'or',
+            new PrefixExpression('!', new IdentifierExpression('y')),
+            new IdentifierExpression('x'),
+          ),
+        ),
       ),
     ]),
   ],
@@ -452,9 +452,9 @@ const fixture = {
     new Program([
       new PostfixExpression(
         new IdentifierExpression(
-          new Call(new IdentifierExpression("collatz"), [new Literal(420)])
+          new Call(new IdentifierExpression('collatz'), [new Literal(420)]),
         ),
-        "++"
+        '++',
       ),
     ]),
   ],
@@ -465,12 +465,12 @@ const fixture = {
     new Program([
       new Ternary(
         new BinaryExpression(
-          "<",
-          new IdentifierExpression("x"),
-          new Literal(0)
+          '<',
+          new IdentifierExpression('x'),
+          new Literal(0),
         ),
-        new PrefixExpression("-", new Literal(1)),
-        new Literal(1)
+        new PrefixExpression('-', new Literal(1)),
+        new Literal(1),
       ),
     ]),
   ],
@@ -481,7 +481,7 @@ const fixture = {
     `,
     new Program([
       new IdentifierExpression(
-        new FieldVarExp(new IdentifierExpression("inkTeam"), "sam")
+        new FieldVarExp(new IdentifierExpression('inkTeam'), 'sam'),
       ),
     ]),
   ],
@@ -494,9 +494,9 @@ const fixture = {
     new Program([
       new IdentifierExpression(
         new SubscriptedVarExp(
-          new IdentifierExpression("inkTeam"),
-          new Literal(420)
-        )
+          new IdentifierExpression('inkTeam'),
+          new Literal(420),
+        ),
       ),
     ]),
   ],
@@ -505,22 +505,22 @@ const fixture = {
     String.raw`sam is "kewl"
     `,
     new Program([
-      new Assignment(new IdentifierExpression("sam"), new Literal("kewl")),
+      new Assignment(new IdentifierExpression('sam'), new Literal('kewl')),
     ]),
   ],
-};
+}
 
-describe("The parser", () => {
+describe('The parser', () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
     test(`produces the correct AST for ${name}`, (done) => {
-      expect(parse(source)).toEqual(expected);
-      done();
-    });
-  });
-  test("throws an exception on a syntax error", (done) => {
+      expect(parse(source)).toEqual(expected)
+      done()
+    })
+  })
+  test('throws an exception on a syntax error', (done) => {
     // We only need one test here that an exception is thrown.
     // Specific syntax errors are tested in the grammar test.
-    expect(() => parse("as$df^&%*$&")).toThrow();
-    done();
-  });
-});
+    expect(() => parse('as$df^&%*$&')).toThrow()
+    done()
+  })
+})
