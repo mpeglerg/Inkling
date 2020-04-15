@@ -192,18 +192,15 @@ ForLoop.prototype.analyze = function (context) {
   let type;
   this.collection.analyze(context);
   check.isIterable(this.collection.type);
-  if (
-    this.collection.type.constructor === ListType ||
-    this.collection.type.constructor === SetType
-  ) {
-    type = this.collection.type.memberType.id;
+  if (this.collection.type.constructor === ListType || this.collection.type.constructor === SetType) {
+    type = this.collection.type.memberType;
   } else if (this.collection.type.constructor === DictType) {
-    type = this.collection.type.keyType.id;
+    type = this.collection.type.keyType;
   } else {
-    type = this.collection.type.id;
+    type = this.collection.type;
   }
   const bodyContext = context.createChildContextForLoop();
-  const id = new Assignment(this.id, type);
+  const id = new VarDeclaration(this.id, false, type);
   bodyContext.add(this.id, id);
   this.body.analyze(bodyContext);
 };
@@ -306,7 +303,6 @@ None.prototype.analyze = function (context) {
 
 SubscriptedVarExp.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id);
-  console.log("in subscript: ", this.callee);
   let listOrDict = this.callee || this.callee.exp;
   check.isListOrDict(listOrDict);
   check.containsKey(this.callee, this.key.value);

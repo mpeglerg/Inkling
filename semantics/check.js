@@ -31,7 +31,6 @@ module.exports = {
   },
 
   isListOrDict(expression) {
-    console.log("is in dict or list ", expression);
     doCheck(
       expression.type.constructor === ListType ||
         expression.type.constructor === DictType,

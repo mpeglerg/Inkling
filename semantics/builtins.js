@@ -70,7 +70,6 @@ const setFunctions = [
   new FuncDecStmt("length", [new Param("s", SetType)], NumType),
 ];
 
-// TODO: keyType and valueType are made up, may be something we need to add for these functions
 const dictFunctions = [
   // TODO: add(key, value)
   new FuncDecStmt(
