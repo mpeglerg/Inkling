@@ -34,7 +34,6 @@ const textFunctions = [
 const mathFunctions = [
   new FuncDecStmt("abs", [new Param("n", NumType)], NumType),
   new FuncDecStmt("sqrt", [new Param("n", NumType)], NumType),
-  // pi here according to casper? hmmm
   new FuncDecStmt(
     "random",
     [new Param("start", NumType), new Param("end", NumType)],
@@ -49,7 +48,6 @@ const mathFunctions = [
 
 const listFunctions = [
   // TODO: add(value)
-  // need to inherit type of list from list that is calling, don't think I did it right here but...
   new FuncDecStmt("add", [new Param("value", this.type)], ListType),
   // TODO: prepend(value)
   new FuncDecStmt("prepend", [new Param("value", this.type)], ListType),
@@ -64,7 +62,6 @@ const listFunctions = [
   new FuncDecStmt("length", [new Param("s", ListType)], NumType),
 ];
 
-// perhaps need/want more functions, this is just based on what casper was planning on implementing
 const setFunctions = [
   // TODO: add(value)
   new FuncDecStmt("add", [new Param("value", this.type)], SetType),
@@ -109,7 +106,6 @@ const functions = [
 
 functions.forEach((func) => {
   func.forEach((f) => {
-    // eslint-disable-next-line no-param-reassign
     f.builtin = true;
   });
 });

@@ -90,10 +90,7 @@ for a in {1:1} {
 for a in {1,2,3} {
   display a
 }
-<<<<<<< HEAD
-=======
 u is Num none
->>>>>>> 269b436bba2e536f92922b0201ad94882f27b7e7
 function fun (j is Bool, i is Bool) is Bool {
   3 + 3
   gimme j
@@ -111,7 +108,6 @@ describe("The semantic analyzer", () => {
   test("accepts the mega program with all syntactic forms", (done) => {
     const astRoot = parse(program);
     expect(astRoot).toBeTruthy();
-    //console.log("analyze : ", analyze);
     analyze(astRoot);
     expect(astRoot).toBeTruthy();
     done();

@@ -46,45 +46,34 @@ module.exports = function (root) {
 };
 
 Program.prototype.analyze = function (context) {
-  //console.log("These are statements : ", context.declarations.display);
   this.stmts.forEach((stmt) => {
-    //console.log("stmt ", stmt);
     stmt.analyze(context);
   });
 };
 
 Print.prototype.analyze = function (context) {
-  // console.log("in print", this.exp);
   this.exp.analyze(context);
 };
 
 Block.prototype.analyze = function (context) {
-  //console.log("In block: ", this.statements);
   const localContext = context.createChildContextForBlock();
   this.statements.forEach((s) => s.analyze(localContext));
 };
 
-// design decisions need to be made for this
 VarDeclaration.prototype.analyze = function (context) {
   this.exp.analyze(context);
   this.type.analyze(context);
   check.isAssignableTo(this.exp, this.type);
-  // console.log("adding id: " + this.id);
   context.add(this.id, this);
 };
 
 Literal.prototype.analyze = function (context) {
-  //console.log("in literal: ", this.value);
   if (typeof this.value === "number") {
     this.type = NumType;
   } else if (typeof this.value === "boolean") {
-    //console.log("in literal: ", this.value);
     this.type = BoolType;
   } else if (typeof this.value === "string") {
     this.type = TextType;
-    // } else {
-    //   this.type = NoneType;
-    // } // moved this to None.analyze
   }
 };
 
@@ -101,13 +90,12 @@ SetType.prototype.analyze = function (context) {
 IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
     test.analyze(context);
-    check.isBool(test.type); // Add boolean checker to check file
+    check.isBool(test.type);
   });
   this.consequence.forEach((block) => {
     const blockContext = context.createChildContextForBlock();
     block.analyze(blockContext);
   });
-  // console.log("this.alt", this.alt);
 
   if (this.alt) {
     const alternateBlock = context.createChildContextForBlock();
@@ -156,13 +144,11 @@ PowExp.prototype.analyze = function (context) {
   this.right.analyze(context);
   check.isNum(this.left.type);
   check.isNum(this.right.type);
-  //console.log("pow : ", this);
 };
 
 PrefixExpression.prototype.analyze = function (context) {
   this.operand.analyze(context);
   if ("!" == this.op) {
-    //console.log("checking operand: " + this.operand);
     check.isBool(this.operand.type);
     this.type = BoolType;
   } else {
@@ -172,20 +158,16 @@ PrefixExpression.prototype.analyze = function (context) {
 };
 
 IdentifierExpression.prototype.analyze = function (context) {
-  //console.log("identifierExp this.id.id: ", this.id);
   if (!this.id.id) {
     this.ref = context.lookupValue(this.id);
     this.type = this.ref.type;
-    //console.log("call");
   } else {
-    // console.log("identifierExp in else:", this);
     this.id.analyze(context);
   }
 };
 
 PostfixExpression.prototype.analyze = function (context) {
   this.operand.analyze(context);
-  //console.log("operand: ", this);
   check.isNum(this.operand.type);
 };
 
@@ -198,13 +180,11 @@ WhileLoop.prototype.analyze = function (context) {
 Assignment.prototype.analyze = function (context) {
   this.target.analyze(context);
   this.source.analyze(context);
-  //console.log("In Assigment: ", this);
   if (!this.target.id.id) {
     check.isAssignableTo(this.source, this.target.type);
     check.isNotReadOnly(this.target);
   } else {
     check.isAssignableTo(this.source, this.target.id.type);
-    //console.log("in else Assignment");
   }
 };
 
@@ -229,10 +209,8 @@ ForLoop.prototype.analyze = function (context) {
 };
 
 FuncDecStmt.prototype.analyze = function (context) {
-  // console.log("This is the function in fucn statement", this);
   context.add(this.function.id, this);
   const bodyContext = context.createChildContextForFunctionBody(this);
-  // console.log("in funcDec: ", this);
   this.function.analyze(bodyContext);
 };
 
@@ -240,7 +218,6 @@ FuncObject.prototype.analyze = function (context) {
   this.params = this.params.map((p) => new Param(p.id, p.type));
   this.params.forEach((p) => p.analyze(context));
   this.body.analyze(context);
-  // console.log("in funcObj: ", this.body.statements);
 
   const returnStatement = this.body.statements.filter(
     (b) => b.constructor === ReturnStatement
@@ -291,10 +268,8 @@ DictExpression.prototype.analyze = function (context) {
 
 ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context));
-  // console.log(" this.members : ", this);
   if (this.members.length) {
     this.type = new ListType(this.members[0].type);
-    // console.log("this type: ", this.type);
     for (let i = 1; i < this.members.length; i += 1) {
       check.expressionsHaveTheSameType(
         this.members[i].type,
@@ -318,11 +293,9 @@ SetExpression.prototype.analyze = function (context) {
 };
 
 Call.prototype.analyze = function (context) {
-  // console.log("this is the this.id in call", this);
   this.callee = context.lookupValue(this.id.id);
   check.isFunction(this.callee);
   this.args.forEach((arg) => arg.analyze(context));
-  //console.log("this is the calle: ", this.callee.function.params, this);
   check.legalArguments(this.args, this.callee.function.params);
   this.type = this.callee.function.type;
 };
@@ -333,11 +306,9 @@ None.prototype.analyze = function (context) {
 
 SubscriptedVarExp.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id);
-  //console.log("callee: ", this.callee);
   console.log("in subscript: ", this.callee);
   let listOrDict = this.callee || this.callee.exp;
   check.isListOrDict(listOrDict);
   check.containsKey(this.callee, this.key.value);
   this.type = this.callee.type.keyType || this.callee.type.memberType;
-  //console.log("this is sub : ", this);
 };

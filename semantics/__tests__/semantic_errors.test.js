@@ -70,7 +70,6 @@ const errors = [
     "variable init in function used outside of block",
     '  r is Num 0\nwhile (r < 5) {\ndisplay r\ninWhileVar is Text "hello"\n}\ndisplay inWhileVar\n',
   ],
-  //   // Might need more here, depending on your test coverage report
 ];
 
 describe("The semantic analyzer", () => {
