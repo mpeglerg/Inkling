@@ -18,13 +18,6 @@ function doCheck(condition, message) {
 }
 
 module.exports = {
-  // Is this type an array type?
-  isListType(type) {
-    doCheck(
-      type.constructor === ListType,
-      "Not a list type, dict, set or text"
-    ); // modified
-  },
   isIterable(type) {
     console.log("this is the type ", type);
     doCheck(
@@ -35,30 +28,14 @@ module.exports = {
       "Not a list, set, dic or text"
     );
   },
-  isSetType(type) {
-    doCheck(type.constructor === SetType, "Not a set type"); // modified
-  },
 
-  isDictType(type) {
-    doCheck(type.constructor === DictType, "Not a dict type");
-  },
-
-  isBoolType(type) {
-    doCheck(type.constructor === BoolType, "Not a bool type");
-  },
-
-  // Is the type of this expression an array type?
-  // isList(expression) {
-  //   doCheck(expression.type.constructor === ListType, "Not a list"); // modified
+  // isListOrDict(expression) {
+  //   doCheck(
+  //     expression.type.constructor === ListType ||
+  //       expression.type.constructor === DictType,
+  //     "Not a list or dict"
+  //   ); // modified
   // },
-
-  isListOrDict(expression) {
-    doCheck(
-      expression.type.constructor === ListType ||
-        expression.type.constructor === DictType,
-      "Not a list or dict"
-    ); // modified
-  },
 
   isNum(expression) {
     console.log("Expression type constructor in isNum:", expression);
@@ -73,9 +50,9 @@ module.exports = {
     doCheck(expression === TextType, "Not a text");
   },
 
-  mustNotHaveAType(expression) {
-    doCheck(!expression.type, "Expression must not have a type");
-  },
+  // mustNotHaveAType(expression) {
+  //   doCheck(!expression.type, "Expression must not have a type");
+  // },
 
   isFunction(value) {
     doCheck(value.constructor === FuncDecStmt, "Not a function"); // modified
@@ -114,9 +91,9 @@ module.exports = {
     );
   },
 
-  fieldHasNotBeenUsed(field, usedFields) {
-    doCheck(!usedFields.has(field), `Field ${field} already declared`);
-  },
+  // fieldHasNotBeenUsed(field, usedFields) {
+  //   doCheck(!usedFields.has(field), `Field ${field} already declared`);
+  // },
 
   inLoop(context, keyword) {
     doCheck(context.inLoop, `${keyword} can only be used in a loop`);
@@ -145,14 +122,15 @@ module.exports = {
   },
 
   containsKey(id, key) {
-    console.log("contains key id: ", id.type.constructor);
     if (id.type.constructor === ListType) {
-      this.isNum(id.type);
-      doCheck(id.members.length > key, "Index out of bounds");
+      this.isNum(id.type.memberType);
+      doCheck(id.exp.members.length > key, "Index out of bounds");
     }
-    if (id.type === DictType) {
-      console.log("contains key");
-      doCheck(key in id.exp, "Invalid key");
+    if (id.type.constructor === DictType) {
+      const keyFound = id.exp.exp.find((keyValue) => {
+        return keyValue.key.value === key;
+      });
+      doCheck(keyFound, "Invalid key");
     }
   },
 };

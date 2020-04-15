@@ -190,6 +190,7 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
     return new SetExpression(expressions.ast());
   },
   Exp6_dict(_1, keyValue, _2) {
+    console.log("keyvalue: ", keyValue.ast());
     return new DictExpression(keyValue.ast());
   },
   VarExp_field(id, _dotOperator, field) {

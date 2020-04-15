@@ -199,7 +199,7 @@ Assignment.prototype.analyze = function (context) {
   this.target.analyze(context);
   this.source.analyze(context);
   console.log("In Assigment: ", this);
-  if (!this.target.id) {
+  if (!this.target.id.id) {
     check.isAssignableTo(this.source, this.target.type);
     check.isNotReadOnly(this.target);
   } else {
@@ -338,20 +338,6 @@ SubscriptedVarExp.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id);
   console.log("callee: ", this.callee);
   check.containsKey(this.callee, this.key.value);
-  this.type = this.callee.type.memberType;
-
-  // if (check.isListOrDict(this.id)) {
-  //   if (this.id.type === ListType) {
-  //     if (check.isNum(this.key)) {
-  //       this.type = this.id[key].type;
-  //     }
-  //   } else {
-  //     this.type = this.id[key].type;
-  //   }
-  // }
+  this.type = this.callee.type.keyType || this.callee.type.memberType;
+  console.log("this is sub : ", this);
 };
-
-// Might need this in check
-// isListOrDict(expression) {
-//   doCheck(expression.type.constructor === ListType || expression.type.constructor === DictType, "Not a list or dict"); // modified
-// },
