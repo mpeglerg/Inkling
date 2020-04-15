@@ -199,6 +199,7 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
   VarExp_subscripted(id, _open, key, _close) {
     return new SubscriptedVarExp(id.ast(), key.ast());
   },
+  // TODO: label id VarExps so that VarExps no longer get wrapped in IdExps
   VarExp(id) {
     return new IdentifierExpression(id.ast());
   },

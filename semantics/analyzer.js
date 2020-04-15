@@ -212,7 +212,10 @@ ForLoop.prototype.analyze = function (context) {
   let type;
   this.collection.analyze(context);
   check.isIterable(this.collection.type);
-  if (this.collection.type === ListType || this.collection.type === SetType) {
+  if (
+    this.collection.type.constructor === ListType ||
+    this.collection.type.constructor === SetType
+  ) {
     type = this.collection.type.memberType.id;
   } else if (this.collection.type.constructor === DictType) {
     type = this.collection.type.keyType.id;
@@ -242,12 +245,7 @@ FuncObject.prototype.analyze = function (context) {
   const returnStatement = this.body.statements.filter(
     (b) => b.constructor === ReturnStatement
   );
-  // console.log(
-  //   "return type: ",
-  //   this.type !== "Void",
-  //   " return  statement:",
-  //   returnStatement.length
-  // );
+
   if (returnStatement.length === 0 && this.type !== "Void") {
     throw new Error("No return statement found");
   } else if (returnStatement.length > 0) {
@@ -334,9 +332,11 @@ None.prototype.analyze = function (context) {
 };
 
 SubscriptedVarExp.prototype.analyze = function (context) {
-  // console.log("in subscrit: ", this);
   this.callee = context.lookupValue(this.id.id);
   //console.log("callee: ", this.callee);
+  console.log("in subscript: ", this.callee);
+  let listOrDict = this.callee || this.callee.exp;
+  check.isListOrDict(listOrDict);
   check.containsKey(this.callee, this.key.value);
   this.type = this.callee.type.keyType || this.callee.type.memberType;
   //console.log("this is sub : ", this);

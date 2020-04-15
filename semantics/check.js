@@ -19,7 +19,6 @@ function doCheck(condition, message) {
 
 module.exports = {
   isIterable(type) {
-    //console.log("this is the type ", type);
     doCheck(
       type.constructor === ListType ||
         type.constructor === SetType ||
@@ -29,13 +28,14 @@ module.exports = {
     );
   },
 
-  // isListOrDict(expression) {
-  //   doCheck(
-  //     expression.type.constructor === ListType ||
-  //       expression.type.constructor === DictType,
-  //     "Not a list or dict"
-  //   ); // modified
-  // },
+  isListOrDict(expression) {
+    console.log("is in dict or list ", expression);
+    doCheck(
+      expression.type.constructor === ListType ||
+        expression.type.constructor === DictType,
+      "Not a list or dict"
+    ); // modified
+  },
 
   isNum(expression) {
     // console.log("Expression type constructor in isNum:", expression);
@@ -46,20 +46,12 @@ module.exports = {
     doCheck(expression === BoolType, "Not a bool");
   },
 
-  isText(expression) {
-    doCheck(expression === TextType, "Not a text");
-  },
-
-  // mustNotHaveAType(expression) {
-  //   doCheck(!expression.type, "Expression must not have a type");
-  // },
-
   isFunction(value) {
     doCheck(value.constructor === FuncDecStmt, "Not a function"); // modified
   },
 
   isNumOrText(expression) {
-    // console.log("is num or text: ", expression);
+    console.log("is num or text: ", expression);
     doCheck(
       expression === NumType || expression.type === TextType,
       "Cannot apply '+ ' to types that are not num or text"
@@ -91,13 +83,6 @@ module.exports = {
     );
   },
 
-  // fieldHasNotBeenUsed(field, usedFields) {
-  //   doCheck(!usedFields.has(field), `Field ${field} already declared`);
-  // },
-
-  inLoop(context, keyword) {
-    doCheck(context.inLoop, `${keyword} can only be used in a loop`);
-  },
   sameType(arg, param) {
     // console.log("in same type ", arg, param);
     if (param.id === "Num") {

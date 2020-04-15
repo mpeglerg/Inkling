@@ -9,6 +9,9 @@ const parse = require("../../ast/parser");
 const analyze = require("../analyzer");
 
 const program = String.raw`
+for  var1 in "Hello" {
+  display var1
+}
 b is Num 5
 a is always Text  "Hello"
 c is Set<Text> {"this", "a", "b"}
@@ -54,6 +57,10 @@ function Greeting (h is Text, i is Text) is Text{
 function fun1 (h is Num, i is Num) is Void {
   display 4
 }
+function fun2 (h is Text) is Void {
+  display 4
+}
+fun2("hello")
 function checker (j is Num, i is Num) is Num {
   b is Num 0
   while (j < 5) {
@@ -74,7 +81,7 @@ display -j
 for a in "hello" {
   display a
 }
-for a in  [1,2,3] {
+for a in [1,2,3] {
   display a
 }
 for a in {1:1} {
@@ -83,13 +90,15 @@ for a in {1:1} {
 for a in {1,2,3} {
   display a
 }
-
 function fun (j is Bool, i is Bool) is Bool {
+  3 + 3
   gimme j
 }
 fun(true,true)
-k1 is Set<Num> {1,2,3}
-k1[0] is 4
+k4 is Dict<Num, Num> {1:10,2:2,3:3}
+k4[1]
+k5 is List<Num> {1,2,3}
+k5[0] is 4
 
 
 `;
@@ -110,7 +119,7 @@ describe("The semantic analyzer", () => {
 // a is always Text  "Hello"
 // c is Set<Text> {"this", "a", "b"}
 // e is List<Text> ["this", "a", "b"]
-// b is 7
+
 // g is Text "hello this is some sample text"
 // h is Set<Num> {1, 2, 3, 5, 6}
 // i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
@@ -171,7 +180,7 @@ describe("The semantic analyzer", () => {
 // for a in "hello" {
 //   display a
 // }
-// for a in  [1,2,3] {
+// for a in [1,2,3] {
 //   display a
 // }
 // for a in {1:1} {
@@ -183,6 +192,12 @@ describe("The semantic analyzer", () => {
 // function fun (j is Bool, i is Bool) is Bool {
 //   gimme j
 // }
+// fun(true,true)
+// k4 is Dict<Num, Num> {1:10,2:2,3:3}
+// k4[1]
+// k5 is List<Num> {1,2,3}
+// k5[0] is 4
+
 // fun(true,true)
 // k is Set<Num> {1,2,3}
 // k[0] is 4
