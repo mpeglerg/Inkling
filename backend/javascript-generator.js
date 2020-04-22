@@ -133,10 +133,16 @@ module.exports = function (exp) {
 // }
 
 Program.prototype.gen = function () {
+  //I think this is incorrect- needs work
   indentLevel = 0
   console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
   this.block.gen()
   console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
+}
+
+Print.prototype.gen = function () {
+  const lineToPrint = this.exp.gen()
+  return `display ${lineToPrint}`
 }
 
 Block.prototype.gen = function () {
@@ -146,7 +152,7 @@ Block.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
-  return `${this.target.gen()} = ${this.source.gen()}`
+  return `${this.id.gen()} = ${this.exp.gen()}`
 }
 
 VarDeclaration.prototype.gen = function () {
@@ -154,7 +160,8 @@ VarDeclaration.prototype.gen = function () {
 }
 
 ListExpression.prototype.gen = function () {
-  return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
+  return `[ListOf<${this.expressions}>]`
+  //return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
 }
 
 BinaryExpression.prototype.gen = function () {
@@ -163,10 +170,10 @@ BinaryExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen())
-  if (this.callee.builtin) {
-    return builtin[this.callee.id](args)
+  if (this.callName.builtin) {
+    return builtin[this.callName.id](args)
   }
-  return `${javaScriptId(this.callee)}(${args.join(',')})`
+  return `${javaScriptId(this.callName)}(${args.join(',')})`
 }
 
 ForLoop.prototype.gen = function () {
@@ -208,6 +215,10 @@ Literal.prototype.gen = function () {
 //   return `${this.record.gen()}.${this.id}`
 // }
 
+PowExp.prototype.gen = function () {
+  return `${this.left.gen()} ^ ${this.right.gen()}`
+}
+
 SubscriptedVarExp.prototype.gen = function () {
   return `${this.id.gen()}[${this.key.gen()}]`
 }
@@ -224,5 +235,6 @@ None.prototype.gen = function () {
 }
 
 WhileLoop.prototype.gen = function () {
-  return `while (${this.condition.gen()}) { ${this.body.gen()} }`
+  return `while (${this.exp.gen()}) { ${this.body.gen()} }`
+  // return `while (${this.condition.gen()}) { ${this.body.gen()} }`
 }
