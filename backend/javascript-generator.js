@@ -73,6 +73,8 @@ const javaScriptId = (() => {
   }
 })()
 
+let indentLevel = 0
+
 // Let's inline the built-in functions, because we can!
 const builtin = {
   display([s]) {
@@ -107,7 +109,7 @@ const builtin = {
 }
 
 module.exports = function (exp) {
-  return beautify(exp.gen(), { indent_size: 2 })
+  return beautify(exp.gen(), { indentSize: 2 })
 }
 
 // This only exists because Tiger is expression-oriented and JavaScript is not.
@@ -130,12 +132,29 @@ module.exports = function (exp) {
 //   return `return ${exp.gen()}`
 // }
 
-ListExpression.prototype.gen = function () {
-  return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
+Program.prototype.gen = function () {
+  indentLevel = 0
+  console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
+  this.block.gen()
+  console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
+}
+
+Block.prototype.gen = function () {
+  indentLevel += 1
+  this.statements.forEach(s => s.gen())
+  indentLevel -= 1
 }
 
 Assignment.prototype.gen = function () {
   return `${this.target.gen()} = ${this.source.gen()}`
+}
+
+VarDeclaration.prototype.gen = function () {
+  return `${javaScriptId(this)} is ${this.init.gen()}`
+}
+
+ListExpression.prototype.gen = function () {
+  return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
 }
 
 BinaryExpression.prototype.gen = function () {
