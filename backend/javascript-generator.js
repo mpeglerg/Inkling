@@ -137,15 +137,16 @@ Program.prototype.gen = function () {
   // I think this is incorrect- needs work
   indentLevel = 0
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
-  this.block.gen()
+  return this.stmts.map((s) => s.gen()).join('')
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
 }
 // We don't need print because we have display in builtins
 
 Block.prototype.gen = function () {
   indentLevel += 1
-  this.statements.forEach((s) => s.gen())
   indentLevel -= 1
+  const statements = this.statements.forEach((s) => s.gen())
+  return statements.join('')
 }
 
 Assignment.prototype.gen = function () {
@@ -171,7 +172,7 @@ Call.prototype.gen = function () {
   if (this.id.builtin) {
     return builtin[this.id.id](args)
   }
-  return `${javaScriptId(this.is.gen())}(${this.args.map((a) => a.gen()).join(',')})`
+  return `${javaScriptId(this.id.gen())}(${args.join(',')})`
 }
 
 ForLoop.prototype.gen = function () {
