@@ -15,28 +15,28 @@
 
 const beautify = require('js-beautify')
 const {
-  Program,
-  Block,
-  Assignment,
-  VarDeclaration,
+  Program, // done
+  Block, // done
+  Assignment, // done
+  VarDeclaration, // done
   Literal,
-  BinaryExpression,
-  IfStmt,
-  WhileLoop,
-  FuncDecStmt,
+  BinaryExpression, // done
+  IfStmt, // done
+  WhileLoop, // done
+  FuncDecStmt, // done
   FuncObject,
-  Call,
+  Call, // done
   Param,
-  DictExpression,
-  SetExpression,
-  ListExpression,
-  ReturnStatement,
+  DictExpression, // done
+  SetExpression, // done
+  ListExpression, // done
+  ReturnStatement, // done
   IdentifierExpression,
   PostfixExpression,
   PrefixExpression,
-  ForLoop,
-  Ternary,
-  None,
+  ForLoop, // done
+  Ternary, // done
+  None, // done
   SubscriptedVarExp,
 } = require('../ast/index')
 const {
@@ -155,12 +155,18 @@ VarDeclaration.prototype.gen = function () {
 
 // I don't know about this one
 DictExpression.prototype.gen = function () {
-  return `${this.exp.map((m) => m.gen())}`
+  const result = {}
+  // JS can't map over objects AFAIK so we have to map over the keys and assign
+  // the keys and values in a new object
+  this.exp.map((pair) => { result[pair.key.gen()] = pair.value.gen() })
+  return `${result}`
 }
 
 // I dont know about this one
 SetExpression.prototype.gen = function () {
-  return `${this.members.map((m) => m.gen())}`
+  let result = new Set()
+  this.members.map((member) => result.add(member.gen()))
+  return `${result}`
 }
 
 ListExpression.prototype.gen = function () {
@@ -180,6 +186,10 @@ Call.prototype.gen = function () {
   return `${javaScriptId(this.id.gen())}(${args.join(',')})`
 }
 
+Param.prototype.gen = function () {
+  return javaScriptId(this.id)
+}
+
 ForLoop.prototype.gen = function () {
   const i = javaScriptId(this.id)
   const loopControl = `for (let ${i} in ${this.collection})`
@@ -188,15 +198,15 @@ ForLoop.prototype.gen = function () {
 }
 
 FuncDecStmt.prototype.gen = function () {
-  const name = javaScriptId(this)
-  const params = this.params.map(javaScriptId)
+  const name = javaScriptId(this.id)
+  const params = this.params.map((param) => param.gen())
   // "Void" functions do not have a JS return, others do
   const body = this.body.gen()
   return `function ${name} (${params.join(',')}) {${body}}`
 }
 
 ReturnStatement.prototype.gen = function () {
-  return `gimme ${this.returnValue}`
+  return `return ${this.returnValue.gen()}`
 }
 
 IdentifierExpression.prototype.gen = function () {
@@ -235,7 +245,7 @@ PostfixExpression.prototype.gen = function () {
 }
 
 Ternary.prototype.gen = function () {
-  return `${this.test} ? ${this.consequence} : ${this.alt}`
+  return `${this.test.gen()} ? ${this.consequence.gen()} : ${this.alt.gen()}`
 }
 
 None.prototype.gen = function () {
