@@ -73,6 +73,7 @@ const javaScriptId = (() => {
   }
 })()
 
+// whats going on with this indent stuff?
 let indentLevel = 0
 
 // Let's inline the built-in functions, because we can!
@@ -133,34 +134,31 @@ module.exports = function (exp) {
 // }
 
 Program.prototype.gen = function () {
-  //I think this is incorrect- needs work
+  // I think this is incorrect- needs work
   indentLevel = 0
-  console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
+  // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
   this.block.gen()
-  console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
+  // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
 }
-
-Print.prototype.gen = function () {
-  const lineToPrint = this.exp.gen()
-  return `display ${lineToPrint}`
-}
+// We don't need print because we have display in builtins
 
 Block.prototype.gen = function () {
   indentLevel += 1
-  this.statements.forEach(s => s.gen())
+  this.statements.forEach((s) => s.gen())
   indentLevel -= 1
 }
 
 Assignment.prototype.gen = function () {
-  return `${this.id.gen()} = ${this.exp.gen()}`
+  // We need to use target and source because thats what they are called in the ast
+  return `${this.target.gen()} = ${this.source.gen()}`
 }
 
 VarDeclaration.prototype.gen = function () {
-  return `${javaScriptId(this)} is ${this.init.gen()}`
+  return `let ${javaScriptId(this)} = ${this.init.gen()}`
 }
 
 ListExpression.prototype.gen = function () {
-  return `[ListOf<${this.expressions}>]`
+  return `${this.members.map((m) => m.gen())}`
   //return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
 }
 
@@ -170,10 +168,10 @@ BinaryExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen())
-  if (this.callName.builtin) {
-    return builtin[this.callName.id](args)
+  if (this.id.builtin) {
+    return builtin[this.id.id](args)
   }
-  return `${javaScriptId(this.callName)}(${args.join(',')})`
+  return `${javaScriptId(this.is.gen())}(${this.args.map((a) => a.gen()).join(',')})`
 }
 
 ForLoop.prototype.gen = function () {
@@ -216,7 +214,7 @@ Literal.prototype.gen = function () {
 // }
 
 PowExp.prototype.gen = function () {
-  return `${this.left.gen()} ^ ${this.right.gen()}`
+  return `${this.left.gen()} ** ${this.right.gen()}`
 }
 
 SubscriptedVarExp.prototype.gen = function () {
@@ -235,6 +233,7 @@ None.prototype.gen = function () {
 }
 
 WhileLoop.prototype.gen = function () {
-  return `while (${this.exp.gen()}) { ${this.body.gen()} }`
+  // p sure we need to use condition instead of exp here because its called condition in the ast
+  return `while (${this.condition.gen()}) { ${this.body.gen()} }`
   // return `while (${this.condition.gen()}) { ${this.body.gen()} }`
 }
