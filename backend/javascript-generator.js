@@ -153,6 +153,16 @@ VarDeclaration.prototype.gen = function () {
   return `let ${javaScriptId(this)} = ${this.init.gen()}`
 }
 
+// I don't know about this one
+DictExpression.prototype.gen = function () {
+  return `${this.exp.map((m) => m.gen())}`
+}
+
+// I dont know about this one
+SetExpression.prototype.gen = function () {
+  return `${this.members.map((m) => m.gen())}`
+}
+
 ListExpression.prototype.gen = function () {
   return `${this.members.map((m) => m.gen())}`
   // return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
