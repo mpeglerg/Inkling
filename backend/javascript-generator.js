@@ -229,7 +229,7 @@ PostfixExpression.prototype.gen = function () {
 }
 
 None.prototype.gen = function () {
-  return 'none'
+  return 'null'
 }
 
 WhileLoop.prototype.gen = function () {
