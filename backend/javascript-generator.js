@@ -16,13 +16,11 @@
 const beautify = require('js-beautify')
 const {
   Program,
-  Print,
   Block,
   Assignment,
   VarDeclaration,
   Literal,
   BinaryExpression,
-  PowExp,
   IfStmt,
   WhileLoop,
   FuncDecStmt,
@@ -32,10 +30,6 @@ const {
   DictExpression,
   SetExpression,
   ListExpression,
-  PrimitiveType,
-  DictType,
-  SetType,
-  ListType,
   ReturnStatement,
   IdentifierExpression,
   PostfixExpression,
@@ -74,6 +68,7 @@ const javaScriptId = (() => {
 })()
 
 // whats going on with this indent stuff?
+// I was using Iki as a guide for program and there was an indent level. Prolly dont need it.
 let indentLevel = 0
 
 // Let's inline the built-in functions, because we can!
@@ -160,7 +155,7 @@ VarDeclaration.prototype.gen = function () {
 
 ListExpression.prototype.gen = function () {
   return `${this.members.map((m) => m.gen())}`
-  //return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
+  // return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
 }
 
 BinaryExpression.prototype.gen = function () {
@@ -190,6 +185,10 @@ FuncDecStmt.prototype.gen = function () {
   return `function ${name} (${params.join(',')}) {${body}}`
 }
 
+ReturnStatement.prototype.gen = function () {
+  return `gimme ${this.returnValue}`
+}
+
 IdentifierExpression.prototype.gen = function () {
   return javaScriptId(this.ref)
 }
@@ -214,10 +213,6 @@ Literal.prototype.gen = function () {
 //   return `${this.record.gen()}.${this.id}`
 // }
 
-PowExp.prototype.gen = function () {
-  return `${this.left.gen()} ** ${this.right.gen()}`
-}
-
 SubscriptedVarExp.prototype.gen = function () {
   return `${this.id.gen()}[${this.key.gen()}]`
 }
@@ -229,6 +224,10 @@ PostfixExpression.prototype.gen = function () {
   return `(((${this.operand.gen()})${this.op}))`
 }
 
+Ternary.prototype.gen = function () {
+  return `${this.test} ? ${this.consequence} : ${this.alt}`
+}
+
 None.prototype.gen = function () {
   return 'null'
 }
@@ -236,5 +235,5 @@ None.prototype.gen = function () {
 WhileLoop.prototype.gen = function () {
   // p sure we need to use condition instead of exp here because its called condition in the ast
   return `while (${this.condition.gen()}) { ${this.body.gen()} }`
-  // return `while (${this.condition.gen()}) { ${this.body.gen()} }`
+  // return `while (${this.exp.gen()}) { ${this.body.gen()} }`
 }
