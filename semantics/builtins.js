@@ -13,7 +13,6 @@ const {
 const NoneType = new PrimitiveType('none')
 
 const standardFunctions = [
-  new FuncDecStmt('display', [new Param('s', TextType)]),
   new FuncDecStmt('exit', [new Param('code', NumType)], NumType),
 ]
 
