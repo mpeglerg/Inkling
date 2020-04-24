@@ -19,21 +19,21 @@ const {
   Block, // done
   Assignment, // done
   VarDeclaration, // done
-  Literal,
+  Literal, // done
   BinaryExpression, // done
   IfStmt, // done
   WhileLoop, // done
   FuncDecStmt, // done
-  FuncObject,
+  FuncObject, // idk if we need a generator for this
   Call, // done
-  Param,
+  Param, // done
   DictExpression, // done
   SetExpression, // done
   ListExpression, // done
   ReturnStatement, // done
-  IdentifierExpression,
-  PostfixExpression,
-  PrefixExpression,
+  IdentifierExpression, // done
+  PostfixExpression, // done
+  PrefixExpression, // done
   ForLoop, // done
   Ternary, // done
   None, // done
@@ -210,7 +210,7 @@ ReturnStatement.prototype.gen = function () {
 }
 
 IdentifierExpression.prototype.gen = function () {
-  return javaScriptId(this.ref)
+  return javaScriptId(this.id)
 }
 
 IfStmt.prototype.gen = function () {
@@ -238,10 +238,10 @@ SubscriptedVarExp.prototype.gen = function () {
 }
 
 PrefixExpression.prototype.gen = function () {
-  return `(${this.op}(${this.operand.gen()}))`
+  return `(${this.op.gen()}(${this.operand.gen()}))`
 }
 PostfixExpression.prototype.gen = function () {
-  return `(((${this.operand.gen()})${this.op}))`
+  return `(((${this.operand.gen()})${this.op.gen()}))`
 }
 
 Ternary.prototype.gen = function () {
@@ -256,4 +256,8 @@ WhileLoop.prototype.gen = function () {
   // p sure we need to use condition instead of exp here because its called condition in the ast
   return `while (${this.condition.gen()}) { ${this.body.gen()} }`
   // return `while (${this.exp.gen()}) { ${this.body.gen()} }`
+}
+
+SubscriptedVarExp.prototype.gen = function () {
+  return `${this.id.gen()}[${this.key.gen()}]`
 }
