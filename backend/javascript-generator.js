@@ -19,6 +19,7 @@ const {
   Block, // done
   Assignment, // done
   VarDeclaration, // done
+  Print, // done
   Literal, // done
   BinaryExpression, // done
   IfStmt, // done
@@ -73,9 +74,6 @@ let indentLevel = 0
 
 // Let's inline the built-in functions, because we can!
 const builtin = {
-  display([s]) {
-    return `console.log(${s})`
-  },
   exit(code) {
     return `process.exit(${code})`
   },
@@ -151,6 +149,10 @@ Assignment.prototype.gen = function () {
 
 VarDeclaration.prototype.gen = function () {
   return `let ${javaScriptId(this)} = ${this.init.gen()}`
+}
+
+Print.prototype.gen = function () {
+  return `console.log(${this.exp.gen()})`
 }
 
 // I don't know about this one
@@ -238,10 +240,10 @@ SubscriptedVarExp.prototype.gen = function () {
 }
 
 PrefixExpression.prototype.gen = function () {
-  return `(${this.op.gen()}(${this.operand.gen()}))`
+  return `(${this.op}(${this.operand.gen()}))`
 }
 PostfixExpression.prototype.gen = function () {
-  return `(((${this.operand.gen()})${this.op.gen()}))`
+  return `(((${this.operand})${this.op.gen()}))`
 }
 
 Ternary.prototype.gen = function () {
