@@ -38,12 +38,12 @@ module.exports = {
     )
   },
 
-  isNum(expression) {
-    doCheck(expression === NumType, 'Not a num')
+  isNum(type) {
+    doCheck(type === NumType, 'Not a num')
   },
 
-  isBool(expression) {
-    doCheck(expression === BoolType, 'Not a bool')
+  isBool(type) {
+    doCheck(type === BoolType, 'Not a bool')
   },
 
   isFunction(value) {
