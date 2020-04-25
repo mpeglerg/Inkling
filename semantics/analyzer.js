@@ -135,7 +135,8 @@ BinaryExpression.prototype.analyze = function (context) {
     check.isNumOrText(this.right.type)
     this.type = this.left.type === NumType ? NumType : BoolType
   } else {
-    check.expressionsHaveTheSameType(this.left.type, this.right.type)
+    check.isNum(this.left.type)
+    check.isNum(this.right.type)
     this.type = NumType
   }
 }

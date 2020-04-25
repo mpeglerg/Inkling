@@ -70,6 +70,11 @@ const errors = [
     'variable init in function used outside of block',
     '  r is Num 0\nwhile (r < 5) {\ndisplay r\ninWhileVar is Text "hello"\n}\ndisplay inWhileVar\n',
   ],
+  ['dividing booleans', 'r is Bool true\nj is Bool false\nr / j\n'],
+  // test for dividing booleans
+  // add necessary types for each node
+  // pow check for return type
+  // in functions check
 ]
 
 describe('The semantic analyzer', () => {
