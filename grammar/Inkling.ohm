@@ -29,7 +29,7 @@ Inkling {
                    ("else" Block)?                                          -- if
     ForLoop     =  "for" id "in" Exp Block
     Field       =  id ":" Exp
-    Exp         =  Exp0 "?" Exp ":" Exp                                      -- ternary
+    Exp         =  Exp0 "?" Exp ":" Exp                                     -- ternary
                 |  Exp0
     Exp0        =  Exp1 "and" Exp                                           -- and
                 |  Exp1 "or" Exp                                            -- or
@@ -51,7 +51,7 @@ Inkling {
                 |  numlit
                 |  nonelit
                 |  VarExp
-                 |  "[" ListOf<Exp, ","> "]"                                 -- list
+                 |  "[" ListOf<Exp, ","> "]"                                -- list
                 |  "{" ListOf<Exp, ","> "}"                                 -- set
                 |  "{" ListOf<KeyValue, ","> "}"                            -- dict
     KeyValue    =  Exp ":" Exp
