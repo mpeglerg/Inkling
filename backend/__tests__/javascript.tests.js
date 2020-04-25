@@ -40,6 +40,14 @@ const fixture = {
     'd is Num 5\n d is 6\n',
     'let d = 5\n d = 6\n',
   ],
+  IfElse:[
+    'if (true) {\n3 + 4\n} else {\n4+3\n}\n',
+    'if (true) {(3 + 4)}else{(4+3)}'
+  ],
+  IfElseIfElse: [
+    'if (true) {\n3 + 4\n} else if (3 < 4) {\n 3 - 4\n} else {\n4+3\n}\n',
+    'if (true) {(3 + 4)}else if ((3 < 4)) {(3 - 4)}else{(4+3)}',
+  ],
   // call: [],
   // if: [],
   // ifelse: [],

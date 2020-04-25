@@ -196,7 +196,7 @@ SetExpression.prototype.gen = function () {
   //console.log(`${result.toString()}`)
   return `new Set(${this.members.map((member) => member.gen())})`;
 
-  
+
   // let result = '{'
   // console.log("in create set: ", this.members);
   // this.members.forEach((member) => result.concat(`${member.gen()}, `));
@@ -206,8 +206,8 @@ SetExpression.prototype.gen = function () {
 Block.prototype.gen = function () {
   indentLevel += 1;
   indentLevel -= 1;
-  const statements = this.statements.forEach((s) => s.gen());
-  return statements.join("");
+  const statements = this.statements.map((s) => s.gen());
+  return statements.join('');
 };
 
 ListExpression.prototype.gen = function () {
@@ -249,11 +249,12 @@ IfStmt.prototype.gen = function () {
   let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`;
   for (let i = 1; i < this.tests.length; i += 1) {
     result = result.concat(
-      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`
+      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`,
     );
   }
-  if (this.alt !== undefined) {
-    result.concat(`else {${this.alt.gen()}}`);
+  const alt = this.alt.gen()
+  if (alt) {
+    result = result.concat(`else {${alt}}`);
   }
   return result;
 };
