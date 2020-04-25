@@ -16,12 +16,15 @@ const fixture = {
   arithmetic: [String.raw`3 * -2 + 2
     `, String.raw`((3 * (-(2))) + 2)`],
   
-  call: [],
-  if: [],
-  ifelse: [],
-  while: [],
-  for: [],
-  
+  //call: [String.raw``],  
+ // if: [],
+  //ifelse: [],
+  //while: [],
+  //for: [String.raw`for i in 20 {} `,
+   //     /let count_(\d+) = 20;\s*for \(let i_(\d+) = 0; i_\2 <= count_\1; i_\2\+\+\) \{\s*\}/],
+  builtins: [String.raw`abs(-10) pow(2, 2) length("hello") exit(3)
+       `, /"Math.abs"\(-10\);\s*\(""**""\);\s*"".length;\s*process\.exit\(3\);/],
+
 }
 
 describe('The JavaScript generator', () => {
