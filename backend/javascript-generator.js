@@ -25,7 +25,7 @@ const {
   IfStmt, // done
   WhileLoop, // done
   FuncDecStmt, // done
-  FuncObject, // idk if we need a generator for this
+  FuncObject, // idk if we need a generator for this --> I dont think we need it
   Call, // done
   Param, // done
   DictExpression, // done
@@ -133,7 +133,6 @@ Program.prototype.gen = function () {
   return this.stmts.map((s) => s.gen()).join('')
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
 }
-// We don't need print because we have display in builtins
 
 Block.prototype.gen = function () {
   indentLevel += 1
@@ -143,7 +142,6 @@ Block.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
-  // We need to use target and source because thats what they are called in the ast
   return `${this.target.gen()} = ${this.source.gen()}`
 }
 
@@ -173,7 +171,7 @@ SetExpression.prototype.gen = function () {
 
 ListExpression.prototype.gen = function () {
   return `${this.members.map((m) => m.gen())}`
-  // return `Array(${this.size.gen()}).fill(${this.fill.gen()})`
+
 }
 
 BinaryExpression.prototype.gen = function () {
@@ -230,11 +228,6 @@ Literal.prototype.gen = function () {
   return this.type === TextType ? `"${this.value}"` : this.value
 }
 
-// We never implemented field expressions past the grammar so we dont need this
-// MemberExp.prototype.gen = function() {
-//   return `${this.record.gen()}.${this.id}`
-// }
-
 SubscriptedVarExp.prototype.gen = function () {
   return `${this.id.gen()}[${this.key.gen()}]`
 }
@@ -255,9 +248,7 @@ None.prototype.gen = function () {
 }
 
 WhileLoop.prototype.gen = function () {
-  // p sure we need to use condition instead of exp here because its called condition in the ast
-  return `while (${this.condition.gen()}) { ${this.body.gen()} }`
-  // return `while (${this.exp.gen()}) { ${this.body.gen()} }`
+  return `while (${this.condition.gen()}) { ${this.body.gen()} }` 
 }
 
 SubscriptedVarExp.prototype.gen = function () {

@@ -15,6 +15,13 @@ const fixture = {
 
   arithmetic: [String.raw`3 * -2 + 2
     `, String.raw`((3 * (-(2))) + 2)`],
+  
+  call: [],
+  if: [],
+  ifelse: [],
+  while: [],
+  for: [],
+  
 }
 
 describe('The JavaScript generator', () => {
