@@ -52,14 +52,15 @@ const fixture = {
     'x is Num 3 < 4 ? 5 : 6\n',
     'let x = (3 < 4) ? 5 : 6',
   ],
-  While: [
+  WhileLoop: [
     'while (3 < 4) {\n 3 + 4\n}\n',
     'while ((3<4)) {(3+4)}',
   ],
+  ForLoop: [
+    'for x in [1,2,3] {\n x + 3\n}\n',
+    'for (let x of [1,2,3]) {(x+3)}',
+  ],
   // call: [],
-  // if: [],
-  // ifelse: [],
-  // while: [],
   // for: [],
   //builtins: ['pow(2, 2)\n length("hello")\n exit(3)\n', /\(2\*\*2\);\s*"".length;\s*process\.exit\(3\);/],
 

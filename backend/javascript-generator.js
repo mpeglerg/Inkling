@@ -227,8 +227,11 @@ Param.prototype.gen = function () {
 };
 
 ForLoop.prototype.gen = function () {
-  const i = javaScriptId(this.id);
-  const loopControl = `for (let ${i} in ${this.collection})`;
+  // const i = javaScriptId(this);
+  /* idk if we want to use javaScriptId here since the id is localized to this for loop,
+   * may be wrong tho
+   * i think our for loop is most similar to js for-in, not for-in; definitely up for debate tho */
+  const loopControl = `for (let ${this.id} of [${this.collection.gen()}])`;
   const body = this.body.gen();
   return `${loopControl} {${body}}`;
 };
