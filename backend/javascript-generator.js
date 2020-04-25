@@ -13,7 +13,8 @@
  *   generate(tigerExpression)
  */
 
-const beautify = require("js-beautify");
+const util = require('util');
+const beautify = require('js-beautify');
 const {
   Program, // done
   Block, // done
@@ -39,21 +40,16 @@ const {
   Ternary, // done
   None, // done
   SubscriptedVarExp,
-} = require("../ast/index");
-const {
-  NumType,
-  BoolType,
-  TextType,
-  NoneType,
-} = require("../semantics/builtins");
+} = require('../ast/index');
+const { NumType, BoolType, TextType, NoneType } = require('../semantics/builtins');
 
 function makeOp(op) {
   return (
     {
-      "==": "===",
-      "!=": "!==",
-      and: "&&",
-      or: "||",
+      '==': '===',
+      '!=': '!==',
+      and: '&&',
+      or: '||',
     }[op] || op
   );
 }
@@ -65,7 +61,7 @@ function makeOp(op) {
 const javaScriptId = (() => {
   let lastId = 0;
   const map = new Map();
-  return (v) => {
+  return v => {
     if (!map.has(v)) {
       map.set(v, ++lastId); // eslint-disable-line no-plusplus
     }
@@ -135,7 +131,7 @@ Program.prototype.gen = function () {
   // I think this is incorrect- needs work
   indentLevel = 0;
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
-  return this.stmts.map((s) => s.gen()).join("");
+  return this.stmts.map(s => s.gen()).join('');
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
 };
 
@@ -152,7 +148,7 @@ Program.prototype.gen = function () {
 
 // DONE
 VarDeclaration.prototype.gen = function () {
-  console.log("Vardeclaration: ", this);
+  console.log('Vardeclaration: ', this);
   if (!this.constant) {
     return `let ${javaScriptId(this)} = ${this.exp.gen()}`;
   } else {
@@ -167,15 +163,16 @@ Print.prototype.gen = function () {
 // I don't know about this one
 DictExpression.prototype.gen = function () {
   const result = {};
-  console.log("Dict: ", this.exp);
-  const keys = this.exp.map((key) => key.key.gen());
-  const values = this.exp.map((val) => val.value.gen());
-  console.log("keyVal: ", keys, values);
+  console.log('Dict: ', this.exp);
+  const keys = this.exp.map(key => key.key.gen());
+  const values = this.exp.map(val => val.value.gen());
+  console.log('keyVal: ', keys, values);
   for (let i = 0; i < keys.length; i++) {
     result[keys[i]] = values[i];
   }
-  console.log("result", JSON.stringify(result));
-  return JSON.stringify(JSON.parse(result));
+  const js = `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`;
+  console.log(js);
+  return js;
 };
 
 // I dont know about this one
@@ -187,7 +184,7 @@ DictExpression.prototype.gen = function () {
 // };
 
 ListExpression.prototype.gen = function () {
-  return `${this.members.map((m) => m.gen())}`;
+  return `${this.members.map(m => m.gen())}`;
 };
 
 BinaryExpression.prototype.gen = function () {
@@ -195,11 +192,11 @@ BinaryExpression.prototype.gen = function () {
 };
 
 Call.prototype.gen = function () {
-  const args = this.args.map((a) => a.gen());
+  const args = this.args.map(a => a.gen());
   if (this.id.builtin) {
     return builtin[this.id.id](args);
   }
-  return `${javaScriptId(this.id.gen())}(${args.join(",")})`;
+  return `${javaScriptId(this.id.gen())}(${args.join(',')})`;
 };
 
 Param.prototype.gen = function () {
@@ -215,10 +212,10 @@ ForLoop.prototype.gen = function () {
 
 FuncDecStmt.prototype.gen = function () {
   const name = javaScriptId(this.id);
-  const params = this.params.map((param) => param.gen());
+  const params = this.params.map(param => param.gen());
   // "Void" functions do not have a JS return, others do
   const body = this.body.gen();
-  return `function ${name} (${params.join(",")}) {${body}}`;
+  return `function ${name} (${params.join(',')}) {${body}}`;
 };
 
 ReturnStatement.prototype.gen = function () {
@@ -232,9 +229,7 @@ IdentifierExpression.prototype.gen = function () {
 IfStmt.prototype.gen = function () {
   let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`;
   for (let i = 1; i < this.tests.length; i += 1) {
-    result = result.concat(
-      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`
-    );
+    result = result.concat(`else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`);
   }
   if (this.alt !== undefined) {
     result.concat(`else {${this.alt.gen()}}`);
@@ -262,7 +257,7 @@ Ternary.prototype.gen = function () {
 };
 
 None.prototype.gen = function () {
-  return "null";
+  return 'null';
 };
 
 WhileLoop.prototype.gen = function () {
