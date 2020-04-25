@@ -107,12 +107,12 @@ IfStmt.prototype.analyze = function (context) {
 Ternary.prototype.analyze = function (context) {
   this.test.analyze(context)
   check.isBool(this.test.type)
-
   const blockContext = context.createChildContextForBlock()
   this.consequence.analyze(blockContext)
-
   const alternateBlock = context.createChildContextForBlock()
   this.alt.analyze(alternateBlock)
+  check.expressionsHaveTheSameType(this.consequence.type, this.alt.type)
+  this.type = this.consequence.type
 }
 
 BinaryExpression.prototype.analyze = function (context) {
@@ -146,6 +146,7 @@ PowExp.prototype.analyze = function (context) {
   this.right.analyze(context)
   check.isNum(this.left.type)
   check.isNum(this.right.type)
+  this.type = NumType
 }
 
 PrefixExpression.prototype.analyze = function (context) {

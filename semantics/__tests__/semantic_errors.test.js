@@ -71,7 +71,7 @@ const errors = [
     '  r is Num 0\nwhile (r < 5) {\ndisplay r\ninWhileVar is Text "hello"\n}\ndisplay inWhileVar\n',
   ],
   ['dividing booleans', 'r is Bool true\nj is Bool false\nr / j\n'],
-  // test for dividing booleans
+  ['ternary expression types', 'c is Num true ? 5 : true\n'],
   // add necessary types for each node
   // pow check for return type
   // in functions check

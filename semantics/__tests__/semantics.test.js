@@ -110,6 +110,7 @@ for a in {1:3,2:1,3:3} {
 for a in {1,2,3} {
   u is a
 }
+u is true ? 5: 6
 
 `
 
