@@ -34,7 +34,7 @@ module.exports = {
     doCheck(
       expression.type.constructor === ListType
       || expression.type.constructor === DictType,
-      'Not a list or dict',
+      'Not a list or  dict',
     )
   },
 
@@ -50,10 +50,10 @@ module.exports = {
     doCheck(value.constructor === FuncDecStmt, 'Not a function')
   },
 
-  isNumOrText(expression) {
+  isNumOrText(type) {
     doCheck(
-      expression === NumType || expression.type === TextType,
-      'Cannot apply \'+ \' to types that are not num or text',
+      type === NumType || type === TextType,
+      'Cannot apply \'+\' to types that are not num or text',
     )
   },
 

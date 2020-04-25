@@ -45,6 +45,8 @@ while (j < 5) {
 f is Bool true
 if (5 < 9 and 5 > 0 or f) {
   display "hello"
+} else if (5 > 9) {
+  display "ooga booga"
 } else {
   display "good bye"
 }
@@ -111,6 +113,8 @@ for a in {1,2,3} {
   u is a
 }
 u is true ? 5: 6
+display "string" + "concatenation"
+
 `
 
 describe('The semantic analyzer', () => {

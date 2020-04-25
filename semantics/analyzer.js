@@ -32,14 +32,14 @@ const {
   SubscriptedVarExp,
 } = require('../ast/index')
 
-const check = require('../semantics/check')
+const check = require('./check')
 
 const {
   NumType,
   BoolType,
   TextType,
   NoneType,
-} = require('../semantics/builtins')
+} = require('./builtins')
 
 const Context = require('./context')
 
@@ -88,6 +88,7 @@ ListType.prototype.analyze = function (context) {
 SetType.prototype.analyze = function (context) {
   this.memberType.analyze(context)
 }
+
 
 IfStmt.prototype.analyze = function (context) {
   this.tests.forEach((test) => {
