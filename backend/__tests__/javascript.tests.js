@@ -48,6 +48,10 @@ const fixture = {
     'if (true) {\n3 + 4\n} else if (3 < 4) {\n 3 - 4\n} else {\n4+3\n}\n',
     'if (true) {(3 + 4)}else if ((3 < 4)) {(3 - 4)}else{(4+3)}',
   ],
+  Ternary: [
+    'x is Num 3 < 4 ? 5 : 6\n',
+    'let x = (3 < 4) ? 5 : 6'
+  ]
   // call: [],
   // if: [],
   // ifelse: [],
