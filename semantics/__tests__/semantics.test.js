@@ -111,7 +111,6 @@ for a in {1,2,3} {
   u is a
 }
 u is true ? 5: 6
-
 `
 
 describe('The semantic analyzer', () => {

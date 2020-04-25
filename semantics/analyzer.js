@@ -172,6 +172,7 @@ IdentifierExpression.prototype.analyze = function (context) {
 PostfixExpression.prototype.analyze = function (context) {
   this.operand.analyze(context)
   check.isNum(this.operand.type)
+  this.type = NumType
 }
 
 WhileLoop.prototype.analyze = function (context) {
@@ -310,5 +311,5 @@ SubscriptedVarExp.prototype.analyze = function (context) {
   const listOrDict = this.callee || this.callee.exp
   check.isListOrDict(listOrDict)
   check.containsKey(this.callee, this.key.value)
-  this.type = this.callee.type.keyType || this.callee.type.memberType
+  this.type = this.callee.type.memberType
 }

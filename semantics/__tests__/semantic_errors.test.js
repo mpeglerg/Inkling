@@ -72,6 +72,7 @@ const errors = [
   ],
   ['dividing booleans', 'r is Bool true\nj is Bool false\nr / j\n'],
   ['ternary expression types', 'c is Num true ? 5 : true\n'],
+
   // add necessary types for each node
   // pow check for return type
   // in functions check
