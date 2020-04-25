@@ -5,9 +5,9 @@
  * JavaScript that we expect.
  */
 
-const parse = require('../../ast/parser');
-const analyze = require('../../semantics/analyzer');
-const generate = require('../javascript-generator');
+const parse = require("../../ast/parser");
+const analyze = require("../../semantics/analyzer");
+const generate = require("../javascript-generator");
 
 const fixture = {
   // hello: [
@@ -31,16 +31,22 @@ const fixture = {
   //   `,
   //   String.raw`const a = "Hello"`,
   // ],
-  DictDeclaration: [
-    String.raw`i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
-    `,
-    String.raw`let i={"name":"Marco", "school":"LMU"}`,
-  ],
-  // EmptySet: [
-  //   String.raw`c is Set<Text> {"this", "a", "b"}
+  // DictDeclaration: [
+  //   String.raw`i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
   //   `,
-  //   String.raw`const set1 = new Set(["this", "a", "b"])`,
+  //   String.raw`let i={"name":"Marco", "school":"LMU"}`,
   // ],
+
+  AssignNum: [
+    String.raw`
+    c is Num 5
+    c is 6
+    `,
+    String.raw`
+    let c =5
+    c = 6
+    `,
+  ],
 
   // call: [],
   // if: [],
@@ -50,12 +56,12 @@ const fixture = {
 };
 
 function normalize(s) {
-  return s.replace(/\s+/g, '');
+  return s.replace(/\s+/g, "");
 }
 
-describe('The JavaScript generator', () => {
+describe("The JavaScript generator", () => {
   Object.entries(fixture).forEach(([name, [source, expected]]) => {
-    test(`produces the correct output for ${name}`, done => {
+    test(`produces the correct output for ${name}`, (done) => {
       const ast = parse(source);
       analyze(ast);
       expect(normalize(generate(ast))).toEqual(normalize(expected));

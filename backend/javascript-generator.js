@@ -13,8 +13,8 @@
  *   generate(tigerExpression)
  */
 
-const util = require('util');
-const beautify = require('js-beautify');
+const util = require("util");
+const beautify = require("js-beautify");
 const {
   Program, // done
   Block, // done
@@ -40,16 +40,21 @@ const {
   Ternary, // done
   None, // done
   SubscriptedVarExp,
-} = require('../ast/index');
-const { NumType, BoolType, TextType, NoneType } = require('../semantics/builtins');
+} = require("../ast/index");
+const {
+  NumType,
+  BoolType,
+  TextType,
+  NoneType,
+} = require("../semantics/builtins");
 
 function makeOp(op) {
   return (
     {
-      '==': '===',
-      '!=': '!==',
-      and: '&&',
-      or: '||',
+      "==": "===",
+      "!=": "!==",
+      and: "&&",
+      or: "||",
     }[op] || op
   );
 }
@@ -61,7 +66,7 @@ function makeOp(op) {
 const javaScriptId = (() => {
   let lastId = 0;
   const map = new Map();
-  return v => {
+  return (v) => {
     if (!map.has(v)) {
       map.set(v, ++lastId); // eslint-disable-line no-plusplus
     }
@@ -131,24 +136,27 @@ Program.prototype.gen = function () {
   // I think this is incorrect- needs work
   indentLevel = 0;
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
-  return this.stmts.map(s => s.gen()).join('');
+  return this.stmts.map((s) => s.gen()).join("");
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
 };
 
-// Block.prototype.gen = function () {
-//   indentLevel += 1;
-//   indentLevel -= 1;
-//   const statements = this.statements.forEach((s) => s.gen());
-//   return statements.join("");
-// };
+// DONE tested
+Literal.prototype.gen = function () {
+  return this.type === TextType ? `"${this.value}"` : this.value;
+};
 
-// Assignment.prototype.gen = function () {
-//   return `${this.target.gen()} = ${this.source.gen()}`;
-// };
+Assignment.prototype.gen = function () {
+  console.log("this: ", this.target);
+  return `${this.target.gen()} = ${this.source.gen()}`;
+};
 
-// DONE
+IdentifierExpression.prototype.gen = function () {
+  console.log("identifier ex", this);
+  return `${this.id}`;
+};
+
 VarDeclaration.prototype.gen = function () {
-  console.log('Vardeclaration: ', this);
+  console.log("Vardeclaration: ", this);
   if (!this.constant) {
     return `let ${javaScriptId(this)} = ${this.exp.gen()}`;
   } else {
@@ -162,18 +170,15 @@ Print.prototype.gen = function () {
 
 DictExpression.prototype.gen = function () {
   const result = {};
-  console.log('Dict: ', this.exp);
-  const keys = this.exp.map(key => key.key.gen());
-  const values = this.exp.map(val => val.value.gen());
-  console.log('keyVal: ', keys, values);
+  const keys = this.exp.map((key) => key.key.gen());
+  const values = this.exp.map((val) => val.value.gen());
   for (let i = 0; i < keys.length; i++) {
     result[keys[i]] = values[i];
   }
-  const js = `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`;
-  console.log(js);
-  return js;
+  return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(", ")} }`;
 };
 
+// Working on
 // I dont know about this one
 // SetExpression.prototype.gen = function () {
 //   let result = new Set();
@@ -182,87 +187,88 @@ DictExpression.prototype.gen = function () {
 //   return `${result}`;
 // };
 
-ListExpression.prototype.gen = function () {
-  return `${this.members.map(m => m.gen())}`;
-};
+// Block.prototype.gen = function () {
+//   indentLevel += 1;
+//   indentLevel -= 1;
+//   const statements = this.statements.forEach((s) => s.gen());
+//   return statements.join("");
+// };
 
-BinaryExpression.prototype.gen = function () {
-  return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`;
-};
+// ListExpression.prototype.gen = function () {
+//   return `${this.members.map((m) => m.gen())}`;
+// };
 
-Call.prototype.gen = function () {
-  const args = this.args.map(a => a.gen());
-  if (this.id.builtin) {
-    return builtin[this.id.id](args);
-  }
-  return `${javaScriptId(this.id.gen())}(${args.join(',')})`;
-};
+// BinaryExpression.prototype.gen = function () {
+//   return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`;
+// };
 
-Param.prototype.gen = function () {
-  return javaScriptId(this.id);
-};
+// Call.prototype.gen = function () {
+//   const args = this.args.map((a) => a.gen());
+//   if (this.id.builtin) {
+//     return builtin[this.id.id](args);
+//   }
+//   return `${javaScriptId(this.id.gen())}(${args.join(",")})`;
+// };
 
-ForLoop.prototype.gen = function () {
-  const i = javaScriptId(this.id);
-  const loopControl = `for (let ${i} in ${this.collection})`;
-  const body = this.body.gen();
-  return `${loopControl} {${body}}`;
-};
+// Param.prototype.gen = function () {
+//   return javaScriptId(this.id);
+// };
 
-FuncDecStmt.prototype.gen = function () {
-  const name = javaScriptId(this.id);
-  const params = this.params.map(param => param.gen());
-  // "Void" functions do not have a JS return, others do
-  const body = this.body.gen();
-  return `function ${name} (${params.join(',')}) {${body}}`;
-};
+// ForLoop.prototype.gen = function () {
+//   const i = javaScriptId(this.id);
+//   const loopControl = `for (let ${i} in ${this.collection})`;
+//   const body = this.body.gen();
+//   return `${loopControl} {${body}}`;
+// };
 
-ReturnStatement.prototype.gen = function () {
-  return `return ${this.returnValue.gen()}`;
-};
+// FuncDecStmt.prototype.gen = function () {
+//   const name = javaScriptId(this.id);
+//   const params = this.params.map((param) => param.gen());
+//   // "Void" functions do not have a JS return, others do
+//   const body = this.body.gen();
+//   return `function ${name} (${params.join(",")}) {${body}}`;
+// };
 
-IdentifierExpression.prototype.gen = function () {
-  return javaScriptId(this.id);
-};
+// ReturnStatement.prototype.gen = function () {
+//   return `return ${this.returnValue.gen()}`;
+// };
 
-IfStmt.prototype.gen = function () {
-  let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`;
-  for (let i = 1; i < this.tests.length; i += 1) {
-    result = result.concat(`else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`);
-  }
-  if (this.alt !== undefined) {
-    result.concat(`else {${this.alt.gen()}}`);
-  }
-  return result;
-};
+// IfStmt.prototype.gen = function () {
+//   let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`;
+//   for (let i = 1; i < this.tests.length; i += 1) {
+//     result = result.concat(
+//       `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`
+//     );
+//   }
+//   if (this.alt !== undefined) {
+//     result.concat(`else {${this.alt.gen()}}`);
+//   }
+//   return result;
+// };
 
-Literal.prototype.gen = function () {
-  return this.type === TextType ? `"${this.value}"` : this.value;
-};
+// SubscriptedVarExp.prototype.gen = function () {
+//   return `${this.id.gen()}[${this.key.gen()}]`;
+// };
 
-SubscriptedVarExp.prototype.gen = function () {
-  return `${this.id.gen()}[${this.key.gen()}]`;
-};
+// PrefixExpression.prototype.gen = function () {
+//   return `(${this.op}(${this.operand.gen()}))`;
+// };
+// PostfixExpression.prototype.gen = function () {
+//   return `(((${this.operand})${this.op.gen()}))`;
+// };
 
-PrefixExpression.prototype.gen = function () {
-  return `(${this.op}(${this.operand.gen()}))`;
-};
-PostfixExpression.prototype.gen = function () {
-  return `(((${this.operand})${this.op.gen()}))`;
-};
+// Ternary.prototype.gen = function () {
+//   return `${this.test.gen()} ? ${this.consequence.gen()} : ${this.alt.gen()}`;
+// };
 
-Ternary.prototype.gen = function () {
-  return `${this.test.gen()} ? ${this.consequence.gen()} : ${this.alt.gen()}`;
-};
+// None.prototype.gen = function () {
+//   return "null";
+// };
 
-None.prototype.gen = function () {
-  return 'null';
-};
+// WhileLoop.prototype.gen = function () {
+//   return `while (${this.condition.gen()}) { ${this.body.gen()} }`;
+// };
 
-WhileLoop.prototype.gen = function () {
-  return `while (${this.condition.gen()}) { ${this.body.gen()} }`;
-};
-
-SubscriptedVarExp.prototype.gen = function () {
-  return `${this.id.gen()}[${this.key.gen()}]`;
-};
+// SubscriptedVarExp.prototype.gen = function () {
+//   return `${this.id.gen()}[${this.key.gen()}]`;
+// };
