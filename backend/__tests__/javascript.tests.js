@@ -10,48 +10,42 @@ const analyze = require("../../semantics/analyzer");
 const generate = require("../javascript-generator");
 
 const fixture = {
-  // Print: [
-  //   String.raw`display "Hello, world"
-  // `,
-  //   String.raw`console.log("Hello, world")`,
-  // ],
-  // arithmetic: [
-  //   String.raw`3 * -2 + 2
-  //   `,
-  //   String.raw`((3 * (-(2))) + 2)`,
-  // ],
-  // VarDeclarationNum: [
-  //   String.raw`c is Num 5
-  //   `,
-  //   String.raw`let c = 5`,
-  // ],
-  // VarDeclarationConstant: [
-  //   String.raw`a is always Text "Hello"
-  //   `,
-  //   String.raw`const a = "Hello"`,
-  // ],
-  // DictDeclaration: [
-  //   String.raw`i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
-  //   `,
-  //   String.raw`let i={"name":"Marco", "school":"LMU"}`,
-  // ],
-  // AssignNum: [
-  //   String.raw`
-  //   c is Num 5
-  //   c is 6
-  //   `,
-  //   String.raw`
-  //   let c =5
-  //   c = 6
-  //   `,
-  // ],
+  Print: [
+    'display "Hello, world"\n',
+    String.raw`console.log("Hello, world")`,
+  ],
+  arithmetic: [
+    '3 * -2 + 2\n',
+    '((3 * (-(2))) + 2)',
+  ],
+  VarDeclarationNum: [
+    'c is Num 5\n',
+    'let c = 5',
+  ],
+  VarDeclarationConstant: [
+    'a is always Text "Hello"\n',
+    'const a = "Hello"',
+  ],
+  DictDeclaration: [
+    'i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}\n',
+    'let i={"name":"Marco", "school":"LMU"}',
+  ],
+  // Expected: "letb=newSet(\"name\",\"Marco\",\"school\",\"LMU\")"
+  // Received: "letb=[objectSet]"
+  SetDeclaration: [
+    'b is Set<Text> {"name", "Marco", "school", "LMU"}\n',
+    'let b = new Set("name", "Marco", "school", "LMU")',
+  ],
+  AssignNum: [
+    'd is Num 5\n d is 6\n',
+    'let d = 5\n d = 6\n',
+  ],
   // call: [],
   // if: [],
   // ifelse: [],
   // while: [],
   // for: [],
-  // builtins: [String.raw`pow(2, 2)\n length("hello")\n exit(3)\n
-  //      `, /\(2**2\);\s*"".length;\s*process\.exit\(3\);/],
+  //builtins: ['pow(2, 2)\n length("hello")\n exit(3)\n', /\(2\*\*2\);\s*"".length;\s*process\.exit\(3\);/],
 
 };
 
