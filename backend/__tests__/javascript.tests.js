@@ -50,6 +50,9 @@ const fixture = {
   // ifelse: [],
   // while: [],
   // for: [],
+  // builtins: [String.raw`pow(2, 2)\n length("hello")\n exit(3)\n
+  //      `, /\(2**2\);\s*"".length;\s*process\.exit\(3\);/],
+
 };
 
 function normalize(s) {
