@@ -175,7 +175,7 @@ DictExpression.prototype.gen = function () {
     result[keys[i]] = values[i];
   }
   console.log("result", JSON.stringify(result));
-  return JSON.stringify(result);
+  return JSON.stringify(JSON.parse(result));
 };
 
 // I dont know about this one
