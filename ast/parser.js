@@ -39,7 +39,7 @@ const {
   Literal,
   None,
   Ternary,
-} = require('../ast')
+} = require('.')
 
 const grammar = ohm.grammar(fs.readFileSync('./grammar/Inkling.ohm'))
 

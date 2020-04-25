@@ -50,8 +50,12 @@ const fixture = {
   ],
   Ternary: [
     'x is Num 3 < 4 ? 5 : 6\n',
-    'let x = (3 < 4) ? 5 : 6'
-  ]
+    'let x = (3 < 4) ? 5 : 6',
+  ],
+  While: [
+    'while (3 < 4) {\n 3 + 4\n}\n',
+    'while ((3<4)) {(3+4)}',
+  ],
   // call: [],
   // if: [],
   // ifelse: [],
