@@ -10,12 +10,11 @@ const analyze = require("../../semantics/analyzer");
 const generate = require("../javascript-generator");
 
 const fixture = {
-  // hello: [
+  // Print: [
   //   String.raw`display "Hello, world"
   // `,
   //   String.raw`console.log("Hello, world")`,
   // ],
-
   // arithmetic: [
   //   String.raw`3 * -2 + 2
   //   `,
@@ -36,18 +35,16 @@ const fixture = {
   //   `,
   //   String.raw`let i={"name":"Marco", "school":"LMU"}`,
   // ],
-
-  AssignNum: [
-    String.raw`
-    c is Num 5
-    c is 6
-    `,
-    String.raw`
-    let c =5
-    c = 6
-    `,
-  ],
-
+  // AssignNum: [
+  //   String.raw`
+  //   c is Num 5
+  //   c is 6
+  //   `,
+  //   String.raw`
+  //   let c =5
+  //   c = 6
+  //   `,
+  // ],
   // call: [],
   // if: [],
   // ifelse: [],

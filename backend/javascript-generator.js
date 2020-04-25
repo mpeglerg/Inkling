@@ -178,6 +178,15 @@ DictExpression.prototype.gen = function () {
   return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(", ")} }`;
 };
 
+PrefixExpression.prototype.gen = function () {
+  return `(${this.op}(${this.operand.gen()}))`;
+};
+
+BinaryExpression.prototype.gen = function () {
+  console.log("binary expression: ", this);
+  return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`;
+};
+
 // Working on
 // I dont know about this one
 // SetExpression.prototype.gen = function () {
@@ -196,10 +205,6 @@ DictExpression.prototype.gen = function () {
 
 // ListExpression.prototype.gen = function () {
 //   return `${this.members.map((m) => m.gen())}`;
-// };
-
-// BinaryExpression.prototype.gen = function () {
-//   return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`;
 // };
 
 // Call.prototype.gen = function () {
@@ -250,9 +255,6 @@ DictExpression.prototype.gen = function () {
 //   return `${this.id.gen()}[${this.key.gen()}]`;
 // };
 
-// PrefixExpression.prototype.gen = function () {
-//   return `(${this.op}(${this.operand.gen()}))`;
-// };
 // PostfixExpression.prototype.gen = function () {
 //   return `(((${this.operand})${this.op.gen()}))`;
 // };
