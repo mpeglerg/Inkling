@@ -164,7 +164,6 @@ Print.prototype.gen = function () {
   return `console.log(${this.exp.gen()})`;
 };
 
-// I don't know about this one
 DictExpression.prototype.gen = function () {
   const result = {};
   console.log("Dict: ", this.exp);
