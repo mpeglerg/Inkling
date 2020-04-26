@@ -223,7 +223,7 @@ Call.prototype.gen = function () {
 };
 
 Param.prototype.gen = function () {
-  return javaScriptId(this);
+  return javaScriptId(this.id);
 };
 
 ForLoop.prototype.gen = function () {
@@ -238,7 +238,7 @@ ForLoop.prototype.gen = function () {
 };
 
 FuncDecStmt.prototype.gen = function () {
-  const name = javaScriptId(this);
+  const name = javaScriptId(this.id);
   // "Void" functions do not have a JS return, others do
   const funcObj = this.function.gen();
   return `function ${name} ${funcObj}`;
