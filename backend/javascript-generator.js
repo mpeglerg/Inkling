@@ -183,24 +183,11 @@ PrefixExpression.prototype.gen = function () {
 };
 
 BinaryExpression.prototype.gen = function () {
-  console.log("binary expression: ", this);
   return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`;
 };
 
-// Working on
-// I dont know about this one
 SetExpression.prototype.gen = function () {
-  //let result = new Set();
-  console.log("in create set: ", this.members);
-  //this.members.map((member) => result.add(member.gen()));
-  //console.log(`${result.toString()}`)
   return `new Set(${this.members.map((member) => member.gen())})`;
-
-
-  // let result = '{'
-  // console.log("in create set: ", this.members);
-  // this.members.forEach((member) => result.concat(`${member.gen()}, `));
-  // return `${result}`;
 };
 
 Block.prototype.gen = function () {
@@ -230,7 +217,7 @@ ForLoop.prototype.gen = function () {
   // const i = javaScriptId(this);
   /* idk if we want to use javaScriptId here since the id is localized to this for loop,
    * may be wrong tho
-   * i think our for loop is most similar to js for-in, not for-in; definitely up for debate tho */
+   * i think our for loop is most similar to js for-of, not for-in; definitely up for debate tho */
   const i = javaScriptId(this.id);
   const loopControl = `for (let ${i} of ${this.collection.gen()})`;
   const body = this.body.gen();
@@ -269,7 +256,8 @@ IfStmt.prototype.gen = function () {
 };
 
 SubscriptedVarExp.prototype.gen = function () {
-  return `${this.id.gen()}[${this.key.gen()}]`;
+  console.log('BEEP')
+  return `${javaScriptId(this.id.id.id)}[${this.key.gen()}]`;
 };
 
 PostfixExpression.prototype.gen = function () {
