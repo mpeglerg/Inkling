@@ -69,7 +69,7 @@ const fixture = {
   ],
   SubscriptedVarExp: [
     'h is List<Num> [1,2,3]\n h[1] is 5\n',
-    'let h_10 = [1,2,3]\n h_10[0] is 5',
+    'let h_10 = [1,2,3]\n h_10[1] = 5',
   ],
   //builtins: ['pow(2, 2)\n length("hello")\n exit(3)\n', /\(2\*\*2\);\s*"".length;\s*process\.exit\(3\);/],
 

@@ -146,15 +146,17 @@ Literal.prototype.gen = function () {
 };
 
 Assignment.prototype.gen = function () {
-  console.log("this: ", this.target);
+  console.log("assignTarget: ", this.target);
   return `${this.target.gen()} = ${this.source.gen()}`;
 };
 
 IdentifierExpression.prototype.gen = function () {
   console.log("identifier ex", this);
+  if (typeof this.id === 'object') {
+    return `${this.id.gen()}`;
+  }
   return `${javaScriptId(this.id)}`;
-};
-
+}
 VarDeclaration.prototype.gen = function () {
   console.log("Vardeclaration: ", this);
   if (!this.constant) {
@@ -187,6 +189,7 @@ BinaryExpression.prototype.gen = function () {
 };
 
 SetExpression.prototype.gen = function () {
+  console.log("in create set: ", this.members);
   return `new Set(${this.members.map((member) => member.gen())})`;
 };
 
@@ -206,7 +209,7 @@ Call.prototype.gen = function () {
   if (this.id.builtin) {
     return builtin[this.id.id](args);
   }
-  return `${javaScriptId(this.id)}(${args.join()})`
+  return `${this.id.gen()}(${args.join()})`
 };
 
 Param.prototype.gen = function () {
@@ -256,8 +259,7 @@ IfStmt.prototype.gen = function () {
 };
 
 SubscriptedVarExp.prototype.gen = function () {
-  console.log('BEEP')
-  return `${javaScriptId(this.id.id.id)}[${this.key.gen()}]`;
+  return `${this.id.gen()}[${this.key.gen()}]`;
 };
 
 PostfixExpression.prototype.gen = function () {
