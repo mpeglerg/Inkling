@@ -70,7 +70,7 @@ const javaScriptId = (() => {
     if (!map.has(v)) {
       map.set(v, ++lastId); // eslint-disable-line no-plusplus
     }
-    return `${v.id}`;
+    return `${v}_${map.get(v)}`;
   };
 })();
 
@@ -152,15 +152,15 @@ Assignment.prototype.gen = function () {
 
 IdentifierExpression.prototype.gen = function () {
   console.log("identifier ex", this);
-  return `${this.id}`;
+  return `${javaScriptId(this.id)}`;
 };
 
 VarDeclaration.prototype.gen = function () {
   console.log("Vardeclaration: ", this);
   if (!this.constant) {
-    return `let ${javaScriptId(this)} = ${this.exp.gen()}`;
+    return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`;
   } else {
-    return `const ${javaScriptId(this)} = ${this.exp.gen()}`;
+    return `const ${javaScriptId(this.id)} = ${this.exp.gen()}`;
   }
 };
 
@@ -231,7 +231,8 @@ ForLoop.prototype.gen = function () {
   /* idk if we want to use javaScriptId here since the id is localized to this for loop,
    * may be wrong tho
    * i think our for loop is most similar to js for-in, not for-in; definitely up for debate tho */
-  const loopControl = `for (let ${this.id} of [${this.collection.gen()}])`;
+  const i = javaScriptId(this.id);
+  const loopControl = `for (let ${i} of [${this.collection.gen()}])`;
   const body = this.body.gen();
   return `${loopControl} {${body}}`;
 };
@@ -260,9 +261,9 @@ IfStmt.prototype.gen = function () {
       `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`,
     );
   }
-  const alt = this.alt.gen()
-  if (alt) {
-    result = result.concat(`else {${alt}}`);
+  // we need to check if this.alt is null because if it is then alt.gen() will throw an error
+  if (this.alt) {
+    result = result.concat(`else {${this.alt.gen()}}`);
   }
   return result;
 };
@@ -285,8 +286,4 @@ None.prototype.gen = function () {
 
 WhileLoop.prototype.gen = function () {
   return `while (${this.condition.gen()}) { ${this.body.gen()} }`;
-};
-
-SubscriptedVarExp.prototype.gen = function () {
-  return `${this.id.gen()}[${this.key.gen()}]`;
 };
