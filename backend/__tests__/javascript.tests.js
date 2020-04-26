@@ -61,7 +61,10 @@ const fixture = {
     'for (let x of [1,2,3]) {(x+3)}',
   ],
   // call: [],
-  // for: [],
+  Call: [
+    'function f(x is Num) is Num {\ngimme x * 3\n}\n',
+    'function f(x) {return (x*3)}',
+  ]
   //builtins: ['pow(2, 2)\n length("hello")\n exit(3)\n', /\(2\*\*2\);\s*"".length;\s*process\.exit\(3\);/],
 
 };

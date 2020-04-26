@@ -216,14 +216,14 @@ ListExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen());
-  if (this.id.builtin) {
-    return builtin[this.id.id](args);
-  }
-  return `${javaScriptId(this.id.gen())}(${args.join(",")})`;
+  // if (this.id.builtin) {
+  //   return builtin[this.id.id](args);
+  // }
+  return `${javaScriptId(this.id)}(${args.join()})`
 };
 
 Param.prototype.gen = function () {
-  return javaScriptId(this.id);
+  return javaScriptId(this);
 };
 
 ForLoop.prototype.gen = function () {
@@ -237,12 +237,17 @@ ForLoop.prototype.gen = function () {
 };
 
 FuncDecStmt.prototype.gen = function () {
-  const name = javaScriptId(this.id);
-  const params = this.params.map((param) => param.gen());
+  const name = javaScriptId(this);
   // "Void" functions do not have a JS return, others do
-  const body = this.body.gen();
-  return `function ${name} (${params.join(",")}) {${body}}`;
+  const funcObj = this.function.gen();
+  return `function ${name} ${funcObj}`;
 };
+
+FuncObject.prototype.gen = function () {
+  const params = `${this.params.map((param) => param.gen())}`
+  const body = this.body.gen()
+  return `( ${params} ){${body} }`
+}
 
 ReturnStatement.prototype.gen = function () {
   return `return ${this.returnValue.gen()}`;
