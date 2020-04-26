@@ -108,6 +108,7 @@ const builtin = {
     return `${base}**${power}`;
   },
   add([x]) {
+    console.log(add);
     return ``;
   },
   // TODO: The list, set, and dict builtins are strange because they are methods,

@@ -15,6 +15,7 @@ Inkling {
                 |  Exp
     VarExp      =  VarExp "[" Exp "]"                                       -- subscripted
                 |  VarExp "." id                                            -- field
+                |  VarExp "." id "("Args")"                                 -- method
                 |  VarExp "(" Args ")"                                      -- call
                 |  id
     FuncDec     =  "function" id "(" Params ")" ReturnType Block            -- function
