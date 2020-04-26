@@ -13,7 +13,7 @@ const {
 const NoneType = new PrimitiveType("none");
 
 const standardFunctions = [
-  new FuncDecStmt("exit", [new Param("code", NumType)], NumType),
+  new FuncDecStmt("exitProcess", [new Param("code", NumType)], NumType),
 ];
 
 const textFunctions = [
@@ -51,7 +51,12 @@ const mathFunctions = [
 
 const listFunctions = [
   // need to inherit type of list from list that is calling, don't think I did it right here but...
-  new FuncDecStmt("add", [new Param("value", this.type)], ListType),
+  new FuncDecStmt(
+    "add",
+    [new Param("id", this.type)],
+    [new Param("value", this.type)],
+    ListType
+  ),
   new FuncDecStmt("prepend", [new Param("value", this.type)], ListType),
   new FuncDecStmt(
     "insert",

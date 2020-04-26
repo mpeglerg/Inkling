@@ -142,9 +142,6 @@ const astGenerator = grammar.createSemantics().addOperation("ast", {
   VarExp_call(callName, _1, args, _2) {
     return new Call(callName.ast(), args.ast());
   },
-  VarExp_method(callName, _1, _2, args, _3) {
-    return new Call(callName.ast(), args.ast());
-  },
   id(_1, _2) {
     return this.sourceString;
   },

@@ -107,7 +107,7 @@ const builtin = {
   pow([base, power]) {
     return `${base}**${power}`;
   },
-  add([x]) {
+  add([listId, b]) {
     console.log(add);
     return ``;
   },

@@ -52,7 +52,7 @@ const fixture = {
   // slice: ['slice("hello",1,2)\n', '"hello".slice(1, 2)'],
   // slice: ['charAt("hello",1)\n', '"hello".charAt(1)'],
   // abs: ["abs(-1)\n", "Math.abs(-1)"],
-  //exit: ["exit(3)\n", "process.exit(3)"],
+  // exitProcess: ["exitProcess(3)\n", "process.exit(3)"],
   // random: ["random(1, 10)\n", "Math.floor(Math.random() * 10 + 1)"],
   // builtins: ['pow(2, 2)\n length("hello")\n', '2**2"hello".length'],
   // ListDeclaration: [
@@ -60,7 +60,7 @@ const fixture = {
   //   'let d_11 = ["name", "Marco", "school", "LMU"]',
   // ],
   ListMethod: [
-    'd is List<Text> ["name", "Marco", "school", "LMU"]\nd.add("guy")\n',
+    'd is List<Text> ["name", "Marco", "school", "LMU"]\nadd("d, guy")\n',
     'let d = ["name", "Marco", "school", "LMU"] d.push("guy")',
   ],
 };
