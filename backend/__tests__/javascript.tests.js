@@ -59,13 +59,17 @@ const fixture = {
     'while ((3<4)) {(3+4)}',
   ],
   ForLoop: [
-    'for x in [1,2,3] {\n x + 3\n}\n',
-    'for (let x_7 of [1,2,3]) {(x_7+3)}',
+    'for g in [1,2,3] {\n g + 3\n}\n',
+    'for (let g_7 of [1,2,3]) {(g_7+3)}',
   ],
   // call: [],
   Functions: [
     'function foo(x is Num) is Num {\ngimme x * 3\n}\n',
-    'function foo_8(x_7) {return (x_7*3)}',
+    'function foo_8(x_9) {return (x_9*3)}',
+  ],
+  SubscriptedVarExp: [
+    'h is List<Num> [1,2,3]\n h[1] is 5\n',
+    'let h_10 = [1,2,3]\n h_10[0] is 5',
   ],
   //builtins: ['pow(2, 2)\n length("hello")\n exit(3)\n', /\(2\*\*2\);\s*"".length;\s*process\.exit\(3\);/],
 

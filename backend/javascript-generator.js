@@ -211,7 +211,7 @@ Block.prototype.gen = function () {
 };
 
 ListExpression.prototype.gen = function () {
-  return `${this.members.map((m) => m.gen())}`;
+  return `[${this.members.map((m) => m.gen())}]`;
 };
 
 Call.prototype.gen = function () {
@@ -232,7 +232,7 @@ ForLoop.prototype.gen = function () {
    * may be wrong tho
    * i think our for loop is most similar to js for-in, not for-in; definitely up for debate tho */
   const i = javaScriptId(this.id);
-  const loopControl = `for (let ${i} of [${this.collection.gen()}])`;
+  const loopControl = `for (let ${i} of ${this.collection.gen()})`;
   const body = this.body.gen();
   return `${loopControl} {${body}}`;
 };
