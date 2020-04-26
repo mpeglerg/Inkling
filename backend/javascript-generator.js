@@ -84,25 +84,31 @@ const builtin = {
     return `process.exit(${code})`;
   },
   slice([s, begin, end]) {
-    return `${s}.substr(${begin}, ${end})`;
+    return `${s}.slice(${begin}, ${end})`;
   },
   length([s]) {
+    console.log("this is in length ", s);
     return `${s}.length`;
   },
   charAt([s, i]) {
     return `${s}.charAt(${i})`;
   },
   abs([x]) {
-    return `Math.abs(${x})`;
+    console.log(typeof x);
+    const num = `${x}`.replace(/[()]/g, "");
+    return `Math.abs(${num})`;
   },
   sqrt([x]) {
     return `Math.sqrt(${x})`;
   },
   random([start, end]) {
-    return `(Math.random()*(${end} - ${start}) + ${start})`;
+    return `Math.floor(Math.random() * ${end} + ${start})`;
   },
   pow([base, power]) {
-    return `${base}**${power})`;
+    return `${base}**${power}`;
+  },
+  add([x]) {
+    return ``;
   },
   // TODO: The list, set, and dict builtins are strange because they are methods,
   // might need to change them to take extra list, set, dict as input
@@ -152,11 +158,11 @@ Assignment.prototype.gen = function () {
 
 IdentifierExpression.prototype.gen = function () {
   console.log("identifier ex", this);
-  if (typeof this.id === 'object') {
+  if (typeof this.id === "object") {
     return `${this.id.gen()}`;
   }
   return `${javaScriptId(this.id)}`;
-}
+};
 VarDeclaration.prototype.gen = function () {
   console.log("Vardeclaration: ", this);
   if (!this.constant) {
@@ -197,7 +203,7 @@ Block.prototype.gen = function () {
   indentLevel += 1;
   indentLevel -= 1;
   const statements = this.statements.map((s) => s.gen());
-  return statements.join('');
+  return statements.join("");
 };
 
 ListExpression.prototype.gen = function () {
@@ -206,10 +212,12 @@ ListExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen());
-  if (this.id.builtin) {
-    return builtin[this.id.id](args);
+  const id = this.id.gen();
+  console.log("In call: ", args);
+  if (this.callee.builtin) {
+    return builtin[this.callee.id](args);
   }
-  return `${this.id.gen()}(${args.join()})`
+  return `${this.id.gen()}(${args.join()})`;
 };
 
 Param.prototype.gen = function () {
@@ -235,10 +243,10 @@ FuncDecStmt.prototype.gen = function () {
 };
 
 FuncObject.prototype.gen = function () {
-  const params = `${this.params.map((param) => param.gen())}`
-  const body = this.body.gen()
-  return `( ${params} ){${body} }`
-}
+  const params = `${this.params.map((param) => param.gen())}`;
+  const body = this.body.gen();
+  return `( ${params} ){${body} }`;
+};
 
 ReturnStatement.prototype.gen = function () {
   return `return ${this.returnValue.gen()}`;
@@ -248,7 +256,7 @@ IfStmt.prototype.gen = function () {
   let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`;
   for (let i = 1; i < this.tests.length; i += 1) {
     result = result.concat(
-      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`,
+      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`
     );
   }
   // we need to check if this.alt is null because if it is then alt.gen() will throw an error
