@@ -295,9 +295,7 @@ Call.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id);
   check.isFunction(this.callee);
   this.args.forEach((arg) => arg.analyze(context));
-  if (this.callee.function.params > 0) {
-    check.legalArguments(this.args, this.callee.function.params);
-  }
+  check.legalArguments(this.args, this.callee.function.params);
   this.type = this.callee.function.type;
 };
 
