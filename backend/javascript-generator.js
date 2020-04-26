@@ -216,9 +216,9 @@ ListExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen());
-  // if (this.id.builtin) {
-  //   return builtin[this.id.id](args);
-  // }
+  if (this.id.builtin) {
+    return builtin[this.id.id](args);
+  }
   return `${javaScriptId(this.id)}(${args.join()})`
 };
 
