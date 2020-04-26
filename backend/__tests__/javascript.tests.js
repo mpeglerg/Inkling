@@ -5,42 +5,44 @@
  * JavaScript that we expect.
  */
 
-const parse = require("../../ast/parser");
-const analyze = require("../../semantics/analyzer");
-const generate = require("../javascript-generator");
+const parse = require('../../ast/parser')
+const analyze = require('../../semantics/analyzer')
+const generate = require('../javascript-generator')
 
 const fixture = {
   Print: [
     'display "Hello, world"\n',
     String.raw`console.log("Hello, world")`,
   ],
-  arithmetic: [
+  Arithmetic: [
     '3 * -2 + 2\n',
     '((3 * (-(2))) + 2)',
   ],
   VarDeclarationNum: [
-    'c is Num 5\n',
-    'let c = 5',
+    'a is Num 5\n',
+    'let a_1 = 5',
   ],
   VarDeclarationConstant: [
-    'a is always Text "Hello"\n',
-    'const a = "Hello"',
+    'b is always Text "Hello"\n',
+    'const b_2 = "Hello"',
   ],
   DictDeclaration: [
-    'i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}\n',
-    'let i={"name":"Marco", "school":"LMU"}',
+    'c is Dict<Text, Text> {"name":"Marco", "school":"LMU"}\n',
+    'let c_3 = {"name":"Marco", "school":"LMU"}',
   ],
-  // Expected: "letb=newSet(\"name\",\"Marco\",\"school\",\"LMU\")"
-  // Received: "letb=[objectSet]"
   SetDeclaration: [
-    'b is Set<Text> {"name", "Marco", "school", "LMU"}\n',
-    'let b = new Set("name", "Marco", "school", "LMU")',
+    'd is Set<Text> {"name", "Marco", "school", "LMU"}\n',
+    'let d_4 = new Set("name", "Marco", "school", "LMU")',
   ],
   AssignNum: [
-    'd is Num 5\n d is 6\n',
-    'let d = 5\n d = 6\n',
+    'e is Num 5\n e is 6\n',
+    'let e_5 = 5\n e_5 = 6\n',
   ],
-  IfElse:[
+  If: [
+    'if(true) {\n3 + 4\n}\n',
+    'if(true) {(3 + 4)}',
+  ],
+  IfElse: [
     'if (true) {\n3 + 4\n} else {\n4+3\n}\n',
     'if (true) {(3 + 4)}else{(4+3)}'
   ],
@@ -49,8 +51,8 @@ const fixture = {
     'if (true) {(3 + 4)}else if ((3 < 4)) {(3 - 4)}else{(4+3)}',
   ],
   Ternary: [
-    'x is Num 3 < 4 ? 5 : 6\n',
-    'let x = (3 < 4) ? 5 : 6',
+    'f is Num 3 < 4 ? 5 : 6\n',
+    'let f_6 = (3 < 4) ? 5 : 6',
   ],
   WhileLoop: [
     'while (3 < 4) {\n 3 + 4\n}\n',
@@ -58,16 +60,16 @@ const fixture = {
   ],
   ForLoop: [
     'for x in [1,2,3] {\n x + 3\n}\n',
-    'for (let x of [1,2,3]) {(x+3)}',
+    'for (let x_7 of [1,2,3]) {(x_7+3)}',
   ],
   // call: [],
   // for: [],
   //builtins: ['pow(2, 2)\n length("hello")\n exit(3)\n', /\(2\*\*2\);\s*"".length;\s*process\.exit\(3\);/],
 
-};
+}
 
 function normalize(s) {
-  return s.replace(/\s+/g, "");
+  return s.replace(/\s+/g, '')
 }
 
 describe("The JavaScript generator", () => {
