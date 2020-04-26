@@ -13,7 +13,7 @@ const {
 const NoneType = new PrimitiveType("none");
 
 const standardFunctions = [
-  new FuncDecStmt("exitProcess", [new Param("code", NumType)], NumType),
+  new FuncDecStmt("xProcess", [new Param("code", NumType)], NumType),
 ];
 
 const textFunctions = [
@@ -53,18 +53,25 @@ const listFunctions = [
   // need to inherit type of list from list that is calling, don't think I did it right here but...
   new FuncDecStmt(
     "add",
-    [new Param("id", this.type)],
-    [new Param("value", this.type)],
+    [new Param("id", ListType), new Param("value", TextType)],
     ListType
   ),
-  new FuncDecStmt("prepend", [new Param("value", this.type)], ListType),
+  new FuncDecStmt(
+    "prepend",
+    [new Param("id", ListType), new Param("value", NumType)],
+    ListType
+  ),
   new FuncDecStmt(
     "insert",
-    [new Param("index", NumType), new Param("value", this.type)],
+    [
+      new Param("id", ListType),
+      new Param("index", NumType),
+      new Param("value", NumType),
+    ],
     ListType
   ),
-  new FuncDecStmt("remove", [new Param("index", NumType)], ListType),
-  new FuncDecStmt("length", [new Param("s", ListType)], NumType),
+  new FuncDecStmt("remove", ListType),
+  // new FuncDecStmt("length", [new Param("s", ListType)], NumType),
 ];
 
 const setFunctions = [
@@ -96,8 +103,8 @@ const functions = [
   ...textFunctions,
   ...mathFunctions,
   ...listFunctions,
-  ...setFunctions,
-  ...dictFunctions,
+  // ...setFunctions,
+  // ...dictFunctions,
 ];
 
 functions.forEach((func) => {

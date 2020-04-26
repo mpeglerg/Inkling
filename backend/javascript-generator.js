@@ -80,7 +80,7 @@ let indentLevel = 0;
 
 // Let's inline the built-in functions, because we can!
 const builtin = {
-  exit(code) {
+  xProcess(code) {
     return `process.exit(${code})`;
   },
   slice([s, begin, end]) {
@@ -94,7 +94,7 @@ const builtin = {
     return `${s}.charAt(${i})`;
   },
   abs([x]) {
-    console.log(typeof x);
+    console.log("abs ", typeof x);
     const num = `${x}`.replace(/[()]/g, "");
     return `Math.abs(${num})`;
   },
@@ -107,9 +107,17 @@ const builtin = {
   pow([base, power]) {
     return `${base}**${power}`;
   },
-  add([listId, b]) {
-    console.log(add);
-    return ``;
+  add([listId, value]) {
+    return `${listId.replace(/[''""]/g, "")}.push(${value})`;
+  },
+  insert([listId, index, value]) {
+    return `${listId.replace(/[''""]/g, "")}.splice(${index}, 0, ${value})`;
+  },
+  prepend([listId, value]) {
+    return `${listId.replace(/[''""]/g, "")}.prepend(${value})`;
+  },
+  remove([listId]) {
+    return `${listId.replace(/[''""]/g, "")}.pop()`;
   },
   // TODO: The list, set, and dict builtins are strange because they are methods,
   // might need to change them to take extra list, set, dict as input
@@ -153,19 +161,19 @@ Literal.prototype.gen = function () {
 };
 
 Assignment.prototype.gen = function () {
-  console.log("assignTarget: ", this.target);
+  // console.log("assignTarget: ", this.target);
   return `${this.target.gen()} = ${this.source.gen()}`;
 };
 
 IdentifierExpression.prototype.gen = function () {
-  console.log("identifier ex", this);
+  // console.log("identifier ex", this);
   if (typeof this.id === "object") {
     return `${this.id.gen()}`;
   }
   return `${javaScriptId(this.id)}`;
 };
 VarDeclaration.prototype.gen = function () {
-  console.log("Vardeclaration: ", this);
+  // console.log("Vardeclaration: ", this);
   if (!this.constant) {
     return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`;
   } else {
@@ -196,7 +204,7 @@ BinaryExpression.prototype.gen = function () {
 };
 
 SetExpression.prototype.gen = function () {
-  console.log("in create set: ", this.members);
+  // console.log("in create set: ", this.members);
   return `new Set(${this.members.map((member) => member.gen())})`;
 };
 

@@ -209,13 +209,11 @@ ForLoop.prototype.analyze = function (context) {
 
 FuncDecStmt.prototype.analyze = function (context) {
   context.add(this.function.id, this);
-  console.log("function statement: ", context);
   const bodyContext = context.createChildContextForFunctionBody(this);
   this.function.analyze(bodyContext);
 };
 
 FuncObject.prototype.analyze = function (context) {
-  console.log("function obj: ", context);
   this.params = this.params.map((p) => new Param(p.id, p.type));
   this.params.forEach((p) => p.analyze(context));
   this.body.analyze(context);
@@ -297,7 +295,9 @@ Call.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id);
   check.isFunction(this.callee);
   this.args.forEach((arg) => arg.analyze(context));
-  check.legalArguments(this.args, this.callee.function.params);
+  if (this.callee.function.params > 0) {
+    check.legalArguments(this.args, this.callee.function.params);
+  }
   this.type = this.callee.function.type;
 };
 
