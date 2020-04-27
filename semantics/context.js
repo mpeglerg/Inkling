@@ -15,9 +15,9 @@ const {
   TextType,
   BoolType,
   NoneType,
-} = require("./builtins");
+} = require('./builtins')
 
-require("./analyzer");
+require('./analyzer')
 
 // When doing semantic analysis we pass around context objects.
 //
@@ -42,7 +42,7 @@ class Context {
       inLoop,
       declarations: Object.create(null),
       typeMap: Object.create(null),
-    });
+    })
   }
 
   createChildContextForFunctionBody(currentFunction) {
@@ -50,7 +50,7 @@ class Context {
       parent: this,
       currentFunction,
       inLoop: false,
-    });
+    })
   }
 
   createChildContextForLoop() {
@@ -58,7 +58,7 @@ class Context {
       parent: this,
       currentFunction: this.currentFunction,
       inLoop: true,
-    });
+    })
   }
 
   createChildContextForBlock() {
@@ -66,28 +66,28 @@ class Context {
       parent: this,
       currentFunction: this.currentFunction,
       inLoop: this.inLoop,
-    });
+    })
   }
 
   add(id, entity) {
     if (id in this.declarations) {
-      throw new Error(`${id} already declared in this scope`);
+      throw new Error(`${id} already declared in this scope`)
     }
-    this.declarations[id] = entity;
+    this.declarations[id] = entity
   }
 
   lookupValue(id) {
     for (let context = this; context !== null; context = context.parent) {
       if (id in context.declarations) {
-        return context.declarations[id];
+        return context.declarations[id]
       }
     }
-    throw new Error(`Identifier ${id} has not been declared`);
+    throw new Error(`Identifier ${id} has not been declared`)
   }
 
   assertInFunction(message) {
     if (!this.currentFunction) {
-      throw new Error(message);
+      throw new Error(message)
     }
   }
 }
@@ -104,7 +104,7 @@ Context.INITIAL = new Context();
   ...textFunctions,
   ...listFunctions,
 ].forEach((entity) => {
-  Context.INITIAL.add(entity.id, entity);
-});
+  Context.INITIAL.add(entity.id, entity)
+})
 
-module.exports = Context;
+module.exports = Context

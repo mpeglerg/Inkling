@@ -1,3 +1,4 @@
+/* eslint func-names: ["error", "never"] */
 /*
  * Translation to JavaScript
  *
@@ -12,8 +13,11 @@
  *   const generate = require('./backend/javascript-generator')
  *   generate(tigerExpression)
  */
+<<<<<<< HEAD
 
 const util = require('util')
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 const beautify = require('js-beautify')
 const {
   Program, // done
@@ -42,10 +46,11 @@ const {
   SubscriptedVarExp,
 } = require('../ast/index')
 const {
-  NumType,
-  BoolType,
   TextType,
+<<<<<<< HEAD
   NoneType,
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 } = require('../semantics/builtins')
 
 function makeOp(op) {
@@ -73,10 +78,13 @@ const javaScriptId = (() => {
     return `${v}_${map.get(v)}`
   }
 })()
+<<<<<<< HEAD
 
 // whats going on with this indent stuff?
 // I was using Iki as a guide for program and there was an indent level. Prolly dont need it.
 let indentLevel = 0
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 
 // Let's inline the built-in functions, because we can!
 const builtin = {
@@ -87,14 +95,20 @@ const builtin = {
     return `${s}.slice(${begin}, ${end})`
   },
   length([s]) {
+<<<<<<< HEAD
     console.log('this is in length ', s)
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
     return `${s}.length`
   },
   charAt([s, i]) {
     return `${s}.charAt(${i})`
   },
   abs([x]) {
+<<<<<<< HEAD
     console.log('abs ', typeof x)
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
     const num = `${x}`.replace(/[()]/g, '')
     return `Math.abs(${num})`
   },
@@ -149,10 +163,14 @@ module.exports = function (exp) {
 
 Program.prototype.gen = function () {
   // I think this is incorrect- needs work
+<<<<<<< HEAD
   indentLevel = 0
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
   return this.stmts.map((s) => s.gen()).join('')
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
+=======
+  return this.stmts.map((s) => s.gen()).join('')
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 }
 
 // DONE tested
@@ -161,19 +179,24 @@ Literal.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
+<<<<<<< HEAD
   // console.log("assignTarget: ", this.target);
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `${this.target.gen()} = ${this.source.gen()}`
 }
 
 IdentifierExpression.prototype.gen = function () {
+<<<<<<< HEAD
   // console.log("identifier ex", this);
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   if (typeof this.id === 'object') {
     return `${this.id.gen()}`
   }
   return `${javaScriptId(this.id)}`
 }
 VarDeclaration.prototype.gen = function () {
-  // console.log("Vardeclaration: ", this);
   if (!this.constant) {
     return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`
   }
@@ -188,9 +211,13 @@ DictExpression.prototype.gen = function () {
   const result = {}
   const keys = this.exp.map((key) => key.key.gen())
   const values = this.exp.map((val) => val.value.gen())
+<<<<<<< HEAD
   for (let i = 0; i < keys.length; i++) {
     result[keys[i]] = values[i]
   }
+=======
+  keys.forEach((key, index) => { result[key] = values[index] })
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`
 }
 
@@ -203,13 +230,19 @@ BinaryExpression.prototype.gen = function () {
 }
 
 SetExpression.prototype.gen = function () {
+<<<<<<< HEAD
   // console.log("in create set: ", this.members);
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `new Set(${this.members.map((member) => member.gen())})`
 }
 
 Block.prototype.gen = function () {
+<<<<<<< HEAD
   indentLevel += 1
   indentLevel -= 1
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   const statements = this.statements.map((s) => s.gen())
   return statements.join('')
 }
@@ -220,8 +253,11 @@ ListExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen())
+<<<<<<< HEAD
   const id = this.id.gen()
   console.log('In call: ', args)
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   if (this.callee.builtin) {
     return builtin[this.callee.id](args)
   }
@@ -279,7 +315,10 @@ SubscriptedVarExp.prototype.gen = function () {
 }
 
 PostfixExpression.prototype.gen = function () {
+<<<<<<< HEAD
   console.log('postfix', this.operand.gen(), this.op)
+=======
+>>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `(((${this.operand.gen()})${this.op}))`
 }
 
