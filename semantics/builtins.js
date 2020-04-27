@@ -33,7 +33,7 @@ const mathFunctions = [
 
 const listFunctions = [
   // need to inherit type of list from list that is calling, don't think I did it right here but...
-  new FuncDecStmt('add', [new Param('id', ListType), new Param('value', TextType)], ListType),
+  new FuncDecStmt('add', [new Param('id', ListType), new Param('value', NumType)], ListType),
   new FuncDecStmt('prepend', [new Param('id', ListType), new Param('value', NumType)], ListType),
   new FuncDecStmt(
     'insert',

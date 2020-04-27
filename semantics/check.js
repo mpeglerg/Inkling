@@ -23,9 +23,9 @@ module.exports = {
   isIterable(type) {
     doCheck(
       type.constructor === ListType
-        || type.constructor === SetType
-        || type.constructor === DictType
-        || type === TextType,
+      || type.constructor === SetType
+      || type.constructor === DictType
+      || type === TextType,
       'Not a list, set, dic or text',
     )
   },
@@ -33,7 +33,7 @@ module.exports = {
   isListOrDict(expression) {
     doCheck(
       expression.type.constructor === ListType
-        || expression.type.constructor === DictType,
+      || expression.type.constructor === DictType,
       'Not a list or  dict',
     )
   },
@@ -53,7 +53,7 @@ module.exports = {
   isNumOrText(type) {
     doCheck(
       type === NumType || type === TextType,
-      "Cannot apply '+' to types that are not num or text",
+      'Cannot apply \'+\' to types that are not num or text',
     )
   },
 
@@ -80,19 +80,20 @@ module.exports = {
   },
 
   sameType(arg, param) {
-    if (param.id === 'Num') {
+    console.log('type: ' + arg.type + ', value: ' + arg.value)
+    if (param.type === NumType) {
       doCheck(
-        typeof arg.value === 'number' || arg.type === NumType,
+        arg.type === NumType,
         'Type mismatch NUM',
       )
-    }
-    if (param.id === 'Text') {
-      doCheck(typeof arg.value === 'string' || arg.type === TextType,
+    } else if (param.type === TextType) {
+      doCheck(arg.type === TextType,
         'Type mismatch TEXT')
-    }
-    if (param.id === 'Bool') {
-      doCheck(typeof arg.value === 'boolean' || arg.type === BoolType,
+    } else if (param.type === BoolType) {
+      doCheck(arg.type === BoolType,
         'Type mismatch BOOL')
+    } else {
+      throw new Error('Param has no type')
     }
   },
 
@@ -102,7 +103,7 @@ module.exports = {
       args.length === params.length,
       `Expected ${params.length} args in call, got ${args.length}`,
     )
-    args.forEach((arg, i) => this.sameType(arg, params[i].type))
+    args.forEach((arg, i) => this.sameType(arg, params[i]))
   },
 
   containsKey(id, key) {

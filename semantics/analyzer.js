@@ -297,7 +297,7 @@ SetExpression.prototype.analyze = function (context) {
 Call.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id)
   check.isFunction(this.callee)
-  this.args.forEach((arg) => arg.analyze(context))
+  this.args.map((arg) => arg.analyze(context))
   check.legalArguments(this.args, this.callee.function.params)
   this.type = this.callee.function.type
 }
