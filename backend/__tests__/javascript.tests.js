@@ -73,6 +73,14 @@ const fixture = {
     'function Greeting (h is Text) is Void {display h\n}\n Greeting("hello")\n',
     'functionGreeting_27(h_10){console.log(h_10)}Greeting_27("hello")',
   ],
+  PostFix: [
+    'ja is Num 5\n ja++\nja--\n',
+    'let ja_28 = 5 (((ja_28)++))(((ja_28)--))',
+  ],
+  Null: [
+    'ooh is Num none\n',
+    'let ooh_29 = null'
+  ],
 };
 
 function normalize(s) {

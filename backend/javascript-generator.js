@@ -280,7 +280,7 @@ SubscriptedVarExp.prototype.gen = function () {
 };
 
 PostfixExpression.prototype.gen = function () {
-  return `(((${this.operand})${this.op.gen()}))`;
+  return `(((${this.operand.gen()})${this.op}))`;
 };
 
 Ternary.prototype.gen = function () {
