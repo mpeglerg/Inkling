@@ -68,10 +68,10 @@ const fixture = {
     'm is List<Num> [1]\nprepend("m", 2)\ninsert("m", 0, 4)\n',
     "let m_22 = [1] m.prepend(2) m.splice( 0, 0, 4 )",
   ],
-  ListRemove: ["j is List<Num> [1]\nremove(j)\n", "let j_25 = [1] j_25.pop()"],
+  ListRemove: ["j is List<Num> [1]\n remove(j)\n", "let j_25 = [1] j_25.pop()"],
   FunctionCall: [
     'function Greeting (h is Text) is Void {display h\n}\n Greeting("hello")\n',
-    'functionGreeting_27(h_10){console.log(h_10)}Greeting_27("hello")',
+    'functionGreeting_25(h_10){console.log(h_10)}Greeting_25("hello")',
   ],
 };
 
