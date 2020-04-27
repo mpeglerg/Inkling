@@ -71,7 +71,7 @@ const fixture = {
   ListRemove: ["j is List<Num> [1]\n remove(j)\n", "let j_25 = [1] j_25.pop()"],
   FunctionCall: [
     'function Greeting (h is Text) is Void {display h\n}\n Greeting("hello")\n',
-    'functionGreeting_25(h_10){console.log(h_10)}Greeting_25("hello")',
+    'functionGreeting_27(h_10){console.log(h_10)}Greeting_27("hello")',
   ],
 };
 

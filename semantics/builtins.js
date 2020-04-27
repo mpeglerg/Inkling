@@ -40,7 +40,7 @@ const listFunctions = [
     [new Param('id', ListType), new Param('index', NumType), new Param('value', NumType)],
     ListType,
   ),
-  new FuncDecStmt('remove', [ListType], ListType),
+  new FuncDecStmt('remove', [new Param('list', ListType)], ListType),
   // new FuncDecStmt("length", [new Param("s", ListType)], NumType),
 ]
 
@@ -73,8 +73,8 @@ const functions = [
   ...textFunctions,
   ...mathFunctions,
   ...listFunctions,
-  // ...setFunctions,
-  // ...dictFunctions,
+  ...setFunctions,
+  ...dictFunctions,
 ]
 
 functions.forEach((func) => {
