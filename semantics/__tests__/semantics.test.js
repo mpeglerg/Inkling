@@ -101,7 +101,7 @@ function fun (j is Bool, i is Bool) is Bool {
 fun(true,true)
 k4 is Dict<Num, Num> {1:10,2:2,3:3}
 k4[1]
-k5 is List<Num> {1,2,3}
+k5 is List<Num> [1,2,3]
 k5[0] is 4
 for a in [1,2,3] {
   u is a

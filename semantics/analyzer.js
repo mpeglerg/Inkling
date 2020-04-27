@@ -69,7 +69,7 @@ Literal.prototype.analyze = function () {
     this.type = NumType;
   } else if (typeof this.value === "boolean") {
     this.type = BoolType;
-  } else if (typeof this.value === "string") {
+  } else { // safe to just have an else here I believe because of grammar constraints
     this.type = TextType;
   }
 };
@@ -251,7 +251,7 @@ DictExpression.prototype.analyze = function (context) {
     e.key.analyze(context);
     e.value.analyze(context);
   });
-  if (this.exp.length) {
+  if (this.exp.length > 0) {
     const keyType = this.exp[0].key.type;
     const valueType = this.exp[0].value.type;
     this.type = new DictType(keyType, valueType);
@@ -263,6 +263,7 @@ DictExpression.prototype.analyze = function (context) {
       );
     }
   }
+  // hmm i think we nee something here for empty dicts
 };
 
 ListExpression.prototype.analyze = function (context) {
