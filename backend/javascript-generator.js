@@ -1,3 +1,4 @@
+/* eslint func-names: ["error", "never"] */
 /*
  * Translation to JavaScript
  *
@@ -13,8 +14,8 @@
  *   generate(tigerExpression)
  */
 
-const util = require("util");
-const beautify = require("js-beautify");
+const util = require('util')
+const beautify = require('js-beautify')
 const {
   Program, // done
   Block, // done
@@ -40,23 +41,23 @@ const {
   Ternary, // done
   None, // done
   SubscriptedVarExp,
-} = require("../ast/index");
+} = require('../ast/index')
 const {
   NumType,
   BoolType,
   TextType,
   NoneType,
-} = require("../semantics/builtins");
+} = require('../semantics/builtins')
 
 function makeOp(op) {
   return (
     {
-      "==": "===",
-      "!=": "!==",
-      and: "&&",
-      or: "||",
+      '==': '===',
+      '!=': '!==',
+      and: '&&',
+      or: '||',
     }[op] || op
-  );
+  )
 }
 
 // javaScriptId(e) takes any Tiger object with an id property, such as a Variable,
@@ -64,68 +65,68 @@ function makeOp(op) {
 // suffix, such as '_1' or '_503'. It uses a cache so it can return the same exact
 // string each time it is called with a particular entity.
 const javaScriptId = (() => {
-  let lastId = 0;
-  const map = new Map();
+  let lastId = 0
+  const map = new Map()
   return (v) => {
     if (!map.has(v)) {
-      map.set(v, ++lastId); // eslint-disable-line no-plusplus
+      map.set(v, ++lastId) // eslint-disable-line no-plusplus
     }
-    return `${v}_${map.get(v)}`;
-  };
-})();
+    return `${v}_${map.get(v)}`
+  }
+})()
 
 // whats going on with this indent stuff?
 // I was using Iki as a guide for program and there was an indent level. Prolly dont need it.
-let indentLevel = 0;
+let indentLevel = 0
 
 // Let's inline the built-in functions, because we can!
 const builtin = {
   xProcess(code) {
-    return `process.exit(${code})`;
+    return `process.exit(${code})`
   },
   slice([s, begin, end]) {
-    return `${s}.slice(${begin}, ${end})`;
+    return `${s}.slice(${begin}, ${end})`
   },
   length([s]) {
-    console.log("this is in length ", s);
-    return `${s}.length`;
+    console.log('this is in length ', s)
+    return `${s}.length`
   },
   charAt([s, i]) {
-    return `${s}.charAt(${i})`;
+    return `${s}.charAt(${i})`
   },
   abs([x]) {
-    console.log("abs ", typeof x);
-    const num = `${x}`.replace(/[()]/g, "");
-    return `Math.abs(${num})`;
+    console.log('abs ', typeof x)
+    const num = `${x}`.replace(/[()]/g, '')
+    return `Math.abs(${num})`
   },
   sqrt([x]) {
-    return `Math.sqrt(${x})`;
+    return `Math.sqrt(${x})`
   },
   random([start, end]) {
-    return `Math.floor(Math.random() * ${end} + ${start})`;
+    return `Math.floor(Math.random() * ${end} + ${start})`
   },
   pow([base, power]) {
-    return `${base}**${power}`;
+    return `${base}**${power}`
   },
   add([listId, value]) {
-    return `${listId.replace(/[''""]/g, "")}.push(${value})`;
+    return `${listId.replace(/[''""]/g, '')}.push(${value})`
   },
   insert([listId, index, value]) {
-    return `${listId.replace(/[''""]/g, "")}.splice(${index}, 0, ${value})`;
+    return `${listId.replace(/[''""]/g, '')}.splice(${index}, 0, ${value})`
   },
   prepend([listId, value]) {
-    return `${listId.replace(/[''""]/g, "")}.prepend(${value})`;
+    return `${listId.replace(/[''""]/g, '')}.prepend(${value})`
   },
   remove([listId]) {
-    return `${listId.replace(/[''""]/g, "")}.pop()`;
+    return `${listId.replace(/[''""]/g, '')}.pop()`
   },
   // TODO: The list, set, and dict builtins are strange because they are methods,
   // might need to change them to take extra list, set, dict as input
-};
+}
 
 module.exports = function (exp) {
-  return beautify(exp.gen(), { indentSize: 2 });
-};
+  return beautify(exp.gen(), { indentSize: 2 })
+}
 
 // This only exists because Tiger is expression-oriented and JavaScript is not.
 // It's pretty crazy! In the case where the expression is actually a sequence,
@@ -149,148 +150,145 @@ module.exports = function (exp) {
 
 Program.prototype.gen = function () {
   // I think this is incorrect- needs work
-  indentLevel = 0;
+  indentLevel = 0
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
-  return this.stmts.map((s) => s.gen()).join("");
+  return this.stmts.map((s) => s.gen()).join('')
   // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
-};
+}
 
 // DONE tested
 Literal.prototype.gen = function () {
-  return this.type === TextType ? `"${this.value}"` : this.value;
-};
+  return this.type === TextType ? `"${this.value}"` : this.value
+}
 
 Assignment.prototype.gen = function () {
   // console.log("assignTarget: ", this.target);
-  return `${this.target.gen()} = ${this.source.gen()}`;
-};
+  return `${this.target.gen()} = ${this.source.gen()}`
+}
 
 IdentifierExpression.prototype.gen = function () {
   // console.log("identifier ex", this);
-  if (typeof this.id === "object") {
-    return `${this.id.gen()}`;
+  if (typeof this.id === 'object') {
+    return `${this.id.gen()}`
   }
-  return `${javaScriptId(this.id)}`;
-};
+  return `${javaScriptId(this.id)}`
+}
 VarDeclaration.prototype.gen = function () {
   // console.log("Vardeclaration: ", this);
   if (!this.constant) {
-    return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`;
-  } else {
-    return `const ${javaScriptId(this.id)} = ${this.exp.gen()}`;
+    return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`
   }
-};
+  return `const ${javaScriptId(this.id)} = ${this.exp.gen()}`
+}
 
 Print.prototype.gen = function () {
-  return `console.log(${this.exp.gen()})`;
-};
+  return `console.log(${this.exp.gen()})`
+}
 
 DictExpression.prototype.gen = function () {
-  const result = {};
-  const keys = this.exp.map((key) => key.key.gen());
-  const values = this.exp.map((val) => val.value.gen());
-  for (let i = 0; i < keys.length; i++) {
-    result[keys[i]] = values[i];
-  }
-  return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(", ")} }`;
-};
+  const result = {}
+  const keys = this.exp.map((key) => key.key.gen())
+  const values = this.exp.map((val) => val.value.gen())
+  keys.forEach((key, index) => { result[key] = values[index] })
+  return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`
+}
 
 PrefixExpression.prototype.gen = function () {
-  return `(${this.op}(${this.operand.gen()}))`;
-};
+  return `(${this.op}(${this.operand.gen()}))`
+}
 
 BinaryExpression.prototype.gen = function () {
-  return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`;
-};
+  return `(${this.left.gen()} ${makeOp(this.op)} ${this.right.gen()})`
+}
 
 SetExpression.prototype.gen = function () {
   // console.log("in create set: ", this.members);
-  return `new Set(${this.members.map((member) => member.gen())})`;
-};
+  return `new Set(${this.members.map((member) => member.gen())})`
+}
 
 Block.prototype.gen = function () {
-  indentLevel += 1;
-  indentLevel -= 1;
-  const statements = this.statements.map((s) => s.gen());
-  return statements.join("");
-};
+  indentLevel += 1
+  indentLevel -= 1
+  const statements = this.statements.map((s) => s.gen())
+  return statements.join('')
+}
 
 ListExpression.prototype.gen = function () {
-  return `[${this.members.map((m) => m.gen())}]`;
-};
+  return `[${this.members.map((m) => m.gen())}]`
+}
 
 Call.prototype.gen = function () {
-  const args = this.args.map((a) => a.gen());
-  const id = this.id.gen();
-  console.log("In call: ", args);
+  const args = this.args.map((a) => a.gen())
+  const id = this.id.gen()
+  console.log('In call: ', args)
   if (this.callee.builtin) {
-    return builtin[this.callee.id](args);
+    return builtin[this.callee.id](args)
   }
-  return `${this.id.gen()}(${args.join()})`;
-};
+  return `${this.id.gen()}(${args.join()})`
+}
 
 Param.prototype.gen = function () {
-  return javaScriptId(this.id);
-};
+  return javaScriptId(this.id)
+}
 
 ForLoop.prototype.gen = function () {
   // const i = javaScriptId(this);
   /* idk if we want to use javaScriptId here since the id is localized to this for loop,
    * may be wrong tho
    * i think our for loop is most similar to js for-of, not for-in; definitely up for debate tho */
-  const i = javaScriptId(this.id);
-  const loopControl = `for (let ${i} of ${this.collection.gen()})`;
-  const body = this.body.gen();
-  return `${loopControl} {${body}}`;
-};
+  const i = javaScriptId(this.id)
+  const loopControl = `for (let ${i} of ${this.collection.gen()})`
+  const body = this.body.gen()
+  return `${loopControl} {${body}}`
+}
 
 FuncDecStmt.prototype.gen = function () {
-  const name = javaScriptId(this.id);
+  const name = javaScriptId(this.id)
   // "Void" functions do not have a JS return, others do
-  const funcObj = this.function.gen();
-  return `function ${name} ${funcObj}`;
-};
+  const funcObj = this.function.gen()
+  return `function ${name} ${funcObj}`
+}
 
 FuncObject.prototype.gen = function () {
-  const params = `${this.params.map((param) => param.gen())}`;
-  const body = this.body.gen();
-  return `( ${params} ){${body} }`;
-};
+  const params = `${this.params.map((param) => param.gen())}`
+  const body = this.body.gen()
+  return `( ${params} ){${body} }`
+}
 
 ReturnStatement.prototype.gen = function () {
-  return `return ${this.returnValue.gen()}`;
-};
+  return `return ${this.returnValue.gen()}`
+}
 
 IfStmt.prototype.gen = function () {
-  let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`;
+  let result = `if (${this.tests[0].gen()}) {${this.consequence[0].gen()}}`
   for (let i = 1; i < this.tests.length; i += 1) {
     result = result.concat(
-      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`
-    );
+      `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`,
+    )
   }
   // we need to check if this.alt is null because if it is then alt.gen() will throw an error
   if (this.alt) {
-    result = result.concat(`else {${this.alt.gen()}}`);
+    result = result.concat(`else {${this.alt.gen()}}`)
   }
-  return result;
-};
+  return result
+}
 
 SubscriptedVarExp.prototype.gen = function () {
-  return `${this.id.gen()}[${this.key.gen()}]`;
-};
+  return `${this.id.gen()}[${this.key.gen()}]`
+}
 
 PostfixExpression.prototype.gen = function () {
-  return `(((${this.operand.gen()})${this.op}))`;
-};
+  return `(((${this.operand.gen()})${this.op}))`
+}
 
 Ternary.prototype.gen = function () {
-  return `${this.test.gen()} ? ${this.consequence.gen()} : ${this.alt.gen()}`;
-};
+  return `${this.test.gen()} ? ${this.consequence.gen()} : ${this.alt.gen()}`
+}
 
 None.prototype.gen = function () {
-  return "null";
-};
+  return 'null'
+}
 
 WhileLoop.prototype.gen = function () {
-  return `while (${this.condition.gen()}) { ${this.body.gen()} }`;
-};
+  return `while (${this.condition.gen()}) { ${this.body.gen()} }`
+}
