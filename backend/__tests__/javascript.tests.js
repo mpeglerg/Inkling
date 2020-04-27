@@ -65,17 +65,10 @@ const fixture = {
     'let k_12 = ["name", "Marco", "school", "LMU"]\n k_12.push("guy")',
   ],
   ListPrependAndInsert: [
-<<<<<<< HEAD
     'm is List<Num> [1]\nprepend("m", 2)\ninsert("m", 0, 4)\n',
-    'let m_22 = [1] m.prepend(2) m.splice( 0, 0, 4 )',
-  ],
-  ListRemove: ['j is List<Num> [1]\n remove(j)\n', 'let j_25 = [1] j_25.pop()'],
-=======
-    'm is List<Num> [1]\nprepend("m", 2)\ninsert(m, 0, 4)\n',
-    'let m_13 = [1] m.prepend(2) m_13.splice( 0, 0, 4 )',
+    'let m_13 = [1] m.prepend(2) m.splice( 0, 0, 4 )',
   ],
   ListRemove: ['j is List<Num> [1]\n remove(j)\n', 'let j_14 = [1] j_14.pop()'],
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   FunctionCall: [
     'function Greeting (n is Text) is Void {display n\n}\n Greeting("hello")\n',
     'function Greeting_15(n_16){console.log(n_16)}\n Greeting_15("hello")',
@@ -86,17 +79,8 @@ const fixture = {
   ],
   Null: [
     'ooh is Num none\n',
-<<<<<<< HEAD
-    'let ooh_29 = null',
-  ],
-=======
     'let ooh_18 = null',
   ],
-  Call: [
-    'function pls (x2 is Num, y2 is Num, z2 is Num) is Num {gimme z2\n}\n pls(1+2,3+2,3 * -2 + 2)\n',
-    'function pls_19(x2_20, y2_21, z2_22){return z2_22}pls_19( (1+2), (3+2), ((3 * (-(2))) + 2) )',
-  ],
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 }
 
 function normalize(s) {

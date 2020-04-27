@@ -13,11 +13,8 @@
  *   const generate = require('./backend/javascript-generator')
  *   generate(tigerExpression)
  */
-<<<<<<< HEAD
 
 const util = require('util')
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 const beautify = require('js-beautify')
 const {
   Program, // done
@@ -47,10 +44,7 @@ const {
 } = require('../ast/index')
 const {
   TextType,
-<<<<<<< HEAD
   NoneType,
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 } = require('../semantics/builtins')
 
 function makeOp(op) {
@@ -64,10 +58,6 @@ function makeOp(op) {
   )
 }
 
-// javaScriptId(e) takes any Tiger object with an id property, such as a Variable,
-// Param, or Func, and produces a JavaScript name by appending a unique identifying
-// suffix, such as '_1' or '_503'. It uses a cache so it can return the same exact
-// string each time it is called with a particular entity.
 const javaScriptId = (() => {
   let lastId = 0
   const map = new Map()
@@ -78,15 +68,7 @@ const javaScriptId = (() => {
     return `${v}_${map.get(v)}`
   }
 })()
-<<<<<<< HEAD
 
-// whats going on with this indent stuff?
-// I was using Iki as a guide for program and there was an indent level. Prolly dont need it.
-let indentLevel = 0
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
-
-// Let's inline the built-in functions, because we can!
 const builtin = {
   xProcess(code) {
     return `process.exit(${code})`
@@ -95,20 +77,14 @@ const builtin = {
     return `${s}.slice(${begin}, ${end})`
   },
   length([s]) {
-<<<<<<< HEAD
     console.log('this is in length ', s)
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
     return `${s}.length`
   },
   charAt([s, i]) {
     return `${s}.charAt(${i})`
   },
   abs([x]) {
-<<<<<<< HEAD
     console.log('abs ', typeof x)
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
     const num = `${x}`.replace(/[()]/g, '')
     return `Math.abs(${num})`
   },
@@ -133,69 +109,33 @@ const builtin = {
   remove([listId]) {
     return `${listId.replace(/[''""]/g, '')}.pop()`
   },
-  // TODO: The list, set, and dict builtins are strange because they are methods,
-  // might need to change them to take extra list, set, dict as input
 }
 
 module.exports = function (exp) {
   return beautify(exp.gen(), { indentSize: 2 })
 }
 
-// This only exists because Tiger is expression-oriented and JavaScript is not.
-// It's pretty crazy! In the case where the expression is actually a sequence,
-// we have to dig in and stick a 'return' before the last expression. And this
-// as to be recursive, because the last expression of a sequence could actually
-// be a sequence....
-// function makeReturn(exp) {
-//   if (exp.constructor === VarDeclaration) {
-//     const filteredDecs = exp.decs.filter((d) => d.constructor !== TypeDec)
-//     const all = [...filteredDecs, ...exp.body.slice(0, -1)].map((e) => e.gen())
-//     all.push(makeReturn(exp.body[exp.body.length - 1]))
-//     return all.join('')
-//   }
-//   if (exp.constructor === ExpSeq) {
-//     const generated = exp.exps.slice(0, -1).map(e => e.gen())
-//     generated.push(makeReturn(exp.exps[exp.exps.length - 1]))
-//     return generated.join('')
-//   }
-//   return `return ${exp.gen()}`
-// }
-
 Program.prototype.gen = function () {
-  // I think this is incorrect- needs work
-<<<<<<< HEAD
   indentLevel = 0
-  // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
   return this.stmts.map((s) => s.gen()).join('')
-  // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
-=======
-  return this.stmts.map((s) => s.gen()).join('')
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
 }
 
-// DONE tested
 Literal.prototype.gen = function () {
   return this.type === TextType ? `"${this.value}"` : this.value
 }
 
 Assignment.prototype.gen = function () {
-<<<<<<< HEAD
   // console.log("assignTarget: ", this.target);
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `${this.target.gen()} = ${this.source.gen()}`
 }
 
 IdentifierExpression.prototype.gen = function () {
-<<<<<<< HEAD
-  // console.log("identifier ex", this);
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   if (typeof this.id === 'object') {
     return `${this.id.gen()}`
   }
   return `${javaScriptId(this.id)}`
 }
+
 VarDeclaration.prototype.gen = function () {
   if (!this.constant) {
     return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`
@@ -211,13 +151,9 @@ DictExpression.prototype.gen = function () {
   const result = {}
   const keys = this.exp.map((key) => key.key.gen())
   const values = this.exp.map((val) => val.value.gen())
-<<<<<<< HEAD
   for (let i = 0; i < keys.length; i++) {
     result[keys[i]] = values[i]
   }
-=======
-  keys.forEach((key, index) => { result[key] = values[index] })
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`
 }
 
@@ -230,19 +166,12 @@ BinaryExpression.prototype.gen = function () {
 }
 
 SetExpression.prototype.gen = function () {
-<<<<<<< HEAD
-  // console.log("in create set: ", this.members);
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `new Set(${this.members.map((member) => member.gen())})`
 }
 
 Block.prototype.gen = function () {
-<<<<<<< HEAD
   indentLevel += 1
   indentLevel -= 1
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   const statements = this.statements.map((s) => s.gen())
   return statements.join('')
 }
@@ -253,11 +182,6 @@ ListExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen())
-<<<<<<< HEAD
-  const id = this.id.gen()
-  console.log('In call: ', args)
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   if (this.callee.builtin) {
     return builtin[this.callee.id](args)
   }
@@ -269,10 +193,6 @@ Param.prototype.gen = function () {
 }
 
 ForLoop.prototype.gen = function () {
-  // const i = javaScriptId(this);
-  /* idk if we want to use javaScriptId here since the id is localized to this for loop,
-   * may be wrong tho
-   * i think our for loop is most similar to js for-of, not for-in; definitely up for debate tho */
   const i = javaScriptId(this.id)
   const loopControl = `for (let ${i} of ${this.collection.gen()})`
   const body = this.body.gen()
@@ -281,7 +201,6 @@ ForLoop.prototype.gen = function () {
 
 FuncDecStmt.prototype.gen = function () {
   const name = javaScriptId(this.id)
-  // "Void" functions do not have a JS return, others do
   const funcObj = this.function.gen()
   return `function ${name} ${funcObj}`
 }
@@ -303,7 +222,6 @@ IfStmt.prototype.gen = function () {
       `else if (${this.tests[i].gen()}) {${this.consequence[i].gen()}}`,
     )
   }
-  // we need to check if this.alt is null because if it is then alt.gen() will throw an error
   if (this.alt) {
     result = result.concat(`else {${this.alt.gen()}}`)
   }
@@ -315,10 +233,6 @@ SubscriptedVarExp.prototype.gen = function () {
 }
 
 PostfixExpression.prototype.gen = function () {
-<<<<<<< HEAD
-  console.log('postfix', this.operand.gen(), this.op)
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   return `(((${this.operand.gen()})${this.op}))`
 }
 

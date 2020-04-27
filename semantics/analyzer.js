@@ -308,10 +308,7 @@ None.prototype.analyze = function () {
 
 SubscriptedVarExp.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id)
-<<<<<<< HEAD
   console.log(`subsripted object: ${this.callee}`)
-=======
->>>>>>> 5318161ca626e2764224797b761f050601d53f3c
   const listOrDict = this.callee || this.callee.exp
   check.isListOrDict(listOrDict)
   check.containsKey(this.callee, this.key.value)
