@@ -13,8 +13,6 @@
  *   const generate = require('./backend/javascript-generator')
  *   generate(tigerExpression)
  */
-
-const util = require('util')
 const beautify = require('js-beautify')
 const {
   Program, // done
@@ -43,10 +41,7 @@ const {
   SubscriptedVarExp,
 } = require('../ast/index')
 const {
-  NumType,
-  BoolType,
   TextType,
-  NoneType,
 } = require('../semantics/builtins')
 
 function makeOp(op) {
@@ -75,10 +70,6 @@ const javaScriptId = (() => {
   }
 })()
 
-// whats going on with this indent stuff?
-// I was using Iki as a guide for program and there was an indent level. Prolly dont need it.
-let indentLevel = 0
-
 // Let's inline the built-in functions, because we can!
 const builtin = {
   xProcess(code) {
@@ -88,14 +79,12 @@ const builtin = {
     return `${s}.slice(${begin}, ${end})`
   },
   length([s]) {
-    console.log('this is in length ', s)
     return `${s}.length`
   },
   charAt([s, i]) {
     return `${s}.charAt(${i})`
   },
   abs([x]) {
-    console.log('abs ', typeof x)
     const num = `${x}`.replace(/[()]/g, '')
     return `Math.abs(${num})`
   },
@@ -150,10 +139,7 @@ module.exports = function (exp) {
 
 Program.prototype.gen = function () {
   // I think this is incorrect- needs work
-  indentLevel = 0
-  // console.log(`${' '.repeat(indentSize * indentLevel)}${'function () {'}`)
   return this.stmts.map((s) => s.gen()).join('')
-  // console.log(`${' '.repeat(indentSize * indentLevel)}${'}'}`)
 }
 
 // DONE tested
@@ -162,19 +148,16 @@ Literal.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
-  // console.log("assignTarget: ", this.target);
   return `${this.target.gen()} = ${this.source.gen()}`
 }
 
 IdentifierExpression.prototype.gen = function () {
-  // console.log("identifier ex", this);
   if (typeof this.id === 'object') {
     return `${this.id.gen()}`
   }
   return `${javaScriptId(this.id)}`
 }
 VarDeclaration.prototype.gen = function () {
-  // console.log("Vardeclaration: ", this);
   if (!this.constant) {
     return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`
   }
@@ -202,13 +185,10 @@ BinaryExpression.prototype.gen = function () {
 }
 
 SetExpression.prototype.gen = function () {
-  // console.log("in create set: ", this.members);
   return `new Set(${this.members.map((member) => member.gen())})`
 }
 
 Block.prototype.gen = function () {
-  indentLevel += 1
-  indentLevel -= 1
   const statements = this.statements.map((s) => s.gen())
   return statements.join('')
 }
@@ -219,8 +199,6 @@ ListExpression.prototype.gen = function () {
 
 Call.prototype.gen = function () {
   const args = this.args.map((a) => a.gen())
-  const id = this.id.gen()
-  console.log('In call: ', args)
   if (this.callee.builtin) {
     return builtin[this.callee.id](args)
   }

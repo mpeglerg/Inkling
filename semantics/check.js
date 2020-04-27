@@ -80,18 +80,19 @@ module.exports = {
   },
 
   sameType(arg, param) {
-    console.log('in type check: ', arg, param)
     if (param.id === 'Num') {
       doCheck(
-        typeof arg.value === 'number' || typeof arg.operand.value === 'number',
+        typeof arg.value === 'number' || arg.type === NumType,
         'Type mismatch NUM',
       )
     }
     if (param.id === 'Text') {
-      doCheck(typeof arg.value === 'string', 'Type mismatch TEXT')
+      doCheck(typeof arg.value === 'string' || arg.type === TextType,
+        'Type mismatch TEXT')
     }
     if (param.id === 'Bool') {
-      doCheck(typeof arg.value === 'boolean', 'Type mismatch BOOL')
+      doCheck(typeof arg.value === 'boolean' || arg.type === BoolType,
+        'Type mismatch BOOL')
     }
   },
 
