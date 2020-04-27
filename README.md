@@ -48,7 +48,8 @@ Created by Marco B, Cooper LaRhette, Veda Ashok, Sam Gibson, Maya Pegler-Gordon,
 
 ## Variable Declaration
 
-```x is Num 5
+```w is Bool true
+x is Num 5
 y is Text “Hello World!”
 z is always Num 10
 ```
@@ -261,5 +262,23 @@ function  findGreatest(a, b, c) {
     } else {
         return c;
     }
+}
+```
+
+### Negative Checker
+
+#### Inkling Example
+
+```
+function negativeChecker(x is Num) is Bool {
+    gimme x < 0 ? true : false
+}
+```
+
+#### Javascript Example
+
+```
+function negativeChecker(x) {
+    return x < 0 ? true : false
 }
 ```
