@@ -14,37 +14,35 @@
  *   generate(tigerExpression)
  */
 
-const util = require('util')
 const beautify = require('js-beautify')
 const {
-  Program, // done
-  Block, // done
-  Assignment, // done
-  VarDeclaration, // done
-  Print, // done
-  Literal, // done
-  BinaryExpression, // done
-  IfStmt, // done
-  WhileLoop, // done
-  FuncDecStmt, // done
-  FuncObject, // idk if we need a generator for this --> I dont think we need it
-  Call, // done
-  Param, // done
-  DictExpression, // done
-  SetExpression, // done
-  ListExpression, // done
-  ReturnStatement, // done
-  IdentifierExpression, // done
-  PostfixExpression, // done
-  PrefixExpression, // done
-  ForLoop, // done
-  Ternary, // done
-  None, // done
+  Program,
+  Block,
+  Assignment,
+  VarDeclaration,
+  Print,
+  Literal,
+  BinaryExpression,
+  IfStmt,
+  WhileLoop,
+  FuncDecStmt,
+  FuncObject,
+  Call,
+  Param,
+  DictExpression,
+  SetExpression,
+  ListExpression,
+  ReturnStatement,
+  IdentifierExpression,
+  PostfixExpression,
+  PrefixExpression,
+  ForLoop,
+  Ternary,
+  None,
   SubscriptedVarExp,
 } = require('../ast/index')
 const {
   TextType,
-  NoneType,
 } = require('../semantics/builtins')
 
 function makeOp(op) {
@@ -77,14 +75,12 @@ const builtin = {
     return `${s}.slice(${begin}, ${end})`
   },
   length([s]) {
-    console.log('this is in length ', s)
     return `${s}.length`
   },
   charAt([s, i]) {
     return `${s}.charAt(${i})`
   },
   abs([x]) {
-    console.log('abs ', typeof x)
     const num = `${x}`.replace(/[()]/g, '')
     return `Math.abs(${num})`
   },
@@ -116,7 +112,6 @@ module.exports = function (exp) {
 }
 
 Program.prototype.gen = function () {
-  indentLevel = 0
   return this.stmts.map((s) => s.gen()).join('')
 }
 
@@ -125,7 +120,6 @@ Literal.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
-  // console.log("assignTarget: ", this.target);
   return `${this.target.gen()} = ${this.source.gen()}`
 }
 
@@ -151,7 +145,7 @@ DictExpression.prototype.gen = function () {
   const result = {}
   const keys = this.exp.map((key) => key.key.gen())
   const values = this.exp.map((val) => val.value.gen())
-  for (let i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i += 1) {
     result[keys[i]] = values[i]
   }
   return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`
@@ -170,8 +164,6 @@ SetExpression.prototype.gen = function () {
 }
 
 Block.prototype.gen = function () {
-  indentLevel += 1
-  indentLevel -= 1
   const statements = this.statements.map((s) => s.gen())
   return statements.join('')
 }
