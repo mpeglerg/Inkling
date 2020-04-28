@@ -1,0 +1,28 @@
+const {
+  Program,
+  Block,
+  Assignment,
+  VarDeclaration,
+  Print,
+  Literal,
+  BinaryExpression,
+  IfStmt,
+  WhileLoop,
+  FuncDecStmt,
+  FuncObject,
+  Call,
+  Param,
+  DictExpression,
+  SetExpression,
+  ListExpression,
+  ReturnStatement,
+  IdentifierExpression,
+  PostfixExpression,
+  PrefixExpression,
+  ForLoop,
+  Ternary,
+  None,
+  SubscriptedVarExp,
+} = require('../ast');
+
+module.exports = program => program.optimize();
