@@ -38,7 +38,6 @@ const fixture = {
     'for g in [1,2,3] {\n g + 3\n}\n',
     'for (let g_7 of [1,2,3]) {(g_7+3)}',
   ],
-  // call: [],
   Functions: [
     'function foo(x is Num) is Num {\ngimme x * 3\n}\n',
     'function foo_8(x_9) {return (x_9*3)}',
