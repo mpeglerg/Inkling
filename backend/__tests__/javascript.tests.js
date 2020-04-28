@@ -12,17 +12,17 @@ const generate = require('../javascript-generator')
 const fixture = {
   Print: ['display "Hello, world"\n', String.raw`console.log("Hello, world")`],
   Arithmetic: ['3 * -2 + 2\n', '((3 * (-(2))) + 2)'],
-  VarDeclarationNum: ['a is Num 5\n', 'let a_1 = 5'],
-  VarDeclarationConstant: ['b is always Text "Hello"\n', 'const b_2 = "Hello"'],
+  VarDeclarationNum: ['a is Num 5\n', 'let a_1 = 5;'],
+  VarDeclarationConstant: ['b is always Text "Hello"\n', 'const b_2 = "Hello";'],
   DictDeclaration: [
     'c is Dict<Text, Text> {"name":"Marco", "school":"LMU"}\n',
-    'let c_3 = {"name":"Marco", "school":"LMU"}',
+    'let c_3 = {"name":"Marco", "school":"LMU"};',
   ],
   SetDeclaration: [
     'd is Set<Text> {"name", "Marco", "school", "LMU"}\n',
-    'let d_4 = new Set("name", "Marco", "school", "LMU")',
+    'let d_4 = new Set("name", "Marco", "school", "LMU");',
   ],
-  AssignNum: ['e is Num 5\n e is 6\n', 'let e_5 = 5\n e_5 = 6\n'],
+  AssignNum: ['e is Num 5\n e is 6\n', 'let e_5 = 5;\n e_5 = 6;\n'],
   If: ['if(true) {\n3 + 4\n}\n', 'if(true) {(3 + 4)}'],
   IfElse: [
     'if (true) {\n3 + 4\n} else {\n4+3\n}\n',
@@ -32,7 +32,7 @@ const fixture = {
     'if (true) {\n3 + 4\n} else if (3 < 4) {\n 3 - 4\n} else {\n4+3\n}\n',
     'if (true) {(3 + 4)}else if ((3 < 4)) {(3 - 4)}else{(4+3)}',
   ],
-  Ternary: ['f is Num 3 < 4 ? 5 : 6\n', 'let f_6 = (3 < 4) ? 5 : 6'],
+  Ternary: ['f is Num 3 < 4 ? 5 : 6\n', 'let f_6 = (3 < 4) ? 5 : 6;'],
   WhileLoop: ['while (3 < 4) {\n 3 + 4\n}\n', 'while ((3<4)) {(3+4)}'],
   ForLoop: [
     'for g in [1,2,3] {\n g + 3\n}\n',
@@ -40,11 +40,11 @@ const fixture = {
   ],
   Functions: [
     'function foo(x is Num) is Num {\ngimme x * 3\n}\n',
-    'function foo_8(x_9) {return (x_9*3)}',
+    'function foo_8(x_9) {return (x_9*3);}',
   ],
   SubscriptedVarExp: [
     'h is List<Num> [1,2,3]\n h[1] is 5\n',
-    'let h_10 = [1,2,3]\n h_10[1] = 5',
+    'let h_10 = [1,2,3];\n h_10[1] = 5;',
   ],
   pow: ['pow(2, 2)\n ', '2**2'],
   length: ['length("hello")\n', '"hello".length'],
@@ -57,28 +57,28 @@ const fixture = {
   builtins: ['pow(2, 2)\n length("hello")\n', '2**2"hello".length'],
   ListDeclaration: [
     'r is List<Text> ["name", "Marco", "school", "LMU"]\n',
-    'let r_11 = ["name", "Marco", "school", "LMU"]',
+    'let r_11 = ["name", "Marco", "school", "LMU"];',
   ],
   ListAdd: [
     'k is List<Text> ["name", "Marco", "school", "LMU"]\nadd(k, "guy")\n',
-    'let k_12 = ["name", "Marco", "school", "LMU"]\n k_12.push("guy")',
+    'let k_12 = ["name", "Marco", "school", "LMU"];\n k_12.push("guy")',
   ],
   ListPrependAndInsert: [
     'm is List<Num> [1]\nprepend("m", 2)\ninsert(m, 0, 4)\n',
-    'let m_13 = [1] m.prepend(2) m_13.splice( 0, 0, 4 )',
+    'let m_13 = [1]; m.prepend(2) m_13.splice( 0, 0, 4 )',
   ],
-  ListRemove: ['j is List<Num> [1]\n remove(j)\n', 'let j_14 = [1] j_14.pop()'],
+  ListRemove: ['j is List<Num> [1]\n remove(j)\n', 'let j_14 = [1]; j_14.pop()'],
   FunctionCall: [
     'function Greeting (n is Text) is Void {display n\n}\n Greeting("hello")\n',
-    'function Greeting_15(n_16){console.log(n_16)}\n Greeting_15("hello")',
+    'function Greeting_15(n_16){console.log(n_16)}\n Greeting_15("hello");',
   ],
   PostFix: [
     'ja is Num 5\n ja++\nja--\n',
-    'let ja_17 = 5 (((ja_17)++))(((ja_17)--))',
+    'let ja_17 = 5; (((ja_17)++))(((ja_17)--))',
   ],
   Null: [
     'ooh is Num none\n',
-    'let ooh_18 = null',
+    'let ooh_18 = null;',
   ],
 }
 

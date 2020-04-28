@@ -114,7 +114,7 @@ Literal.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
-  return `${this.target.gen()} = ${this.source.gen()}`
+  return `${this.target.gen()} = ${this.source.gen()};`
 }
 
 IdentifierExpression.prototype.gen = function () {
@@ -126,9 +126,9 @@ IdentifierExpression.prototype.gen = function () {
 
 VarDeclaration.prototype.gen = function () {
   if (!this.constant) {
-    return `let ${javaScriptId(this.id)} = ${this.exp.gen()}`
+    return `let ${javaScriptId(this.id)} = ${this.exp.gen()};`
   }
-  return `const ${javaScriptId(this.id)} = ${this.exp.gen()}`
+  return `const ${javaScriptId(this.id)} = ${this.exp.gen()};`
 }
 
 Print.prototype.gen = function () {
@@ -171,7 +171,7 @@ Call.prototype.gen = function () {
   if (this.callee.builtin) {
     return builtin[this.callee.id](args)
   }
-  return `${this.id.gen()}(${args.join()})`
+  return `${this.id.gen()}(${args.join()});`
 }
 
 Param.prototype.gen = function () {
@@ -198,7 +198,7 @@ FuncObject.prototype.gen = function () {
 }
 
 ReturnStatement.prototype.gen = function () {
-  return `return ${this.returnValue.gen()}`
+  return `return ${this.returnValue.gen()};`
 }
 
 IfStmt.prototype.gen = function () {
