@@ -265,7 +265,6 @@ DictExpression.prototype.analyze = function (context) {
       )
     }
   }
-  // hmm i think we nee something here for empty dicts
 }
 
 ListExpression.prototype.analyze = function (context) {
@@ -308,7 +307,6 @@ None.prototype.analyze = function () {
 
 SubscriptedVarExp.prototype.analyze = function (context) {
   this.callee = context.lookupValue(this.id.id)
-  console.log(`subsripted object: ${this.callee}`)
   const listOrDict = this.callee || this.callee.exp
   check.isListOrDict(listOrDict)
   check.containsKey(this.callee, this.key.value)

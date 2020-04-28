@@ -17,29 +17,29 @@
 const util = require('util')
 const beautify = require('js-beautify')
 const {
-  Program, // done
-  Block, // done
-  Assignment, // done
-  VarDeclaration, // done
-  Print, // done
-  Literal, // done
-  BinaryExpression, // done
-  IfStmt, // done
-  WhileLoop, // done
-  FuncDecStmt, // done
-  FuncObject, // idk if we need a generator for this --> I dont think we need it
-  Call, // done
-  Param, // done
-  DictExpression, // done
-  SetExpression, // done
-  ListExpression, // done
-  ReturnStatement, // done
-  IdentifierExpression, // done
-  PostfixExpression, // done
-  PrefixExpression, // done
-  ForLoop, // done
-  Ternary, // done
-  None, // done
+  Program,
+  Block,
+  Assignment,
+  VarDeclaration,
+  Print,
+  Literal,
+  BinaryExpression,
+  IfStmt,
+  WhileLoop,
+  FuncDecStmt,
+  FuncObject,
+  Call,
+  Param,
+  DictExpression,
+  SetExpression,
+  ListExpression,
+  ReturnStatement,
+  IdentifierExpression,
+  PostfixExpression,
+  PrefixExpression,
+  ForLoop,
+  Ternary,
+  None,
   SubscriptedVarExp,
 } = require('../ast/index')
 const {
