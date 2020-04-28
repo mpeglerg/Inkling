@@ -16,7 +16,6 @@ b is Num 5
 a is always Text  "Hello"
 c is Set<Text> {"this", "a", "b"}
 e is List<Text> ["this", "a", "b"]
-
 g is Text "hello this is some sample text"
 h is Set<Num> {1, 2, 3, 5, 6}
 i is Dict<Text, Text> {"name":"Marco", "school":"LMU"}
@@ -121,7 +120,6 @@ describe('The semantic analyzer', () => {
   test('accepts the mega program with all syntactic forms', (done) => {
     const astRoot = parse(program)
     expect(astRoot).toBeTruthy()
-    // console.log("analyze : ", analyze);
     analyze(astRoot)
     expect(astRoot).toBeTruthy()
     done()

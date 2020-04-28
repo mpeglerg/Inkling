@@ -23,9 +23,9 @@ module.exports = {
   isIterable(type) {
     doCheck(
       type.constructor === ListType
-        || type.constructor === SetType
-        || type.constructor === DictType
-        || type === TextType,
+      || type.constructor === SetType
+      || type.constructor === DictType
+      || type === TextType,
       'Not a list, set, dic or text',
     )
   },
@@ -33,7 +33,7 @@ module.exports = {
   isListOrDict(expression) {
     doCheck(
       expression.type.constructor === ListType
-        || expression.type.constructor === DictType,
+      || expression.type.constructor === DictType,
       'Not a list or  dict',
     )
   },
@@ -53,7 +53,7 @@ module.exports = {
   isNumOrText(type) {
     doCheck(
       type === NumType || type === TextType,
-      "Cannot apply '+' to types that are not num or text",
+      'Cannot apply \'+\' to types that are not num or text',
     )
   },
 
@@ -80,17 +80,15 @@ module.exports = {
   },
 
   sameType(arg, param) {
-    if (param.id === 'Num') {
+    if (param.type.id === 'Num') {
       doCheck(
         typeof arg.value === 'number' || arg.type === NumType,
         'Type mismatch NUM',
       )
-    }
-    if (param.id === 'Text') {
+    } else if (param.type.id === 'Text') {
       doCheck(typeof arg.value === 'string' || arg.type === TextType,
         'Type mismatch TEXT')
-    }
-    if (param.id === 'Bool') {
+    } else if (param.type.id === 'Bool') {
       doCheck(typeof arg.value === 'boolean' || arg.type === BoolType,
         'Type mismatch BOOL')
     }
@@ -102,7 +100,7 @@ module.exports = {
       args.length === params.length,
       `Expected ${params.length} args in call, got ${args.length}`,
     )
-    args.forEach((arg, i) => this.sameType(arg, params[i].type))
+    args.forEach((arg, i) => this.sameType(arg, params[i]))
   },
 
   containsKey(id, key) {

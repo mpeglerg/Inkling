@@ -64,8 +64,8 @@ const fixture = {
     'let k_12 = ["name", "Marco", "school", "LMU"]\n k_12.push("guy")',
   ],
   ListPrependAndInsert: [
-    'm is List<Num> [1]\nprepend("m", 2)\ninsert("m", 0, 4)\n',
-    'let m_13 = [1] m.prepend(2) m.splice( 0, 0, 4 )',
+    'm is List<Num> [1]\nprepend("m", 2)\ninsert(m, 0, 4)\n',
+    'let m_13 = [1] m.prepend(2) m_13.splice( 0, 0, 4 )',
   ],
   ListRemove: ['j is List<Num> [1]\n remove(j)\n', 'let j_14 = [1] j_14.pop()'],
   FunctionCall: [

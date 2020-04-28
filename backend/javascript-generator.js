@@ -2,19 +2,12 @@
 /*
  * Translation to JavaScript
  *
- * Requiring this module adds a gen() method to each of the AST classes, except
- * for types, and fields, which don’t figure into code generation. It exports a
- * function that generates a complete, pretty-printed JavaScript program for a
- * Tiger expression, bundling the translation of the Tiger standard library with
- * the expression's translation.
- *
- * Each gen() method returns a fragment of JavaScript.
+ *   Each gen() method returns a fragment of JavaScript.
  *
  *   const generate = require('./backend/javascript-generator')
- *   generate(tigerExpression)
+ *   generate(inklingExpression)
  */
 
-const util = require('util')
 const beautify = require('js-beautify')
 const {
   Program,
@@ -44,7 +37,6 @@ const {
 } = require('../ast/index')
 const {
   TextType,
-  NoneType,
 } = require('../semantics/builtins')
 
 function makeOp(op) {
@@ -77,14 +69,12 @@ const builtin = {
     return `${s}.slice(${begin}, ${end})`
   },
   length([s]) {
-    console.log('this is in length ', s)
     return `${s}.length`
   },
   charAt([s, i]) {
     return `${s}.charAt(${i})`
   },
   abs([x]) {
-    console.log('abs ', typeof x)
     const num = `${x}`.replace(/[()]/g, '')
     return `Math.abs(${num})`
   },
@@ -116,7 +106,6 @@ module.exports = function (exp) {
 }
 
 Program.prototype.gen = function () {
-  indentLevel = 0
   return this.stmts.map((s) => s.gen()).join('')
 }
 
@@ -125,7 +114,6 @@ Literal.prototype.gen = function () {
 }
 
 Assignment.prototype.gen = function () {
-  // console.log("assignTarget: ", this.target);
   return `${this.target.gen()} = ${this.source.gen()}`
 }
 
@@ -151,7 +139,7 @@ DictExpression.prototype.gen = function () {
   const result = {}
   const keys = this.exp.map((key) => key.key.gen())
   const values = this.exp.map((val) => val.value.gen())
-  for (let i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i += 1) {
     result[keys[i]] = values[i]
   }
   return `{ ${keys.map((k, i) => `${k}: ${values[i]}`).join(', ')} }`
@@ -170,8 +158,6 @@ SetExpression.prototype.gen = function () {
 }
 
 Block.prototype.gen = function () {
-  indentLevel += 1
-  indentLevel -= 1
   const statements = this.statements.map((s) => s.gen())
   return statements.join('')
 }

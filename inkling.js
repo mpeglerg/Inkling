@@ -12,14 +12,14 @@ const generate = require('./backend/javascript-generator')
 
 // If compiling from a string, return the AST, IR, or compiled code as a string.
 function compile(sourceCode, { astOnly, frontEndOnly, shouldOptimize }) {
-  const program = parse(sourceCode)
+  let program = parse(sourceCode)
   if (astOnly) {
     return util.inspect(program, { depth: null })
   }
   program.analyze(Context.INITIAL)
-  // if (shouldOptimize) {
-  //   program = program.optimize()
-  // }
+  if (shouldOptimize) {
+    program = program.optimize()
+  }
   if (frontEndOnly) {
     return util.inspect(program, { depth: null })
   }
@@ -30,10 +30,10 @@ function compile(sourceCode, { astOnly, frontEndOnly, shouldOptimize }) {
 function compileFile(filename, options) {
   fs.readFile(filename, 'utf-8', (error, sourceCode) => {
     if (error) {
-      console.error(error)
-      return
+      throw new Error(`${error}`)
     }
 
+    // eslint-disable-next-line no-console
     console.log(compile(sourceCode, options))
   })
 }
@@ -46,18 +46,18 @@ module.exports = {
 // If running as a script, we have a lot of command line processing to do. The source
 // program will come from the file name that is given as the command line argument.
 if (require.main === module) {
-  const { argv } = yargs.usage('$0 [-a] [-o] [-i] filename').
-    boolean(['a', 'o', 'i']).
-    describe('a', 'show abstract syntax tree after parsing then stop').
-    describe('o', 'do optimizations').
-    describe(
+  const { argv } = yargs.usage('$0 [-a] [-o] [-i] filename')
+    .boolean(['a', 'o', 'i'])
+    .describe('a', 'show abstract syntax tree after parsing then stop')
+    .describe('o', 'do optimizations')
+    .describe(
       'i',
       'generate and show the decorated abstract syntax tree then stop',
-    ).
-    demand(1)
+    )
+    .demand(1)
   compileFile(argv._[0], {
     astOnly: argv.a,
     frontEndOnly: argv.i,
-    // shouldOptimize: argv.o,
+    shouldOptimize: argv.o,
   })
 }
