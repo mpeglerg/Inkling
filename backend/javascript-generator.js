@@ -2,16 +2,10 @@
 /*
  * Translation to JavaScript
  *
- * Requiring this module adds a gen() method to each of the AST classes, except
- * for types, and fields, which don’t figure into code generation. It exports a
- * function that generates a complete, pretty-printed JavaScript program for a
- * Tiger expression, bundling the translation of the Tiger standard library with
- * the expression's translation.
- *
- * Each gen() method returns a fragment of JavaScript.
+ *   Each gen() method returns a fragment of JavaScript.
  *
  *   const generate = require('./backend/javascript-generator')
- *   generate(tigerExpression)
+ *   generate(inklingExpression)
  */
 
 const beautify = require('js-beautify')
