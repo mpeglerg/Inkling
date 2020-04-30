@@ -1,3 +1,10 @@
+/* TODO:
+*  Constant Folding - Copy from Tiger
+*  Strength Reduction - pick a couple
+*  Unreachable Codes - pick a couple
+*  Assignment Simplification
+*/
+
 const {
   Program,
   Block,
