@@ -9,6 +9,7 @@ const yargs = require('yargs')
 const parse = require('./ast/parser')
 const Context = require('./semantics/context')
 const generate = require('./backend/javascript-generator')
+const optimize = require('./semantics/optimizer')
 
 // If compiling from a string, return the AST, IR, or compiled code as a string.
 function compile(sourceCode, { astOnly, frontEndOnly, shouldOptimize }) {
@@ -18,6 +19,7 @@ function compile(sourceCode, { astOnly, frontEndOnly, shouldOptimize }) {
   }
   program.analyze(Context.INITIAL)
   if (shouldOptimize) {
+    console.log('optimizing...')
     program = program.optimize()
   }
   if (frontEndOnly) {

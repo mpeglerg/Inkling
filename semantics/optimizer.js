@@ -52,6 +52,7 @@ Program.prototype.optimize = function () {
   this.stmts.forEach((stmt) => {
     stmt.optimize()
   })
+  return this
 }
 
 Print.prototype.optimize = function () {
@@ -76,6 +77,7 @@ IfStmt.prototype.optimize = function () {
   // TODO: this one is p spicy idk if its right
   this.tests = this.tests.map((test) => test.optimize())
   for (let i = 0; i < this.tests.length; i += 1) {
+    console.log(this.tests[i])
     if (this.tests[i] === false) {
       delete this.tests[i]
       delete this.consequence[i]

@@ -40,7 +40,7 @@ const {
 
 const Context = require('./context')
 
-module.exports = function (root) {
+module.exports = (root) => {
   root.analyze(Context.INITIAL)
 }
 
