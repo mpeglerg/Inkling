@@ -136,12 +136,12 @@ PowExp.prototype.optimize = function () {
 
 PrefixExpression.prototype.optimize = function () {
   this.operand = this.operand.optimize()
-  if (this.op === '-') return new Literal(-this.operand.value) // this has some weird spacing issue in the generated code
+  // this has some weird spacing issue in the generated code
+  if (this.op === '-') return new Literal(-this.operand.value)
   return this
 }
 
 IdentifierExpression.prototype.optimize = function () {
-  // TODO: idk if this is right but i think we need to optimize cuz im p sure ids can be expressions
   return this
 }
 
@@ -162,7 +162,10 @@ WhileLoop.prototype.optimize = function () {
 Assignment.prototype.optimize = function () {
   this.target = this.target.optimize()
   this.source = this.source.optimize()
-  if (this.target === this.source) {
+  console.log(this.target === this.source)
+  // this is correct I think but it is fucking other things up, we may need to check if a node is
+  // null now in the generator as it gives an error otherwise
+  if (this.target.id === this.source.id) {
     return null
   }
   return this
@@ -176,9 +179,7 @@ ForLoop.prototype.optimize = function () {
 }
 
 FuncDecStmt.prototype.optimize = function () {
-  // TODO: I feel like theres more to the functions but idk
-  // eh i think this is good, we optimize args and stuff at the Call
-  this.function.optimize()
+  this.function = this.function.optimize()
   return this
 }
 
@@ -186,7 +187,6 @@ FuncObject.prototype.optimize = function () {
   if (this.body) {
     this.body = this.body.optimize()
   }
-  // TODO: probably more todo idk
   return this
 }
 
