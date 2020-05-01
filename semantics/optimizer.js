@@ -73,9 +73,20 @@ Literal.prototype.optimize = function () {
 }
 
 IfStmt.prototype.optimize = function () {
-  this.test = this.test.optimize()
-  this.consequent = this.consequent.optimize()
+  // TODO: this one is p spicy idk if its right
+  this.tests = this.tests.map((test) => test.optimize())
+  for (let i = 0; i < this.tests.length; i += 1) {
+    if (this.tests[i] === false) {
+      delete this.tests[i]
+      delete this.consequence[i]
+      i -= 1
+    }
+  }
+  this.consequence = this.consequence.map((consequence) => consequence.optimize())
   this.alternate = this.alternate.optimize()
+  if (this.tests.length === 0) {
+    return this.alternate
+  }
   // if (isZero(this.test)) {
   //   return this.alternate;
   // }
@@ -125,7 +136,8 @@ PrefixExpression.prototype.optimize = function () {
 }
 
 IdentifierExpression.prototype.optimize = function () {
-  // TODO
+  // TODO: idk if this is right but i think we need to optimize cuz im p sure ids can be expressions
+  this.id = this.id.optimize()
   return this
 }
 
@@ -136,26 +148,41 @@ PostfixExpression.prototype.optimize = function () {
 
 WhileLoop.prototype.optimize = function () {
   // TODO
+  this.condition = this.condition.optimize()
+  if (this.condition instanceof Literal && !this.condition.value) {
+    return new None()
+  }
   return this
 }
 
 Assignment.prototype.optimize = function () {
-  // TODO: lots of stuff we can do here
+  this.target = this.target.optimize()
+  this.source = this.source.optimize()
+  if (this.target === this.source) {
+    return null
+  }
   return this
 }
 
 ForLoop.prototype.optimize = function () {
-  // TODO
+  this.id = this.id.optimize()
+  this.collection = this.collection.optimize()
+  this.body = this.body.optimize()
   return this
 }
 
 FuncDecStmt.prototype.optimize = function () {
-  // TODO
+  // TODO: I feel like theres more to the functions but idk
+  if (this.body) {
+    this.body = this.body.optimize()
+  }
   return this
 }
 
 FuncObject.prototype.optimize = function () {
-  this.body.optimize()
+  if (this.body) {
+    this.body = this.body.optimize()
+  }
   // TODO: probably more todo idk
   return this
 }
@@ -166,6 +193,7 @@ Param.prototype.optimize = function () {
 
 ReturnStatement.prototype.optimize = function () {
   this.returnValue = this.returnValue.optimize() // dunno if this is correct
+  // -- I think this is correct but not positive
   return this
 }
 
