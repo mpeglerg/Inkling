@@ -170,7 +170,7 @@ ReturnStatement.prototype.optimize = function () {
 }
 
 DictExpression.prototype.optimize = function () {
-  this.exp.map((e) => {
+  this.exp.forEach((e) => {
     e.key.optimize()
     e.value.optimize()
   })
