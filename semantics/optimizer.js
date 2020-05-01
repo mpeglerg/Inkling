@@ -93,9 +93,6 @@ IfStmt.prototype.optimize = function () {
   if (this.tests.length === 0) {
     return this.alternate
   }
-  // if (isZero(this.test)) {
-  //   return this.alternate;
-  // }
   return this
 }
 
@@ -106,6 +103,7 @@ Ternary.prototype.optimize = function () {
   return this
 }
 
+// constant folding done here
 BinaryExpression.prototype.optimize = function () {
   this.left = this.left.optimize()
   this.right = this.right.optimize()
@@ -138,6 +136,7 @@ PowExp.prototype.optimize = function () {
 
 PrefixExpression.prototype.optimize = function () {
   this.operand = this.operand.optimize()
+  if (this.op === '-') return new Literal(-this.operand.value) // this has some weird spacing issue in the generated code
   return this
 }
 
