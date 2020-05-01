@@ -12,26 +12,26 @@ const {
   Assignment,
   VarDeclaration,
   Print,
-  Literal,
-  BinaryExpression,
+  ReturnStatement,
+  ForLoop,
   IfStmt,
-  WhileLoop,
   FuncDecStmt,
   FuncObject,
-  Call,
+  WhileLoop,
+  SubscriptedVarExp,
   Param,
+  Call,
+  BinaryExpression,
+  IdentifierExpression,
+  ListExpression,
   DictExpression,
   SetExpression,
-  ListExpression,
-  ReturnStatement,
-  IdentifierExpression,
-  PostfixExpression,
-  PrefixExpression,
-  ForLoop,
-  Ternary,
-  None,
-  SubscriptedVarExp,
   PowExp,
+  PrefixExpression,
+  PostfixExpression,
+  Literal,
+  None,
+  Ternary,
 } = require('../ast')
 
 module.exports = (program) => program.optimize()
@@ -49,9 +49,7 @@ function bothLiterals(b) {
 }
 
 Program.prototype.optimize = function () {
-  this.stmts.forEach((stmt) => {
-    stmt.optimize()
-  })
+  this.stmts = this.stmts.map((stmt) => stmt.optimize())
   return this
 }
 
@@ -60,7 +58,8 @@ Print.prototype.optimize = function () {
 }
 
 Block.prototype.optimize = function () {
-  this.statements.forEach((s) => s.optimize())
+  this.statements = this.statements.map((s) => s.optimize())
+  console.log(this.statements.length)
   return this.statements.length === 1 ? this.statements[0] : this
 }
 
@@ -70,22 +69,26 @@ VarDeclaration.prototype.optimize = function () {
 }
 
 Literal.prototype.optimize = function () {
+  console.log('literal')
   return this
 }
 
 IfStmt.prototype.optimize = function () {
   // TODO: this one is p spicy idk if its right
   this.tests = this.tests.map((test) => test.optimize())
-  for (let i = 0; i < this.tests.length; i += 1) {
-    console.log(this.tests[i])
-    if (this.tests[i] === false) {
+
+  // loop backwards when removing items from array
+  for (let i = this.tests.length - 1; i >= 0; i -= 1) {
+    console.log('test: ' + this.tests[i])
+    if (this.tests[i] === false) { // this.tests[i] is [object Object]
       delete this.tests[i]
       delete this.consequence[i]
-      i -= 1
     }
   }
   this.consequence = this.consequence.map((consequence) => consequence.optimize())
-  this.alternate = this.alternate.optimize()
+  if (this.alternate) {
+    this.alternate = this.alternate.optimize()
+  }
   if (this.tests.length === 0) {
     return this.alternate
   }
@@ -98,7 +101,7 @@ IfStmt.prototype.optimize = function () {
 Ternary.prototype.optimize = function () {
   this.test = this.test.optimize()
   this.consequence = this.consequence.optimize()
-  this.alt.optimize()
+  this.alt = this.alt.optimize()
   return this
 }
 
@@ -139,7 +142,6 @@ PrefixExpression.prototype.optimize = function () {
 
 IdentifierExpression.prototype.optimize = function () {
   // TODO: idk if this is right but i think we need to optimize cuz im p sure ids can be expressions
-  this.id = this.id.optimize()
   return this
 }
 
@@ -151,7 +153,7 @@ PostfixExpression.prototype.optimize = function () {
 WhileLoop.prototype.optimize = function () {
   this.condition = this.condition.optimize()
   if (this.condition instanceof Literal && !this.condition.value) {
-    return new None()
+    return null
   }
   this.body = this.body.optimize()
   return this
@@ -175,9 +177,9 @@ ForLoop.prototype.optimize = function () {
 
 FuncDecStmt.prototype.optimize = function () {
   // TODO: I feel like theres more to the functions but idk
-  if (this.body) {
-    this.body = this.body.optimize()
-  }
+  // eh i think this is good, we optimize args and stuff at the Call
+  console.log('functions')
+  this.function.optimize()
   return this
 }
 
@@ -208,7 +210,7 @@ DictExpression.prototype.optimize = function () {
 }
 
 ListExpression.prototype.optimize = function () {
-  this.members.map((m) => m.optimize())
+  this.members = this.members.map((m) => m.optimize())
   return this
 }
 
