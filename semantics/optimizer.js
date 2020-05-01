@@ -147,11 +147,11 @@ PostfixExpression.prototype.optimize = function () {
 }
 
 WhileLoop.prototype.optimize = function () {
-  // TODO
   this.condition = this.condition.optimize()
   if (this.condition instanceof Literal && !this.condition.value) {
     return new None()
   }
+  this.body = this.body.optimize()
   return this
 }
 
