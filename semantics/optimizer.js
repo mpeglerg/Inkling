@@ -1,11 +1,3 @@
-/* eslint func-names: ["error", "never"] */
-/* TODO:
-*  Constant Folding - Copy from Tiger
-*  Strength Reduction - pick a couple
-*  Unreachable Codes - pick a couple
-*  Assignment Simplification
-*/
-
 const {
   Program,
   Block,
@@ -72,20 +64,7 @@ Literal.prototype.optimize = function () {
 }
 
 IfStmt.prototype.optimize = function () {
-  // TODO: this one is p spicy idk if its right
   this.tests = this.tests.map((test) => test.optimize())
-
-  // i don't think we can do this since it is a runtime operation, ie we would be able to guarantee
-  // what the test would evaluate to till the moment it evaluates
-
-  // loop backwards when removing items from array
-  // for (let i = this.tests.length - 1; i >= 0; i -= 1) {
-  //   console.log('test: ' + this.tests[i])
-  //   if (this.tests[i] === false) { // this.tests[i] is [object Object]
-  //     delete this.tests[i]
-  //     delete this.consequence[i]
-  //   }
-  // }
   this.consequence = this.consequence.map((consequence) => consequence.optimize())
   if (this.alternate) {
     this.alternate = this.alternate.optimize()
@@ -103,7 +82,6 @@ Ternary.prototype.optimize = function () {
   return this
 }
 
-// constant folding done here
 BinaryExpression.prototype.optimize = function () {
   this.left = this.left.optimize()
   this.right = this.right.optimize()
@@ -166,8 +144,6 @@ WhileLoop.prototype.optimize = function () {
 Assignment.prototype.optimize = function () {
   this.target = this.target.optimize()
   this.source = this.source.optimize()
-  // this is correct I think but it is fucking other things up, we may need to check if a node is
-  // null now in the generator as it gives an error otherwise
   if (this.target.id === this.source.id) {
     return null
   }
@@ -198,8 +174,7 @@ Param.prototype.optimize = function () {
 }
 
 ReturnStatement.prototype.optimize = function () {
-  this.returnValue = this.returnValue.optimize() // dunno if this is correct
-  // -- I think this is correct but not positive
+  this.returnValue = this.returnValue.optimize() 
   return this
 }
 
