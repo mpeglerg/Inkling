@@ -285,6 +285,6 @@ function negativeChecker(x) {
 
 ## Optimizations
 - Constant Folding
-- Strength Reduction in Prefix Operator 
+- Strength Reduction in Prefix Operator & Binary Operators
 - Unreachable Code for While Loop
 - Assignment Simplification 
