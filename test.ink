@@ -29,6 +29,6 @@ function testPrefixOp() is Text {
     }
     gimme "hello"
 }
-x is Num 5
+x is Num findGreatest(3,2,3)
 x is -x
 x is -5
