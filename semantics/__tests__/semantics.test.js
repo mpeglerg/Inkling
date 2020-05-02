@@ -91,7 +91,8 @@ for a in {1:1} {
 for a in {1,2,3} {
   display a
 }
-u is Num 4
+k5 is List<Num> [1,2,3]
+u is Num k5[1]
 t is Num none
 function fun (j is Bool, i is Bool) is Bool {
   3 + 3
@@ -100,7 +101,7 @@ function fun (j is Bool, i is Bool) is Bool {
 fun(true,true)
 k4 is Dict<Num, Num> {1:10,2:2,3:3}
 k4[1]
-k5 is List<Num> [1,2,3]
+u is k5[0]
 k5[0] is 4
 for a in [1,2,3] {
   u is a
@@ -111,7 +112,7 @@ for a in {1:3,2:1,3:3} {
 for a in {1,2,3} {
   u is a
 }
-u is true ? 5: 6
+
 display "string" + "concatenation"
 
 `
