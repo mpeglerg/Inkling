@@ -136,7 +136,6 @@ PowExp.prototype.optimize = function () {
 
 PrefixExpression.prototype.optimize = function () {
   this.operand = this.operand.optimize()
-  // this has some weird spacing issue in the generated code
   if (this.op === '-' && this.operand instanceof Literal) {
     return new Literal(-this.operand.value)
   }
@@ -144,7 +143,9 @@ PrefixExpression.prototype.optimize = function () {
 }
 
 IdentifierExpression.prototype.optimize = function () {
-  // this.id = this.id.optimize()
+  if (this.id instanceof Call || this.id instanceof SubscriptedVarExp) {
+    this.id = this.id.optimize()
+  }
   return this
 }
 
@@ -165,7 +166,6 @@ WhileLoop.prototype.optimize = function () {
 Assignment.prototype.optimize = function () {
   this.target = this.target.optimize()
   this.source = this.source.optimize()
-  console.log(this.target === this.source)
   // this is correct I think but it is fucking other things up, we may need to check if a node is
   // null now in the generator as it gives an error otherwise
   if (this.target.id === this.source.id) {
@@ -222,7 +222,7 @@ SetExpression.prototype.optimize = function () {
 }
 
 Call.prototype.optimize = function () {
-  this.args.forEach((arg) => arg.optimize())
+  this.args = this.args.map((arg) => arg.optimize())
   return this
 }
 
