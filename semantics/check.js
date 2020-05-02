@@ -72,10 +72,6 @@ module.exports = {
     )
   },
 
-  isNotConstant(id) {
-    doCheck(!id.ref.constant, 'Can\'t assign to "always" variable')
-  },
-
   isNotReadOnly(lvalue) {
     doCheck(
       !(lvalue.constructor === IdentifierExpression && lvalue.ref.constant),
