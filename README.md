@@ -282,3 +282,9 @@ function negativeChecker(x) {
     return x < 0 ? true : false
 }
 ```
+
+## Optimizations
+- Constant Folding
+- Strength Reduction in Prefix Operator 
+- Unreachable Code for While Loop
+- Assignment Simplification 
