@@ -31,4 +31,4 @@ function testPrefixOp() is Text {
 }
 x is Num 5
 x is -x
-x is 5
+x is -5

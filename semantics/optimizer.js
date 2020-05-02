@@ -137,12 +137,14 @@ PowExp.prototype.optimize = function () {
 PrefixExpression.prototype.optimize = function () {
   this.operand = this.operand.optimize()
   // this has some weird spacing issue in the generated code
-  if (this.op === '-') return new Literal(-this.operand.value)
+  if (this.op === '-' && this.operand instanceof Literal) {
+    return new Literal(-this.operand.value)
+  }
   return this
 }
 
 IdentifierExpression.prototype.optimize = function () {
-  this.id = this.id.optimize()
+  // this.id = this.id.optimize()
   return this
 }
 
