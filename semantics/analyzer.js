@@ -164,6 +164,9 @@ IdentifierExpression.prototype.analyze = function (context) {
   } else {
     this.id.analyze(context)
   }
+  if (this.id instanceof Call) {
+    this.type = this.id.type
+  }
 }
 
 PostfixExpression.prototype.analyze = function (context) {
