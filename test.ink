@@ -29,3 +29,6 @@ function testPrefixOp() is Text {
     }
     gimme "hello"
 }
+x is Num 5
+x is x
+x is 5
