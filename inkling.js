@@ -19,8 +19,7 @@ function compile(sourceCode, { astOnly, frontEndOnly, shouldOptimize }) {
   }
   program.analyze(Context.INITIAL)
   if (shouldOptimize) {
-    console.log('optimizing...')
-    program = program.optimize()
+    program = optimize(program)
   }
   if (frontEndOnly) {
     return util.inspect(program, { depth: null })

@@ -1,3 +1,4 @@
+/* eslint func-names: ["error", "never"] */
 const {
   Program,
   Block,
@@ -174,7 +175,7 @@ Param.prototype.optimize = function () {
 }
 
 ReturnStatement.prototype.optimize = function () {
-  this.returnValue = this.returnValue.optimize() 
+  this.returnValue = this.returnValue.optimize()
   return this
 }
 
