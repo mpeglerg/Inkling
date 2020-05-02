@@ -142,6 +142,7 @@ PrefixExpression.prototype.optimize = function () {
 }
 
 IdentifierExpression.prototype.optimize = function () {
+  this.id = this.id.optimize()
   return this
 }
 
