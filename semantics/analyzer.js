@@ -62,11 +62,7 @@ Block.prototype.analyze = function (context) {
 VarDeclaration.prototype.analyze = function (context) {
   this.exp.analyze(context)
   this.type.analyze(context)
-  if (this.exp.id instanceof Call || this.exp.id instanceof SubscriptedVarExp) {
-    check.isAssignableTo(this.exp.id, this.type)
-  } else {
-    check.isAssignableTo(this.exp, this.type)
-  }
+  check.isAssignableTo(this.exp, this.type)
   context.add(this.id, this)
 }
 
@@ -168,7 +164,7 @@ IdentifierExpression.prototype.analyze = function (context) {
   } else {
     this.id.analyze(context)
   }
-  if (this.id instanceof Call) {
+  if (this.id instanceof Call || this.id instanceof SubscriptedVarExp) {
     this.type = this.id.type
   }
 }
@@ -188,11 +184,11 @@ WhileLoop.prototype.analyze = function (context) {
 Assignment.prototype.analyze = function (context) {
   this.target.analyze(context)
   this.source.analyze(context)
-  const targetType = !this.target.id.id ? this.target.type : this.target.id.type
-  if (this.source.id instanceof Call || this.source.id instanceof SubscriptedVarExp) {
-    check.isAssignableTo(this.source.id, targetType)
+  if (!this.target.id.id) {
+    check.isAssignableTo(this.source, this.target.type)
+    check.isNotReadOnly(this.target)
   } else {
-    check.isAssignableTo(this.source, targetType)
+    check.isAssignableTo(this.source, this.target.id.type)
   }
 }
 
@@ -306,7 +302,6 @@ Call.prototype.analyze = function (context) {
   this.args.forEach((arg) => arg.analyze(context))
   check.legalArguments(this.args, this.callee.function.params)
   this.type = this.callee.function.type
-  console.log(this)
 }
 
 None.prototype.analyze = function () {
