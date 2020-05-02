@@ -185,18 +185,11 @@ WhileLoop.prototype.analyze = function (context) {
 Assignment.prototype.analyze = function (context) {
   this.target.analyze(context)
   this.source.analyze(context)
-  if (!this.target.id.id) {
-    if (this.source.id instanceof Call || this.source.id instanceof SubscriptedVarExp) {
-      check.isAssignableTo(this.source.id, this.target.type)
-    } else {
-      check.isAssignableTo(this.source, this.target.type)
-    }
+  const targetType = !this.target.id.id ? this.target.type : this.target.id.type
+  if (this.source.id instanceof Call || this.source.id instanceof SubscriptedVarExp) {
+    check.isAssignableTo(this.source.id, targetType)
   } else {
-    if (this.source.id instanceof Call || this.source.id instanceof SubscriptedVarExp) {
-      check.isAssignableTo(this.source.id, this.target.id.type)
-    } else {
-      check.isAssignableTo(this.source, this.target.id.type)
-    }
+    check.isAssignableTo(this.source, targetType)
   }
 }
 
