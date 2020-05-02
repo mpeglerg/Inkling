@@ -10,7 +10,7 @@ const Context = require('../context')
 
 const errors = [
   ['use of undeclared variable', 'a is 1\n'],
-  ['assignment to constant', 'b is always Num 5\nx is 1\n'],
+  ['assignment to constant', 'b is always Num 5\nb is 1\n'],
   ['List with inconsistent types', 'c is List<Text> ["this", 2, "b"]\n'],
   ['Set with inconsistent types', 'd is Set<Text> {"this", 2, "b"}\n'],
   [
