@@ -283,7 +283,21 @@ function negativeChecker(x) {
 }
 ```
 
+## Semantic Errors
+
+- Type mismatch during declaration or assignment
+- Assignment to a variable declared with the 'always' keyword (constants)
+- Passing in `x` number of arguments where the function is declared with `y` number of parameters and `x !== y`
+- Passing in arguments with wrong type compared to parameter(s) declaration/the function signature
+- Indexing out of bounds for lists and dictionaries
+- Applying the `+` operator to variables that are not of type `Text` or `Num`
+- Having a `return` in a function that has a return type of `Void`
+- Not returning anything in a function this is declared to return something
+- Returning the something that is not of the type declared in the function signature
+- Trying to iterate through something that is not a list, set, dictionary, or string in a `for` loop
+
 ## Optimizations
+
 - Constant Folding
 - Strength Reduction in Prefix Operator & Binary Operators
 - Unreachable Code for While Loop
