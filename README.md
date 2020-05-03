@@ -292,8 +292,8 @@ function negativeChecker(x) {
 - Indexing out of bounds for lists and dictionaries
 - Applying the `+` operator to variables that are not of type `Text` or `Num`
 - Having a `return` in a function that has a return type of `Void`
-- Not returning anything in a function this is declared to return something
-- Returning the something that is not of the type declared in the function signature
+- Not returning anything in a function that is declared to return something
+- Returning something that is not of the type declared in the function signature
 - Trying to iterate through something that is not a list, set, dictionary, or string in a `for` loop
 
 ## Optimizations
