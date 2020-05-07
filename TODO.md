@@ -7,6 +7,7 @@
 - add more strength reductions to BinaryExp
 - another non-trivial optimization not in tiger
     - toal suggested 'Can you throw in getting rid of statements after a return maybe? Then you can have the 5 points back. Let me know.'
+- subscripted shit still not working (see `doc/dictsListsAndSets.ink`)
 
 ### Minor
 
