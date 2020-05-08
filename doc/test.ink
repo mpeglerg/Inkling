@@ -7,3 +7,13 @@ function test(x is Num) is Bool {
   }
   gimme x > 1
 }
+
+u is Num -3
+
+test(3+4)
+test(0-1)
+test(3 + u)
+
+if (2 < 3) {
+  display 2
+}

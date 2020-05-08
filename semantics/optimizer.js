@@ -41,6 +41,10 @@ function bothLiterals(b) {
   return b.left instanceof Literal && b.right instanceof Literal
 }
 
+function isNegative(n) {
+  return n instanceof Literal && n.value < 0
+}
+
 Program.prototype.optimize = function () {
   this.stmts = this.stmts.map((stmt) => stmt.optimize())
   return this
@@ -86,17 +90,28 @@ Ternary.prototype.optimize = function () {
 BinaryExpression.prototype.optimize = function () {
   this.left = this.left.optimize()
   this.right = this.right.optimize()
-  if (this.op === '+' && isZero(this.right)) return this.left
+  // we may need to check that we aren't concatenating strings here before we do these, unsure
+  if ((this.op === '+' || this.op === '-') && isZero(this.right)) return this.left
   if (this.op === '+' && isZero(this.left)) return this.right
-  if (this.op === '*' && isZero(this.right)) return new Literal(0)
-  if (this.op === '*' && isZero(this.left)) return new Literal(0)
+  // not sure this use of isNegative was the best, may need some tweaks
+  if (this.op === '+' && isNegative(this.right)) {
+    return new Literal(this.left.value + this.right.value)
+  }
+  if (this.op === '-' && isZero(this.left)) return new Literal(`-${this.right.value}`)
+  if (this.op === '*' && (isZero(this.left) || isZero(this.right))) return new Literal(0)
   if (this.op === '*' && isOne(this.right)) return this.left
   if (this.op === '*' && isOne(this.left)) return this.right
   if (bothLiterals(this)) {
     const [x, y] = [this.left.value, this.right.value]
     if (this.op === '+') return new Literal(x + y)
+    if (this.op === '-') return new Literal(x - y)
     if (this.op === '*') return new Literal(x * y)
     if (this.op === '/') return new Literal(x / y)
+    if (this.op === '%') return new Literal(x % y)
+    if (this.op === '<=') return new Literal(x <= y)
+    if (this.op === '>=') return new Literal(x >= y)
+    if (this.op === '<') return new Literal(x < y)
+    if (this.op === '>') return new Literal(x > y)
   }
   return this
 }
@@ -152,7 +167,7 @@ Assignment.prototype.optimize = function () {
 }
 
 ForLoop.prototype.optimize = function () {
-  this.id = this.id.optimize()
+  // this.id = this.id.optimize()
   this.collection = this.collection.optimize()
   this.body = this.body.optimize()
   return this
