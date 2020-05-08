@@ -54,6 +54,7 @@ const fixture = {
   sqrt: ['sqrt(2)\n', 'Math.sqrt(2);'],
   xProcess: ['xProcess(3)\n', 'process.exit(3);'],
   random: ['random(1, 10)\n', 'Math.floor(Math.random() * 10 + 1);'],
+  range: ['range(0, 10)\n', 'Array(10 - 0 + 1).fill().map((_, idx) => 0 + idx);'],
   builtins: ['pow(2, 2)\n length("hello")\n', '2**2;"hello".length;'],
   ListDeclaration: [
     'r is List<Text> ["name", "Marco", "school", "LMU"]\n',
