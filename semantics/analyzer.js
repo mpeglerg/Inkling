@@ -207,7 +207,7 @@ ForLoop.prototype.analyze = function (context) {
     // TODO
   } else {
     // probably need to throw error here since can't iterate on anything else than above
-    type = this.collection.type
+    throw new Error('can only iterate on lists, sets, dicts, or text')
   }
   const bodyContext = context.createChildContextForLoop()
   const id = new VarDeclaration(this.id, false, type)
