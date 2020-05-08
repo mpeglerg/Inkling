@@ -68,7 +68,8 @@ module.exports = {
   // Can we assign expression to a variable/param/field of type type?
   isAssignableTo(expression, type) {
     doCheck(
-      deepEqual(expression.type, type) || deepEqual(expression.type, NoneType),
+      (deepEqual(type, expression.type, true) && type.constructor === expression.type.constructor)
+      || deepEqual(expression.type, NoneType),
       `Expression of type ${util.format(
         expression.type,
       )} not compatible with type ${util.format(type)}`,

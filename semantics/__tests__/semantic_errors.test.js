@@ -73,9 +73,13 @@ const errors = [
   ['dividing booleans', 'r is Bool true\nj is Bool false\nr / j\n'],
   ['ternary expression types', 'c is Num true ? 5 : true\n'],
   [
-    'assigning to list with wrong member type from function call', 'function f(x is Num) is List<Num> {\n'
-  + '  gimme [1,2,x]\n'
-  + '}\n wew is List<Text> f(2)\n'],
+    'assigning to list with wrong member type from function call',
+    'function f(x is Num) is List<Num> {\n'
+    + '  gimme [1,2,x]\n'
+    + '}\n wew is List<Text> f(2)\n'],
+  [
+    'returning a list in function that should return a set',
+    'function getSetOfTexts() is Set<Text> {\n  gimme ["!", "1", "dsa"]\n}\n\ntexts is Set<Text> getSetOfTexts()\n'],
 
   // add necessary types for each node
   // pow check for return type
