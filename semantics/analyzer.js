@@ -63,7 +63,6 @@ VarDeclaration.prototype.analyze = function (context) {
   this.type.analyze(context)
   check.isAssignableTo(this.exp, this.type)
   context.add(this.id, this)
-  console.log('list type:', this.type)
 }
 
 Literal.prototype.analyze = function () {
@@ -195,23 +194,21 @@ Assignment.prototype.analyze = function (context) {
 ForLoop.prototype.analyze = function (context) {
   let type
   this.collection.analyze(context)
-  console.log('for loop id type:', this.collection.type.memberType)
   check.isIterable(this.collection.type)
   if (this.collection.type.constructor === ListType
     || this.collection.type.constructor === SetType) {
     type = this.collection.type.memberType
   } else if (this.collection.type.constructor === DictType) {
     type = this.collection.type.keyType
-  } else if (this.collection.type.constructor === TextType) {
-    // TODO
-    type = this.collection.type
+  // } else if (this.collection.type.constructor === TextType) {
+  //   // TODO
+  //   type = this.collection.type
   } else {
     // probably need to throw error here since can't iterate on anything else than above
     type = this.collection.type
   }
   const bodyContext = context.createChildContextForLoop()
   const id = new VarDeclaration(this.id, false, type)
-  console.log('i id', id)
   bodyContext.add(this.id, id)
   this.body.analyze(bodyContext)
 }
@@ -279,8 +276,6 @@ ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context))
   if (this.members.length) {
     this.type = new ListType(this.members[0].type)
-    console.log('the type of this mf list is: ')
-    console.log(this.type)
     this.members.forEach((m) => check.expressionsHaveTheSameType(
       m.type,
       this.type.memberType,
@@ -305,7 +300,6 @@ Call.prototype.analyze = function (context) {
   this.args.forEach((arg) => arg.analyze(context))
   check.legalArguments(this.args, this.callee.function.params)
   this.type = this.callee.function.type
-  console.log('range type: ', this)
 }
 
 None.prototype.analyze = function () {

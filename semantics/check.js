@@ -84,6 +84,7 @@ module.exports = {
   },
 
   sameType(arg, param) {
+    // fug we never allow/check for lists, sets, or dicts here oopsieee
     if (param.type.id === 'Num') {
       doCheck(
         typeof arg.value === 'number' || arg.type === NumType,
@@ -96,6 +97,10 @@ module.exports = {
       doCheck(typeof arg.value === 'boolean' || arg.type === BoolType,
         'Type mismatch BOOL')
     }
+    // else {
+    //   // TODO
+    //   throw new Error('unsupported argument type')
+    // }
   },
 
   // Same number of args and params; all types compatible
