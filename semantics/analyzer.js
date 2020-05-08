@@ -1,5 +1,4 @@
 /* eslint func-names: ["error", "never"] */
-const deepEqual = require('deep-equal')
 const {
   Program,
   Print,
@@ -64,7 +63,7 @@ VarDeclaration.prototype.analyze = function (context) {
   this.type.analyze(context)
   check.isAssignableTo(this.exp, this.type)
   context.add(this.id, this)
-  console.log('lsit type:', this.type)
+  console.log('list type:', this.type)
 }
 
 Literal.prototype.analyze = function () {
@@ -205,6 +204,7 @@ ForLoop.prototype.analyze = function (context) {
     type = this.collection.type.keyType
   } else if (this.collection.type.constructor === TextType) {
     // TODO
+    type = this.collection.type
   } else {
     // probably need to throw error here since can't iterate on anything else than above
     type = this.collection.type
@@ -237,12 +237,6 @@ FuncObject.prototype.analyze = function (context) {
     if (this.type === 'Void') {
       throw new Error('Void functions do not have return statements')
     }
-    console.log('+++checking return type against func signature+++\nfunc return type')
-    console.log(this.type)
-    console.log('func return statement object')
-    console.log(returnStatement[0])
-    console.log('DEEP EQUAL:')
-    console.log(deepEqual(returnStatement[0].type, this.type))
     check.isAssignableTo(returnStatement[0], this.type) // bug here
   }
 }

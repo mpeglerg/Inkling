@@ -135,6 +135,8 @@ function getListOfTexts() is List<Text> {
 function getDictOfNumsToTexts() is Dict<Num, Text> {
   gimme {3: "hi", 4: "owo"}
 }
+
+ge is Dict<Num, Text> getDictOfNumsToTexts()
 `
 
 describe('The semantic analyzer', () => {
