@@ -27,6 +27,11 @@ const {
   Ternary,
 } = require('../ast')
 
+const {
+  TextType,
+  BoolType,
+} = require('../ast')
+
 module.exports = (program) => program.optimize()
 
 function isZero(e) {
@@ -43,6 +48,14 @@ function bothLiterals(b) {
 
 function isNegative(n) {
   return n instanceof Literal && n.value < 0
+}
+
+function bothStringLiterals(e) {
+  return bothLiterals(e) && e.left.type === TextType && e.right.type === TextType
+}
+
+function bothBoolLiterals(e) {
+  return bothLiterals(e) && e.left.type === BoolType && e.right.type === BoolType
 }
 
 Program.prototype.optimize = function () {
@@ -90,10 +103,16 @@ Ternary.prototype.optimize = function () {
 BinaryExpression.prototype.optimize = function () {
   this.left = this.left.optimize()
   this.right = this.right.optimize()
-  // we may need to check that we aren't concatenating strings here before we do these, unsure
+  if (this.op === '+' && bothStringLiterals(this)) {
+    const [x, y] = [this.left.value, this.right.value]
+    const xy = (x + y).replace(/["]+/g, '')
+    return new Literal(`"${xy}"`)
+  }
+  if (this.op === '!=') return new Literal(this.left.value !== this.right.value)
+  if (this.op === '==') return new Literal(this.left.value === this.right.value)
   if ((this.op === '+' || this.op === '-') && isZero(this.right)) return this.left
   if (this.op === '+' && isZero(this.left)) return this.right
-  // not sure this use of isNegative was the best, may need some tweaks
+  // not sure this use of isNegative was the best, use may need some tweaks or the function does too
   if (this.op === '+' && isNegative(this.right)) {
     return new Literal(this.left.value + this.right.value)
   }
@@ -101,7 +120,11 @@ BinaryExpression.prototype.optimize = function () {
   if (this.op === '*' && (isZero(this.left) || isZero(this.right))) return new Literal(0)
   if (this.op === '*' && isOne(this.right)) return this.left
   if (this.op === '*' && isOne(this.left)) return this.right
-  if (bothLiterals(this)) {
+  if (bothBoolLiterals(this)) {
+    const [x, y] = [this.left.value, this.right.value]
+    if (this.op === 'and') return new Literal(x && y)
+    if (this.op === 'or') return new Literal(x || y)
+  } else if (bothLiterals(this)) {
     const [x, y] = [this.left.value, this.right.value]
     if (this.op === '+') return new Literal(x + y)
     if (this.op === '-') return new Literal(x - y)
