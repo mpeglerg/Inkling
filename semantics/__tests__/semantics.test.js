@@ -137,6 +137,10 @@ function getDictOfNumsToTexts() is Dict<Num, Text> {
 }
 
 ge is Dict<Num, Text> getDictOfNumsToTexts()
+function food(x is Num, y is Text, g is Bool) is Void {
+  display y
+}
+food(3, "weW", true)
 `
 
 describe('The semantic analyzer', () => {
