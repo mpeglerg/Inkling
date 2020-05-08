@@ -69,9 +69,10 @@ Print.prototype.optimize = function () {
 
 Block.prototype.optimize = function () {
   this.statements = this.statements.map((s) => s.optimize())
-  // remove any statements in block after return
-  const firstReturn = this.statements.findIndex((r) => r.constructor === ReturnStatement)
-  this.statements = this.statements.slice(0, firstReturn + 1)
+  const indexOfReturnStatement = this.statements.findIndex((r) => r.constructor === ReturnStatement)
+  if (indexOfReturnStatement >= 0) {
+    this.statements = this.statements.slice(0, indexOfReturnStatement + 1)
+  }
   return this.statements.length === 1 ? this.statements[0] : this
 }
 
