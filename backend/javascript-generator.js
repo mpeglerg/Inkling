@@ -99,6 +99,9 @@ const builtin = {
   remove([listId]) {
     return `${listId.replace(/[''""]/g, '')}.pop()`
   },
+  range([start, end]) {
+    return `Array(${end} - ${start} + 1).fill().map((_, idx) => ${start} + idx)`
+  },
 }
 
 module.exports = function (exp) {

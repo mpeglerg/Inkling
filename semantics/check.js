@@ -25,8 +25,11 @@ module.exports = {
       type.constructor === ListType
       || type.constructor === SetType
       || type.constructor === DictType
-      || type === TextType,
-      'Not a list, set, dic or text',
+      || type === TextType
+      || type === ListType
+      || type === SetType
+      || type === DictType,
+      'Not a list, set, dict or text',
     )
   },
 

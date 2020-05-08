@@ -64,6 +64,7 @@ VarDeclaration.prototype.analyze = function (context) {
   this.type.analyze(context)
   check.isAssignableTo(this.exp, this.type)
   context.add(this.id, this)
+  console.log('lsit type:', this.type)
 }
 
 Literal.prototype.analyze = function () {
@@ -195,10 +196,12 @@ Assignment.prototype.analyze = function (context) {
 ForLoop.prototype.analyze = function (context) {
   let type
   this.collection.analyze(context)
+  console.log('for loop:', this.collection.id.type.memberType)
   check.isIterable(this.collection.type)
   if (
     this.collection.type.constructor === ListType
     || this.collection.type.constructor === SetType
+    || this.collection.type.constructor === TextType
   ) {
     type = this.collection.type.memberType
   } else if (this.collection.type.constructor === DictType) {
@@ -208,6 +211,7 @@ ForLoop.prototype.analyze = function (context) {
   }
   const bodyContext = context.createChildContextForLoop()
   const id = new VarDeclaration(this.id, false, type)
+  console.log('i id', id)
   bodyContext.add(this.id, id)
   this.body.analyze(bodyContext)
 }
@@ -302,6 +306,7 @@ Call.prototype.analyze = function (context) {
   this.args.forEach((arg) => arg.analyze(context))
   check.legalArguments(this.args, this.callee.function.params)
   this.type = this.callee.function.type
+  console.log('range type: ', this)
 }
 
 None.prototype.analyze = function () {
