@@ -95,8 +95,8 @@ function fizzbuzz(x is Num) is Void {
       display "buzz"
     } else {
       display i
-    } 
-  } 
+    }
+  }
 }
 for a in {1,2,3} {
   display a
@@ -125,11 +125,16 @@ for a in {1,2,3} {
 
 display "string" + "concatenation"
 
-function fuu(x is Num) is List<Num> {
-  gimme [1,2,x]
+btw: lists return valid lists, sets, dicts
+function getListOfNums() is List<Num> {
+  gimme [1,2,4]
 }
-
-wew is List<Num> fuu(2)
+function getListOfTexts() is List<Text> {
+  gimme ["!", "1", "dsa"]
+}
+function getDictOfNumsToTexts() is Dict<Num, Text> {
+  gimme {3: "hi", 4: "owo"}
+}
 `
 
 describe('The semantic analyzer', () => {
