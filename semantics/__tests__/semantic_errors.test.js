@@ -72,7 +72,10 @@ const errors = [
   ],
   ['dividing booleans', 'r is Bool true\nj is Bool false\nr / j\n'],
   ['ternary expression types', 'c is Num true ? 5 : true\n'],
-
+  [
+    'assigning to list with wrong member type from function call', 'function f(x is Num) is List<Num> {\n'
+  + '  gimme [1,2,x]\n'
+  + '}\n wew is List<Text> f(2)\n'],
 
   // add necessary types for each node
   // pow check for return type

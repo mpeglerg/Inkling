@@ -83,10 +83,20 @@ for a in "hello" {
   display a
 }
 for a in [1,2,3] {
-  display a
+  abcd is Num a
 }
-for a in {1:1} {
-  display a
+function fizzbuzz(x is Num) is Void {
+  for i in range(0,x) {
+    if (i%3 == 0 and i%5 == 0) {
+      display "fizzbuzz"
+    } else if (i % 3 == 0) {
+      display "fizz"
+    } else if (i % 5 == 0) {
+      display "buzz"
+    } else {
+      display i
+    } 
+  } 
 }
 for a in {1,2,3} {
   display a
@@ -115,6 +125,11 @@ for a in {1,2,3} {
 
 display "string" + "concatenation"
 
+function fuu(x is Num) is List<Num> {
+  gimme [1,2,x]
+}
+
+wew is List<Num> fuu(2)
 `
 
 describe('The semantic analyzer', () => {
