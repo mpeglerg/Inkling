@@ -196,7 +196,7 @@ Assignment.prototype.analyze = function (context) {
 ForLoop.prototype.analyze = function (context) {
   let type
   this.collection.analyze(context)
-  console.log('for loop:', this.collection.id.type.memberType)
+  console.log('for loop id type:', this.collection.id)
   check.isIterable(this.collection.type)
   if (
     this.collection.type.constructor === ListType
@@ -278,12 +278,10 @@ ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context))
   if (this.members.length) {
     this.type = new ListType(this.members[0].type)
-    for (let i = 1; i < this.members.length; i += 1) {
-      check.expressionsHaveTheSameType(
-        this.members[i].type,
-        this.type.memberType,
-      )
-    }
+    this.members.forEach((m) => check.expressionsHaveTheSameType(
+      m.type,
+      this.type.memberType,
+    ))
   }
 }
 
@@ -291,12 +289,10 @@ SetExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context))
   if (this.members.length) {
     this.type = new SetType(this.members[0].type)
-    for (let i = 1; i < this.members.length; i += 1) {
-      check.expressionsHaveTheSameType(
-        this.members[i].type,
-        this.type.memberType,
-      )
-    }
+    this.members.forEach((m) => check.expressionsHaveTheSameType(
+      m.type,
+      this.type.memberType,
+    ))
   }
 }
 
