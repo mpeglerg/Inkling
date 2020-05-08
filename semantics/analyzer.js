@@ -1,5 +1,5 @@
 /* eslint func-names: ["error", "never"] */
-
+const deepEqual = require('deep-equal')
 const {
   Program,
   Print,
@@ -196,17 +196,17 @@ Assignment.prototype.analyze = function (context) {
 ForLoop.prototype.analyze = function (context) {
   let type
   this.collection.analyze(context)
-  console.log('for loop id type:', this.collection.id)
+  console.log('for loop id type:', this.collection.type.memberType)
   check.isIterable(this.collection.type)
-  if (
-    this.collection.type.constructor === ListType
-    || this.collection.type.constructor === SetType
-    || this.collection.type.constructor === TextType
-  ) {
+  if (this.collection.type.constructor === ListType
+    || this.collection.type.constructor === SetType) {
     type = this.collection.type.memberType
   } else if (this.collection.type.constructor === DictType) {
     type = this.collection.type.keyType
+  } else if (this.collection.type.constructor === TextType) {
+    // TODO
   } else {
+    // probably need to throw error here since can't iterate on anything else than above
     type = this.collection.type
   }
   const bodyContext = context.createChildContextForLoop()
@@ -237,7 +237,13 @@ FuncObject.prototype.analyze = function (context) {
     if (this.type === 'Void') {
       throw new Error('Void functions do not have return statements')
     }
-    check.isAssignableTo(returnStatement[0].returnValue, this.type)
+    console.log('+++checking return type against func signature+++\nfunc return type')
+    console.log(this.type)
+    console.log('func return statement object')
+    console.log(returnStatement[0])
+    console.log('DEEP EQUAL:')
+    console.log(deepEqual(returnStatement[0].type, this.type))
+    check.isAssignableTo(returnStatement[0], this.type) // bug here
   }
 }
 
@@ -247,6 +253,7 @@ Param.prototype.analyze = function (context) {
 
 ReturnStatement.prototype.analyze = function (context) {
   this.returnValue.analyze(context)
+  this.type = this.returnValue.type
   context.assertInFunction('Return statement not in function')
 }
 
@@ -278,6 +285,8 @@ ListExpression.prototype.analyze = function (context) {
   this.members.forEach((m) => m.analyze(context))
   if (this.members.length) {
     this.type = new ListType(this.members[0].type)
+    console.log('the type of this mf list is: ')
+    console.log(this.type)
     this.members.forEach((m) => check.expressionsHaveTheSameType(
       m.type,
       this.type.memberType,
